@@ -1,0 +1,309 @@
+query,classification
+"Hi there, how are you doing today?",general_chat
+Good morning! Can you help me later?,general_chat
+"Thanks for the help earlier, appreciate it.",general_chat
+"I'm bored waiting for IT, any suggestions?",general_chat
+What time does the support team usually respond?,general_chat
+Do you have coffee recommendations for late nights?,general_chat
+Is anyone available to chat right now?,general_chat
+Can I ask a non-technical question first?,general_chat
+What's the weather like at your location?,general_chat
+Do you have any tips for staying focused?,general_chat
+Hello! I wanted to say hi before my issue.,general_chat
+Are you a real person or a bot?,general_chat
+"Just checking in, is support open on weekends?",general_chat
+Can we schedule a time to talk about this later?,general_chat
+I'm new here — what's the easiest way to get help?,general_chat
+Do you have any downtime expected today?,general_chat
+What's the expected response time for priority 3 issues?,general_chat
+I wanted to compliment the team for fast responses.,general_chat
+Do you celebrate company milestones? Just curious.,general_chat
+Can you direct me to the HR portal? Not IT related.,general_chat
+Is it okay to ask multiple unrelated questions in one chat?,general_chat
+Are there any maintenance windows tonight?,general_chat
+What languages can you chat in besides English?,general_chat
+I'm trying to be polite — do you prefer formal greetings?,general_chat
+Do you provide training sessions for new hires?,general_chat
+Can you give me a quick morale boost? I'm stressed.,general_chat
+What's the best way to request new hardware?,general_chat
+Do you have any holiday hours posted?,general_chat
+"I lost my mug in the break room, thoughts?",general_chat
+Any suggestions for a laptop bag that's durable?,general_chat
+"Before we start, can you confirm you can view tickets?",general_chat
+"I appreciate the quick response time, thanks!",general_chat
+What's the best way to ask for VPN access politely?,general_chat
+Do you accept praise as a form of gratitude?,general_chat
+Can you point me to the onboarding docs?,general_chat
+Is there a community forum for non-urgent issues?,general_chat
+"I have a random question about office seating, is this the right place?",general_chat
+Do you recommend ergonomic keyboards for long typing?,general_chat
+What's a polite way to escalate an old ticket?,general_chat
+Could you tell me a fun IT fact?,general_chat
+Are you able to share the support team's working hours?,general_chat
+Is lunch provided during team events?,general_chat
+Are there guidelines for saving passwords securely?,general_chat
+Do you accept feature requests via chat?,general_chat
+I like to greet people with 'Hey' — is that okay here?,general_chat
+Can you tell me how to request ergonomic adjustments?,general_chat
+Do you have a FAQ I can browse for basic questions?,general_chat
+I'm just here to say thanks to the IT team!,general_chat
+Is it possible to get a standing desk through support?,general_chat
+Can I communicate in shorthand or should I be verbose?,general_chat
+What's the official channel for non-urgent feedback?,general_chat
+Will someone from IT attend the company all-hands?,general_chat
+Do you have tips for working remotely effectively?,general_chat
+How do I compliment a technician who helped me?,general_chat
+Can you remind me where the printer room is located?,general_chat
+Are office plants maintained by facilities or IT?,general_chat
+Is it okay to request after-hours support for emergencies?,general_chat
+Does IT provide any certifications or training budgets?,general_chat
+I want to know more about the company network culture.,general_chat
+Can you hold a ticket while I gather more info?,general_chat
+What's the polite way to decline an update request?,general_chat
+Do you encourage internal blogging or knowledge sharing?,general_chat
+Do you accept emoji reactions to helpful messages?,general_chat
+What's the recommended headset for frequent calls?,general_chat
+Are there walking groups here for lunchtime?,general_chat
+Thank you — that fixed my mood even if not my issue.,general_chat
+Can you help me draft an email to request access?,general_chat
+How do I find out who manages my desk area?,general_chat
+Any advice on preventing eye strain from monitors?,general_chat
+Is there a suggestion box for improving IT services?,general_chat
+Can IT recommend a good notebook for meetings?,general_chat
+Just checking: are you available 24/7 for urgent issues?,general_chat
+How do I unsubscribe from non-critical notifications?,general_chat
+Is it okay to ping you for quick clarifications?,general_chat
+Do you offer help with personal device setup at work?,general_chat
+Can you help me find the nearest power outlet?,general_chat
+I'm visiting the office — any tips for first day?,general_chat
+Do you host any monthly IT knowledge sessions?,general_chat
+Are there any internal Slack channels for casual chat?,general_chat
+What's the policy for peripheral device replacements?,general_chat
+I wanted to say hi to the on-call engineer.,general_chat
+Could you provide a quick morale-boosting quote?,general_chat
+Is there a buddy program for new employees in IT?,general_chat
+How early should I report an equipment issue before a meeting?,general_chat
+Do we have a lost-and-found system for office items?,general_chat
+Can you share tips on keeping data organized?,general_chat
+Are we allowed to personalize our workstations?,general_chat
+Do you have a quick checklist for first-day IT setup?,general_chat
+I appreciate your patience while I collect logs.,general_chat
+Is there an internal mentorship program for IT staff?,general_chat
+Would you like feedback on this support interaction?,general_chat
+What's the typical time to provision a new laptop?,general_chat
+Thanks — that worked out well for my meeting today.,general_chat
+Is there a preferred channel for recognition of colleagues?,general_chat
+Any tips for organizing remote stand-ups effectively?,general_chat
+Are there community events for IT employees?,general_chat
+Can you tell me about the office's security culture?,general_chat
+What's the recommended approach to ask for overtime support?,general_chat
+Do you have a greeting you'd prefer me to use?,general_chat
+How do I politely ask to escalate a problem during a demo?,general_chat
+Can you give me a link to the company's code of conduct?,general_chat
+I enjoy learning new tech — any starter resources?,general_chat
+Is there a regular newsletter from IT I can subscribe to?,general_chat
+Do you accept suggestions for improving knowledge base articles?,general_chat
+Are office tours available for new hires?,general_chat
+Thanks for listening — ready to start with the technical issue now.,general_chat
+What is a VLAN and why would I use one?,kb_lookup
+How does DHCP assign IP addresses?,kb_lookup
+What's the difference between NAT and PAT?,kb_lookup
+Explain the purpose of a gateway in a network.,kb_lookup
+What are best practices for password policies?,kb_lookup
+How do I interpret a traceroute output?,kb_lookup
+What's the difference between TCP and UDP?,kb_lookup
+Describe how DNS resolution works.,kb_lookup
+What is two-factor authentication and why use it?,kb_lookup
+How do software updates affect security posture?,kb_lookup
+When should I use a static IP instead of DHCP?,kb_lookup
+What is a subnet mask and how do I calculate subnets?,kb_lookup
+Explain VLAN tagging and trunking in switches.,kb_lookup
+What is MFA and how is it different from 2FA?,kb_lookup
+How do SSL and TLS secure web traffic?,kb_lookup
+What is the role of a firewall in network security?,kb_lookup
+How do I reset a forgotten Active Directory password?,kb_lookup
+What is an IP address conflict and how to resolve it?,kb_lookup
+What's the function of a load balancer?,kb_lookup
+Explain the difference between public and private IP addresses.,kb_lookup
+How does VPN encryption protect remote connections?,kb_lookup
+What is SNMP used for in network management?,kb_lookup
+How do I read syslog entries for troubleshooting?,kb_lookup
+What considerations are there for patch management?,kb_lookup
+Explain the concept of zero trust security.,kb_lookup
+How are backups typically scheduled and validated?,kb_lookup
+What is ARP and why is it important?,kb_lookup
+How does DHCP lease renewal work?,kb_lookup
+"What's the difference between RAID levels 0, 1, and 5?",kb_lookup
+What is a certificate authority and how do certificates work?,kb_lookup
+When should I use SSH vs Telnet for device access?,kb_lookup
+What are common causes of slow network performance?,kb_lookup
+How to secure a remote desktop protocol (RDP) connection?,kb_lookup
+What logging levels are typical for applications and servers?,kb_lookup
+Describe how content delivery networks (CDNs) work.,kb_lookup
+"What's the difference between SaaS, PaaS, and IaaS?",kb_lookup
+How do you perform capacity planning for a server?,kb_lookup
+What is the principle of least privilege in access control?,kb_lookup
+How do I secure Wi-Fi access in an office environment?,kb_lookup
+What is endpoint detection and response (EDR)?,kb_lookup
+How do you interpret CPU and memory metrics on a server?,kb_lookup
+Explain the meaning of packet loss and jitter.,kb_lookup
+What is a DNS zone and how are records managed?,kb_lookup
+How do I rotate API keys safely?,kb_lookup
+What is role-based access control (RBAC)?,kb_lookup
+How do containers differ from virtual machines?,kb_lookup
+What is a bastion host and when should it be used?,kb_lookup
+How do you troubleshoot intermittent connectivity issues?,kb_lookup
+What is firmware and why keep device firmware updated?,kb_lookup
+How should sensitive logs be handled and protected?,kb_lookup
+Explain network segmentation and its benefits.,kb_lookup
+What's the difference between symmetric and asymmetric encryption?,kb_lookup
+How do you set up monitoring alerts without noise?,kb_lookup
+What is port forwarding and when is it needed?,kb_lookup
+How does email spam filtering typically work?,kb_lookup
+What is a service level agreement (SLA) in IT support?,kb_lookup
+How do you safely decommission an old server?,kb_lookup
+What is the difference between backup and disaster recovery?,kb_lookup
+What are common indicators of a compromised account?,kb_lookup
+How to configure network interfaces for high availability?,kb_lookup
+What is an incident response plan and key steps?,kb_lookup
+How to read packet captures with Wireshark basics?,kb_lookup
+What are acceptable encryption standards for data at rest?,kb_lookup
+How do you implement multi-cloud networking securely?,kb_lookup
+What is immutable infrastructure and why use it?,kb_lookup
+How does OAuth differ from OpenID Connect?,kb_lookup
+What is a health check endpoint and why add one?,kb_lookup
+How to interpret HTTP status codes during debugging?,kb_lookup
+What is the recommended lifecycle for SSL certificates?,kb_lookup
+How do you isolate a production incident for investigation?,kb_lookup
+What is a DMZ in network architecture?,kb_lookup
+When should you use IPv6 instead of IPv4?,kb_lookup
+What are common best practices for mobile device management?,kb_lookup
+How to secure API endpoints exposed to partners?,kb_lookup
+What is continuous integration and why is it useful?,kb_lookup
+How do you manage secrets across environments?,kb_lookup
+What's the difference between monitoring and observability?,kb_lookup
+What is the concept of blue-green deployment?,kb_lookup
+How do I implement logging best practices for compliance?,kb_lookup
+What is the difference between an incident and a problem ticket?,kb_lookup
+Explain how BGP impacts internet routing.,kb_lookup
+What is a service mesh and when to use it?,kb_lookup
+How to plan a network IP addressing scheme for an office?,kb_lookup
+What is certificate pinning and when is it recommended?,kb_lookup
+How do you verify backups are restorable?,kb_lookup
+What are common causes of high disk latency?,kb_lookup
+What is telemetry and why collect it?,kb_lookup
+How to secure SSH access with key management?,kb_lookup
+What is DevOps and how does it change support practices?,kb_lookup
+How can I protect against phishing attacks?,kb_lookup
+What are the signs of a network loop?,kb_lookup
+How do I create a KB article for a recurring issue?,kb_lookup
+What is the best way to document change requests?,kb_lookup
+How to implement role separation between admin accounts?,kb_lookup
+What is the purpose of RADIUS in authentication?,kb_lookup
+"When troubleshooting, how should I prioritize alerts?",kb_lookup
+Check the status of switch SW-DC1 in datacenter A.,tool
+Run a traceroute to 8.8.8.8 from edge-router-1.,tool
+Retrieve last 24 hours of logs for server app-prod-01.,tool
+Lookup the ticket with ID INC-2025-104 and give me details.,tool
+What's the current public IP of gateway-hq?,tool
+Ping 10.10.23.45 and report packet loss and latency.,tool
+Get the VLAN configuration for switch port Gi0/24 on SW-BLDG2.,tool
+Show me the last 50 authentication failures in the auth logs.,tool
+Query the asset database for laptops assigned to j.smith.,tool
+Retrieve configuration backup for router R-EDGE-3.,tool
+Find devices in rack R12 with model Cisco 9300.,tool
+Display the current firewall rules for perimeter-fw-1.,tool
+Fetch the DHCP lease table for subnet 192.168.50.0/24.,tool
+Restart the web service on web-frontend-02.,tool
+Get the MAC address history for IP 10.2.1.75.,tool
+Show open ports on server db-replica-1.,tool
+Lookup the physical location of device with serial SN1234567.,tool
+Run a health check on database cluster prod-db.,tool
+Fetch recent CPU usage spikes for host analytics-03.,tool
+Find the nearest support engineer on call for site London.,tool
+Provide the DNS A record for app.company.com.,tool
+Pull CPU and memory metrics for the past hour for vm-app-7.,tool
+Get the SSL certificate expiry date for portal.company.com.,tool
+List all active VPN sessions for user maria.ivanova.,tool
+Show the routing table on router core-2.,tool
+Query the backup status for server fileserver-09.,tool
+Fetch the last 100 lines of system.log from host mail-gw.,tool
+Search the ticketing system for incidents impacting Wi-Fi this week.,tool
+Get the SFP module type installed in uplink-port on SW-DC2.,tool
+Look up the warranty status for device asset# A-4421.,tool
+Run a DNS lookup for mx records of company.com.,tool
+List all servers with disk usage above 85%.,tool
+Retrieve the MAC vendor for address 00:1A:2B:3C:4D:5E.,tool
+Check if port 3306 is reachable on db-master-01.,tool
+Get the incident history for switch SW-PLATFORM-5.,tool
+Show me the current BGP peer status on router edge-nyc.,tool
+Find which user last logged into workstation WS-0402.,tool
+Query the IPAM for an available IP in block 10.0.16.0/24.,tool
+Collect application logs for service payment-api between 02:00 and 03:00 UTC.,tool
+Get the TLS protocol versions supported by api.internal.net.,tool
+Lookup the physical address for site code SFO-2.,tool
+Retrieve recent change records touching VLAN 200.,tool
+Run a port scan against 172.16.5.12 for commonly used ports.,tool
+Search monitoring for alerts related to high latency in EU region.,tool
+Show the last configuration commit on firewall cluster-fw.,tool
+Display user permissions for shared drive //files.company.com/shared.,tool
+Get the serial number and model for UPS in rack 7.,tool
+Check whether the DHCP server is authoritative for scope 10.1.1.0/24.,tool
+Pull security events for user login failures in the past 48 hours.,tool
+Request the current patch level for Windows domain controllers.,tool
+Show me latency to CDN edge in Tokyo from monitoring probes.,tool
+Fetch the list of DNS zones hosted on our primary DNS server.,tool
+Retrieve CPU temperature and fan speed for server chassis-11.,tool
+Identify which VLAN IP 10.20.30.40 belongs to.,tool
+Get the list of blocked IPs on the perimeter firewall for today.,tool
+Query the asset DB for monitors older than 5 years.,tool
+Run a connectivity test between site A and site B.,tool
+Fetch the current SSL chain for microservice auth and validate.,tool
+Lookup the owner of certificate thumbprint ABCD1234EF56.,tool
+Show the last scheduled job runs for ETL pipeline daily-load.,tool
+Get the list of printers with low toner alerts in the London office.,tool
+Search logs for error code 503 across the load balancers.,tool
+Show me the active listening sockets on host cache-1.,tool
+Retrieve the On-Call rota for the networking team this month.,tool
+Query user mailbox quotas and usage for the marketing team.,tool
+Find devices with outdated anti-virus definitions.,tool
+Check SSL certificate chain for expired intermediate certs.,tool
+Get a topology map for site LA-Office network.,tool
+Pull recent config diffs for switches in building 4.,tool
+Show the current storage pool utilization for NAS-Cluster-2.,tool
+Search the knowledge base for KB articles related to slow VPN.,tool
+Get network interface statistics for eth0 on host analytics-1.,tool
+Lookup the last successful backup timestamp for DB-order.,tool
+Query the inventory for available docking stations.,tool
+Show me the last firmware update applied to AP-Office-12.,tool
+Find all servers tagged with 'production' in our cloud account.,tool
+Run a reverse DNS lookup for IP 203.0.113.77.,tool
+Pull the crash report for application service user-profile on 2025-09-20.,tool
+Get the LDAP group membership for group 'engineering-all'.,tool
+Search monitoring for drops in throughput on interface TenGigE0/1.,tool
+Request the floor plan and device locations for HQ floor 3.,tool
+Check if a quarantine rule exists for file hash 9f86d081884c7d659a2feaa0c55ad015.,tool
+List all open change requests affecting production this week.,tool
+Show who last modified the VLAN assignment for port 12.,tool
+Retrieve the license expiry dates for our virtualization hosts.,tool
+Get the health status of service bus cluster sb-cluster-1.,tool
+Find recent escalations tied to customer-facing errors.,tool
+Pull the last successful run output for nightly backup-job-3.,tool
+Show active sessions on the Citrix gateway right now.,tool
+Get the WAN circuit utilization statistics for provider X.,tool
+Lookup the IPAM history for host payroll-server-2.,tool
+Run a diagnostics check on laser-printer-05.,tool
+Show the certificate subject and issuer for secure.company.com.,tool
+Find all assets with missing owner field in the CMDB.,tool
+Retrieve the last change approval for emergency patching.,tool
+Get endpoint detection alerts for the finance department for today.,tool
+List the top talkers on switch SPINE-1 for the past 15 minutes.,tool
+Search the archive for previous incidents affecting mailbox delivery.,tool
+Check whether automatic updates are enabled for Chrome on managed devices.,tool
+Provide the netflow summary for subnet 172.20.0.0/16.,tool
+Run a canonicalization check for URLs served by website alpha.,tool
+Show the recent vulnerability scan results for host web-cache-4.,tool
+Lookup contact details for the vendor responsible for router repairs.,tool
+Retrieve the last 7 days of authentication logs for admin accounts.,tool
+Find desktops with more than three blue-screen events in last month.,tool
+Get the build version of application inventory-service running now.,tool

@@ -1,0 +1,13 @@
+streamlit
+httpx
+pydantic
+python-dotenv
+openai
+pandas
+nest-asyncio
+scikit-learn
+seaborn
+matplotlib
+requests
+plotly
+google-genai

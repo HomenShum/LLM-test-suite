@@ -1,0 +1,33 @@
+{
+  "run_id": "test5_research_leaf_scaffold_20251001_170032",
+  "test_type": "orchestrator",
+  "test_name": "Test 5",
+  "timestamp": "2025-10-01T17:00:32.193029",
+  "model": "gemini-2.5-flash",
+  "dataset_info": {
+    "size": 0,
+    "type": "research"
+  },
+  "configuration": {
+    "mode": "research",
+    "coordination_pattern": "leaf_scaffold",
+    "budget_mode": "turns",
+    "max_turns": 3
+  },
+  "summary_metrics": {
+    "final_score": 0.0,
+    "total_turns": 0,
+    "best_turn": 0,
+    "total_cost": 0.0,
+    "total_tokens": 0,
+    "mode": "research",
+    "coordination_pattern": "leaf_scaffold",
+    "memory_stats": {
+      "total_retrievals": 0,
+      "total_insertions": 0,
+      "cache_hits": 0,
+      "avg_retrieval_latency_ms": 0.0
+    },
+    "rethink_count": 0
+  }
+}

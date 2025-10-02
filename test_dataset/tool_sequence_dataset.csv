@@ -1,0 +1,150 @@
+query,expected_sequence
+Check status of edge-router-12 in datacenter-1,['check_device']
+Verify firmware version on firewall-fw-07,['check_device']
+Is switch core-sw-03 online and what is its uptime?,['check_device']
+Run a health check for storage-array-02,['check_device']
+Confirm power state of host vmhost-9 in cluster-prod,['check_device']
+Check battery health of UPS-ups-1 in rack-22,['check_device']
+Is access-point ap-45 reporting connectivity issues?,['check_device']
+Retrieve last heartbeat from load-balancer lb-03,['check_device']
+Check temperature sensors for server srv-db-02,['check_device']
+Verify NIC statistics for hypervisor hv-04,['check_device']
+Check patch status on endpoint workstation-ws-101,['check_device']
+Confirm serial number and warranty for switch access-sw-11,['check_device']
+Check configuration sync status of cluster k8s-cluster-5,['check_device']
+Verify VPN gateway vg-02 is accepting connections,['check_device']
+Retrieve incident INC-12458 details and current assignee,['get_incident']
+Get status and timeline for ticket INC-9981,['get_incident']
+Fetch root cause analysis attached to incident INC-20234,['get_incident']
+Show updates for outage ticket INC-1100 in network team queue,['get_incident']
+Get priority and SLA for incident INC-30321,['get_incident']
+Retrieve communications log for incident INC-4501,['get_incident']
+Get remediation steps recorded in incident INC-5612,['get_incident']
+Fetch incident INC-7777 history including related CI,['get_incident']
+Show escalation path for incident INC-214,['get_incident']
+Retrieve incident INC-9045 attachments and screenshots,['get_incident']
+Get current status of incident INC-33009 affecting app-prod,['get_incident']
+Fetch assigned technician and ETA for incident INC-1200,['get_incident']
+Show related incidents linked to INC-890,['get_incident']
+Find owner and hostname for IP 10.12.4.56,['lookup_ip']
+Lookup geolocation and ASN for public IP 203.0.113.45,['lookup_ip']
+Resolve reverse DNS for 198.51.100.22,['lookup_ip']
+Check last seen device for IP 192.168.10.15 on the network,['lookup_ip']
+Lookup blacklisting status for IP 34.210.101.12,['lookup_ip']
+Find which VLAN 10.0.2.8 belongs to,['lookup_ip']
+Lookup ISP and contact for IP 45.77.188.9,['lookup_ip']
+Resolve hostname for IP 172.16.5.3 in branch-office,['lookup_ip']
+Check malicious activity reports for IP 203.0.113.99,['lookup_ip']
+Lookup PTR record for 54.210.33.11,['lookup_ip']
+Find subnetwork allocation for IP 10.0.0.128,['lookup_ip']
+Determine if IP 192.0.2.50 is within allowed VPN pool,['lookup_ip']
+Lookup last DHCP lease holder for IP 10.20.30.44,['lookup_ip']
+Authenticate admin jsmith then retrieve configuration for router rtr-21 from the asset database,"['authenticate_user', 'query_database']"
+Authenticate service-account svc_monitor and query DB for recent deployment records of app-inventory,"['authenticate_user', 'query_database']"
+Authenticate helpdesk agent and fetch user profile for user alice in the HR database,"['authenticate_user', 'query_database']"
+Authenticate operator and query database for patch history of server srv-web-03,"['authenticate_user', 'query_database']"
+Authenticate OpsLead and retrieve security group membership for host hv-02,"['authenticate_user', 'query_database']"
+Authenticate network-admin and query database for ACL entries affecting subnet 10.1.0.0/16,"['authenticate_user', 'query_database']"
+Authenticate technician and pull warranty and vendor data for storage-array-07 from CMDB,"['authenticate_user', 'query_database']"
+Authenticate analyst and query database for last backup timestamp of db-prod-1,"['authenticate_user', 'query_database']"
+Authenticate devops user and query DB for current auto-scaling policies in cluster k8s-prod,"['authenticate_user', 'query_database']"
+Authenticate auditor and retrieve change log entries for firewall-fw-02,"['authenticate_user', 'query_database']"
+Authenticate manager then query inventory DB for available spare power supplies,"['authenticate_user', 'query_database']"
+Authenticate intern and get compliance status for host srv-app-12 in asset DB,"['authenticate_user', 'query_database']"
+Authenticate field-tech and query database for rack location of server srv-cache-4,"['authenticate_user', 'query_database']"
+Authenticate admin and query DB for the serial number of switch core-sw-01,"['authenticate_user', 'query_database']"
+Authenticate on-call and query database for scheduled maintenance windows for datacenter-2,"['authenticate_user', 'query_database']"
+Authenticate support and retrieve escalation history for incident INC-20145 from the incident DB,"['authenticate_user', 'query_database']"
+Authenticate network-operator and query DB for recent BGP changes affecting peer AS64500,"['authenticate_user', 'query_database']"
+Authenticate procurement and query DB for vendor contact information for router vendor,"['authenticate_user', 'query_database']"
+Authenticate site-lead and pull environmental sensor logs for rack-12 from monitoring DB,"['authenticate_user', 'query_database']"
+Authenticate automation-service and query DB for last successful run of job deploy-app,"['authenticate_user', 'query_database']"
+Authenticate security-analyst and query DB for list of hosts with outdated SSH keys,"['authenticate_user', 'query_database']"
+Authenticate backup-admin and query DB for retention policy applied to archive vault,"['authenticate_user', 'query_database']"
+Authenticate change-manager and retrieve planned changes for the next 7 days from change DB,"['authenticate_user', 'query_database']"
+Authenticate engineer and query DB for accepted certificates expiring within 30 days,"['authenticate_user', 'query_database']"
+Check inventory for replacement fan for server model X9 and create order if out of stock,"['check_inventory', 'create_order']"
+Check spare power supplies in stock for UPS model APC-72 and place order for 5 units if low,"['check_inventory', 'create_order']"
+Verify available SFP modules for 10Gb links and create purchase order for required quantity,"['check_inventory', 'create_order']"
+Check inventory of replacement drive 2TB SSD for storage-array-01 and create order for 3,"['check_inventory', 'create_order']"
+Check stock of rack-mount shelves and create order to resupply branch-office if below threshold,"['check_inventory', 'create_order']"
+Verify spare CPU modules for blade chassis and create order to maintain two spares,"['check_inventory', 'create_order']"
+Check inventory for RJ45 patch panels and create purchase order for new deployment,"['check_inventory', 'create_order']"
+Check available access points AP-200 and create order to replace 10 units in campus,"['check_inventory', 'create_order']"
+Check inventory for replacement NICs and create order for three dual-port cards,"['check_inventory', 'create_order']"
+Verify stock of power cables C14 and create order to replenish 50 pieces,"['check_inventory', 'create_order']"
+Check inventory of blank server racks and create order to support upcoming expansion,"['check_inventory', 'create_order']"
+Verify availability of backup tapes and create order for monthly rotation supply,"['check_inventory', 'create_order']"
+Check inventory for SATA cables and create order for assorted lengths,"['check_inventory', 'create_order']"
+Check spare GPUs for compute cluster and create order for two units if none available,"['check_inventory', 'create_order']"
+Verify stock of KVM switches and create order to replace failing unit in lab,"['check_inventory', 'create_order']"
+Check inventory for fiber patch cords LC-LC and create order for the new site,"['check_inventory', 'create_order']"
+Check availability of serial console adapters and create order for field tech kits,"['check_inventory', 'create_order']"
+Verify spare power distribution units PDUs and create order to provision new rack,"['check_inventory', 'create_order']"
+Check inventory for replacement LCD console and create order if obsolete models unavailable,"['check_inventory', 'create_order']"
+Check stock of thermal paste and create order for maintenance team,"['check_inventory', 'create_order']"
+Verify spares for RAID controller cards and create order for a replacement,"['check_inventory', 'create_order']"
+Check inventory of Windows server licenses and create order to cover new VM growth,"['check_inventory', 'create_order']"
+Verify available encryption HSM modules and create order to meet compliance needs,"['check_inventory', 'create_order']"
+Check inventory of network transceivers and create order to replace failing ports,"['check_inventory', 'create_order']"
+Verify availability of USB console cables and create order to restock support vans,"['check_inventory', 'create_order']"
+"Validate maintenance request MR-402, fetch current device configuration for switch core-sw-05, and apply required VLAN updates","['validate_request', 'fetch_data', 'update_system']"
+"Validate remote access request for user bob, fetch list of approved hosts, and update firewall rules to allow access","['validate_request', 'fetch_data', 'update_system']"
+"Validate patch approval for server srv-app-21, fetch installed packages, and update the system with the approved patch","['validate_request', 'fetch_data', 'update_system']"
+"Validate certificate renewal request for lb-frontend, fetch current cert info, and update the load balancer with new certificate","['validate_request', 'fetch_data', 'update_system']"
+"Validate scaling request for k8s deployment web-tier, fetch current replica count, and update the cluster to desired replicas","['validate_request', 'fetch_data', 'update_system']"
+"Validate backup restore request from user ops, fetch backup metadata for db-prod-02, and perform the restore to the target host","['validate_request', 'fetch_data', 'update_system']"
+"Validate firmware upgrade approval for storage-array-09, fetch current firmware version, and push firmware update","['validate_request', 'fetch_data', 'update_system']"
+"Validate password reset authorization for admin account, fetch account last activity, and update the account credentials","['validate_request', 'fetch_data', 'update_system']"
+"Validate network change CR-78, fetch current ACLs for perimeter firewall, and apply the ACL changes","['validate_request', 'fetch_data', 'update_system']"
+"Validate provisioning request for vm-new-15, fetch available host resources, and create the VM with requested specs","['validate_request', 'fetch_data', 'update_system']"
+"Validate VLAN change request for floor-3, fetch switch port assignments, and update port VLAN mappings","['validate_request', 'fetch_data', 'update_system']"
+"Validate DNS update ticket, fetch current DNS records for app.example.com, and update the A/TTL as requested","['validate_request', 'fetch_data', 'update_system']"
+"Validate API key rotation request, fetch services using the key, and update those services with the new key","['validate_request', 'fetch_data', 'update_system']"
+"Validate decommission request for server srv-old-7, fetch dependent services, and update service registry to remove references","['validate_request', 'fetch_data', 'update_system']"
+"Validate remote patch window, fetch target host list for the app cluster, and apply OS updates during the window","['validate_request', 'fetch_data', 'update_system']"
+"Validate user access revocation, fetch group memberships for user charlie, and update directory to remove access","['validate_request', 'fetch_data', 'update_system']"
+"Validate storage allocation increase, fetch current LUN utilization, and update storage quotas accordingly","['validate_request', 'fetch_data', 'update_system']"
+"Validate port forwarding request, fetch current NAT rules, and update router NAT to add the port mapping","['validate_request', 'fetch_data', 'update_system']"
+"Validate monitoring threshold change, fetch current metrics for service cache, and update alerting thresholds","['validate_request', 'fetch_data', 'update_system']"
+"Validate incident-driven hotfix, fetch affected files from repository, and apply hotfix to production servers","['validate_request', 'fetch_data', 'update_system']"
+"Validate cross-datacenter sync request, fetch replication status, and update replication configuration to include new dataset","['validate_request', 'fetch_data', 'update_system']"
+"Validate application config change, fetch current config for microservice auth, and deploy updated config to the cluster","['validate_request', 'fetch_data', 'update_system']"
+"Validate VPN access extension, fetch client's session logs, and update VPN expiry date for the account","['validate_request', 'fetch_data', 'update_system']"
+"Validate SSL offload change, fetch current LB settings, and update balancer to enable SSL termination","['validate_request', 'fetch_data', 'update_system']"
+"Validate LDAP schema update, fetch impacted entries, and update directory schema safely","['validate_request', 'fetch_data', 'update_system']"
+"Validate emergency restart request for host hv-21, fetch running VMs, and update hypervisor to perform graceful restart","['validate_request', 'fetch_data', 'update_system']"
+"Validate high-priority outage mitigation, fetch routing table entries, and update BGP announcement to reroute traffic","['validate_request', 'fetch_data', 'update_system']"
+"Validate service account privilege escalation, fetch current permissions, and update role assignments per approval","['validate_request', 'fetch_data', 'update_system']"
+"Validate DNS zone transfer request, fetch existing zone data, and update secondary DNS servers to accept transfer","['validate_request', 'fetch_data', 'update_system']"
+"Validate container image promotion, fetch image tags and scans, and update production registry to mark image as promoted","['validate_request', 'fetch_data', 'update_system']"
+"Validate compliance patch deployment, fetch CVE list for hosts, and update systems to remediate vulnerabilities","['validate_request', 'fetch_data', 'update_system']"
+"Validate disaster recovery failover, fetch latest replication checkpoints, and update routing to point to DR site","['validate_request', 'fetch_data', 'update_system']"
+"Validate certificate revocation, fetch services using the cert, and update them to use replacement certificates","['validate_request', 'fetch_data', 'update_system']"
+"Validate scheduled upgrade to middleware, fetch dependent service versions, and update middleware nodes sequentially","['validate_request', 'fetch_data', 'update_system']"
+"Validate IoT device firmware rollout, fetch device group membership, and update each device to approved firmware","['validate_request', 'fetch_data', 'update_system']"
+"Validate license transfer request, fetch license allocations, and update entitlement records to reflect the transfer","['validate_request', 'fetch_data', 'update_system']"
+"Validate encryption key rollover, fetch services using old key, and update systems to use new key material","['validate_request', 'fetch_data', 'update_system']"
+"Validate network segmentation change, fetch host communication patterns, and update segmentation rules","['validate_request', 'fetch_data', 'update_system']"
+"Validate time sync configuration change, fetch NTP server list, and update hosts to use the new servers","['validate_request', 'fetch_data', 'update_system']"
+"Validate dynamic DNS registration, fetch host identifiers, and update DNS entries for new hosts","['validate_request', 'fetch_data', 'update_system']"
+"Validate hot patch on kernel, fetch kernel module dependencies, and update servers with the hot patch","['validate_request', 'fetch_data', 'update_system']"
+"Validate storage tier migration, fetch data heatmap for volumes, and update policies to move cold data","['validate_request', 'fetch_data', 'update_system']"
+"Validate SSO connector update, fetch service provider metadata, and update identity provider configuration","['validate_request', 'fetch_data', 'update_system']"
+"Validate load balancer pool modification, fetch pool member health, and update the pool to remove unhealthy nodes","['validate_request', 'fetch_data', 'update_system']"
+"Validate remote logging change, fetch current syslog targets, and update agents to forward logs to new endpoint","['validate_request', 'fetch_data', 'update_system']"
+"Validate QoS policy change, fetch traffic classification for the service, and update router QoS settings","['validate_request', 'fetch_data', 'update_system']"
+"Validate configuration drift remediation, fetch baseline configs, and update deviating systems to baseline","['validate_request', 'fetch_data', 'update_system']"
+"Validate automated backup frequency change, fetch current backup schedules, and update system cron jobs","['validate_request', 'fetch_data', 'update_system']"
+"Validate database schema migration, fetch dependent stored procedures, and update the schema applying migrations","['validate_request', 'fetch_data', 'update_system']"
+"Validate access token expiration policy change, fetch active tokens, and update token store to enforce new TTL","['validate_request', 'fetch_data', 'update_system']"
+"Validate analytics data retention change, fetch dataset locations, and update retention policies across systems","['validate_request', 'fetch_data', 'update_system']"
+"Validate patch rollback request, fetch current deployment artifacts, and update deployments to previous stable version","['validate_request', 'fetch_data', 'update_system']"
+"Validate service mesh route update, fetch current virtual service config, and update routing to direct traffic","['validate_request', 'fetch_data', 'update_system']"
+"Validate firewall dynamic rule request, fetch triggered events, and update rules to block malicious IPs","['validate_request', 'fetch_data', 'update_system']"
+"Validate LDAP group sync enabling, fetch source groups, and update sync settings to activate synchronization","['validate_request', 'fetch_data', 'update_system']"
+"Validate host remediation plan, fetch installed agents status, and update remediation tool to apply fixes","['validate_request', 'fetch_data', 'update_system']"
+"Validate edge device configuration push, fetch device capabilities, and update remote device configs accordingly","['validate_request', 'fetch_data', 'update_system']"
+"Validate CDN cache purge request, fetch affected URLs, and update CDN to purge the identified cache entries","['validate_request', 'fetch_data', 'update_system']"
+"Validate application secret injection, fetch deployment manifests, and update orchestrator to roll new pods with secrets","['validate_request', 'fetch_data', 'update_system']"
+"Validate network baseline update, fetch traffic baselines, and update anomaly detection system with new baselines","['validate_request', 'fetch_data', 'update_system']"
