@@ -39,9 +39,6 @@ env/
 # Test outputs
 test_output/
 
-# Large cache files
-pricing_cache/openrouter_pricing.json
-
 # Dataset directory (optional - uncomment to ignore generated datasets)
 # test_dataset/
 
