@@ -147,25 +147,49 @@ Tests sentiment analysis and text classification capabilities.
 
 ```
 LLM_test_suite/
-├── streamlit_test_v5.py          # Main Streamlit application
-├── leaf_agent_scaffold.py        # Multi-agent orchestration system
-├── requirements.txt               # Python dependencies
-├── cost_tracker/                  # Provider-agnostic cost tracking
-│   ├── __init__.py
-│   ├── tracker.py                 # Core tracking logic
-│   ├── extractors.py              # Usage extractors for providers
-│   ├── pricing_resolver.py        # Pricing discovery and caching
-│   └── readme.md                  # Cost tracker documentation
-├── utils/                         # Utility modules
-│   ├── dashboard_logger.py        # Persistent execution logging
-│   └── stateful_components.py     # Memory and security components
-├── test_dataset/                  # Test datasets
-│   ├── classification_dataset.csv
-│   ├── tool_sequence_dataset.csv
-│   └── context_pruning_dataset.csv
-├── agent_dashboard_logs/          # Execution logs (auto-generated)
-├── model_costs/                   # Cached pricing data (auto-generated)
-└── pricing_cache/                 # OpenRouter pricing cache (auto-generated)
+├── streamlit_test_v5.py          # Main Streamlit app entrypoint
+├── requirements.txt              # Python dependencies
+├── ui/                           # Streamlit UI modules
+│   ├── test6_visual_llm.py       # Test 6 UI (modes, analysis, caching)
+│   ├── test6_advanced_results.py # Visualizations, leaderboard, judge, Q&A
+│   ├── test6_synthesis_display.py
+│   ├── agent_dashboard.py
+│   ├── sidebar.py, footer.py, data_generation.py, test_tabs.py
+├── core/                         # Core analysis logic
+│   ├── visual_qa_interface.py
+│   ├── visual_meta_analysis.py
+│   ├── visual_results_synthesis.py
+│   ├── vision_visualizations.py
+│   ├── visual_llm_clients.py, pricing.py
+│   ├── image_collector.py, rating_extractor.py, models.py
+│   ├── orchestrator.py, unified_orchestrator.py, dynamic_visual_analysis.py
+│   ├── master_llm_curator.py, judges.py, analysis_history.py, api_clients.py
+│   ├── summaries.py, test_runners.py, vision_model_discovery.py, reporting.py
+├── utils/                        # Utilities & helpers
+│   ├── execution_tracker.py, dashboard_logger.py
+│   ├── advanced_visualizations.py, visualizations.py, gantt_charts.py, plotly_config.py
+│   ├── data_helpers.py, helpers.py, ui_components.py
+│   ├── model_discovery.py, model_metadata.py, stateful_components.py, test_image_generator.py
+├── cost_tracker/                 # Provider-agnostic cost tracking
+│   ├── tracker.py, extractors.py, pricing_resolver.py, readme.md
+├── pricing_cache/                # Pricing/model cache (auto-generated)
+│   ├── openrouter_pricing.json, openrouter_vision_models.json
+├── test_dataset/                 # Datasets and sample images
+│   ├── classification_dataset.csv, context_pruning_dataset.csv, tool_sequence_dataset.csv
+│   └── visual_llm_images/ [...]
+├── analysis_history/             # Past runs: images and results (auto-generated)
+│   ├── images/<timestamps>/..., results/<timestamps>/...
+├── config/
+│   └── scenarios.py
+├── scripts/
+│   └── cleanup_docs.ps1
+├── examples/
+│   └── dynamic_visual_analysis_examples.py
+├── agent_dashboard_logs/         # Execution logs (auto-generated)
+├── model_costs/                  # (currently empty)
+├── pricing_cache/                # OpenRouter cache (auto-generated)
+├── CHANGELOG.md, README.md, .gitignore
+└── .streamlit/secrets.toml       # Local secrets (not committed)
 ```
 
 ## 🔧 Configuration
