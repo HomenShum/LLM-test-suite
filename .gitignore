@@ -49,3 +49,18 @@ Thumbs.db
 # Streamlit
 .streamlit/secrets.toml
 
+
+
+# Docs policy: ignore non-essential Markdown files by default
+# Keep only top-level structural docs and any README.md files
+*.md
+!README.md
+!**/README.md
+!DESIGN_SPECS.md
+!FOLDER_STRUCTURES.md
+!CHANGELOG.md
+
+# Ignore streamlit backup/corrupted files
+streamlit_test_v5.py.backup
+streamlit_test_v5.py.backup_*
+streamlit_test_v5.py.corrupted

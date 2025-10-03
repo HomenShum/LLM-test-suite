@@ -578,11 +578,11 @@ def _render_visualization_tabs(viz_data: Dict[str, Any], key_prefix: str) -> Non
                     for r in ranks[:5]
                 ])
                 st.dataframe(df, use_container_width=True, hide_index=True)
-            if st.button("🔄 Re-run Judge (Compact)", key="leaderboard_rerun_judge"):
+            if st.button("🔄 Re-run Judge (Compact)", key=f"{key_prefix}_leaderboard_rerun_judge"):
                 st.session_state.test6_evaluation_results = None
                 st.rerun()
         else:
-            if st.button("🚀 Run LLM Judge (Compact)", key="leaderboard_run_judge"):
+            if st.button("🚀 Run LLM Judge (Compact)", key=f"{key_prefix}_leaderboard_run_judge"):
                 with st.spinner("Running judge..."):
                     results = st.session_state.get('test6_analysis_data') or []
                     task_desc = st.session_state.get('test6_task_description') or ""
