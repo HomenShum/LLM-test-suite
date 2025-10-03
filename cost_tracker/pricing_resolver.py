@@ -5,7 +5,15 @@ import json
 import requests
 from typing import Optional
 
-LINKUP_API_KEY = os.getenv("LINKUP_API_KEY", "")
+def _get_linkup_key():
+    """Get Linkup API key from session state, env, or return empty string."""
+    try:
+        import streamlit as st
+        return st.session_state.get("LINKUP_API_KEY") or os.getenv("LINKUP_API_KEY", "")
+    except:
+        return os.getenv("LINKUP_API_KEY", "")
+
+LINKUP_API_KEY = _get_linkup_key()
 LINKUP_SEARCH_URL = "https://api.linkup.so/v1/search"
 LINKUP_FETCH_URL = "https://api.linkup.so/v1/fetch"
 
@@ -68,12 +76,13 @@ def _fetch_pricing_page(provider: str) -> Optional[str]:
     Returns:
         Page content as string, or None if fetch fails
     """
-    if not LINKUP_API_KEY or provider not in PRICING_URLS:
+    linkup_key = _get_linkup_key()
+    if not linkup_key or provider not in PRICING_URLS:
         return None
 
     url = PRICING_URLS[provider]
     headers = {
-        "Authorization": f"Bearer {LINKUP_API_KEY}",
+        "Authorization": f"Bearer {linkup_key}",
         "Content-Type": "application/json"
     }
 
@@ -112,7 +121,8 @@ def linkup_price_lookup(provider: str, model: str) -> Optional[dict]:
     Returns:
         dict with input_per_mtok_usd and output_per_mtok_usd, or None if not found
     """
-    if not LINKUP_API_KEY:
+    linkup_key = _get_linkup_key()
+    if not linkup_key:
         return None
 
     # Strategy 1: Try fetching the pricing page directly
@@ -152,7 +162,7 @@ def linkup_price_lookup(provider: str, model: str) -> Optional[dict]:
         include_domains = []
 
     headers = {
-        "Authorization": f"Bearer {LINKUP_API_KEY}",
+        "Authorization": f"Bearer {linkup_key}",
         "Content-Type": "application/json"
     }
 

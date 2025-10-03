@@ -1,0 +1,75 @@
+{
+  "analyses": [
+    {
+      "id": "20251002_173154",
+      "timestamp": "2025-10-02T17:31:54.595922",
+      "preset_name": "\ud83c\udfa8 Art & Style Analysis",
+      "task_description": "Identify the artistic style, color palette, composition techniques, and emotional tone. Describe the subject matter and artistic elements.",
+      "num_images": 29,
+      "num_models": 2,
+      "models": [
+        "gemini",
+        "llama"
+      ],
+      "has_ground_truth": false,
+      "has_curation_report": false,
+      "has_computational_results": false,
+      "has_evaluation_results": false,
+      "has_qa_history": false
+    },
+    {
+      "id": "20251002_183514",
+      "timestamp": "2025-10-02T18:35:14.990719",
+      "preset_name": "\ud83c\udfed Product Defect Detection",
+      "task_description": "Detect any visible defects, scratches, dents, discoloration, or manufacturing flaws. Rate the product quality on a scale of 1-5.",
+      "num_images": 10,
+      "num_models": 3,
+      "models": [
+        "gpt5",
+        "gemini",
+        "llama"
+      ],
+      "has_ground_truth": true,
+      "has_curation_report": true,
+      "has_computational_results": false,
+      "has_evaluation_results": false,
+      "has_qa_history": true
+    },
+    {
+      "id": "20251002_190619",
+      "timestamp": "2025-10-02T19:06:19.504560",
+      "preset_name": "\ud83c\udfe5 Medical Image Analysis",
+      "task_description": "Identify anatomical structures, detect any abnormalities or anomalies, assess image quality, and provide diagnostic observations.",
+      "num_images": 8,
+      "num_models": 3,
+      "models": [
+        "gpt5",
+        "gemini",
+        "llama"
+      ],
+      "has_ground_truth": true,
+      "has_curation_report": true,
+      "has_computational_results": false,
+      "has_evaluation_results": false,
+      "has_qa_history": true
+    },
+    {
+      "id": "20251002_203834",
+      "timestamp": "2025-10-02T20:38:34.360445",
+      "preset_name": "\ud83c\udf06 Scene Understanding",
+      "task_description": "Identify objects, people, vehicles, and landmarks. Describe the scene composition, lighting conditions, and overall atmosphere.",
+      "num_images": 12,
+      "num_models": 3,
+      "models": [
+        "gpt5",
+        "gemini",
+        "llama"
+      ],
+      "has_ground_truth": true,
+      "has_curation_report": true,
+      "has_computational_results": true,
+      "has_evaluation_results": false,
+      "has_qa_history": true
+    }
+  ]
+}

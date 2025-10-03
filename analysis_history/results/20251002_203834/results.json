@@ -1,0 +1,520 @@
+{
+  "results": [
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_001.jpg",
+      "image_name": "image_001.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.75,
+          "rationale": "Static cityscape of Manhattan with prominent architectural foreground and distant skyline. Bright daylight with clear sky; minimal to no motion blur. Overall sharp detail and balanced lighting; atmosphere is daytime urban panorama.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.75,\n  \"rationale\": \"Static cityscape of Manhattan with prominent architectural foreground and distant skyline. Bright daylight with clear sky; minimal to no motion blur. Overall sharp detail and balanced lighting; atmosphere is daytime urban panorama.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "logo",
+            "text"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image captures a detailed cityscape with prominent landmarks like the Empire State Building. The composition is well-balanced, with the foreground buildings framing the iconic skyscrapers in the background. The lighting suggests it's late afternoon or early morning, with a warm, golden hue illuminating the structures and casting soft shadows. The atmosphere is serene and majestic, typical of a grand urban vista. The visual quality is high, with clear details and good contrast. However, there are visible artifacts, primarily the photographer's logo and text in the upper right corner, which slightly detract from the pristine nature of the image.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"logo\",\n    \"text\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image captures a detailed cityscape with prominent landmarks like the Empire State Building. The composition is well-balanced, with the foreground buildings framing the iconic skyscrapers in the background. The lighting suggests it's late afternoon or early morning, with a warm, golden hue illuminating the structures and casting soft shadows. The atmosphere is serene and majestic, typical of a grand urban vista. The visual quality is high, with clear details and good contrast. However, there are visible artifacts, primarily the photographer's logo and text in the upper right corner, which slightly detract from the pristine nature of the image.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a high-quality photograph of a cityscape with prominent buildings and a clear sky. The lack of motion and blur indicates a low movement rating. The visual quality is high due to the clarity and detail of the image. There are no noticeable artifacts, resulting in a low artifact presence rating. The confidence is high due to the clear and detailed nature of the image.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image is a high-quality photograph of a cityscape with prominent buildings and a clear sky. The lack of motion and blur indicates a low movement rating. The visual quality is high due to the clarity and detail of the image. There are no noticeable artifacts, resulting in a low artifact presence rating. The confidence is high due to the clear and detailed nature of the image.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_002.jpg",
+      "image_name": "image_002.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [
+            "Empire State Building (center, landmark)",
+            "dense Manhattan skyline with mid-rise and high-rise buildings",
+            "construction cranes on some structures",
+            "streets and rooftops with varied brick and concrete facades",
+            "clear blue sky with scattered clouds"
+          ],
+          "confidence": 0.82,
+          "rationale": "The scene depicts a static urban cityscape of Manhattan with a dense mix of mid-rise and tall skyscrapers under bright daylight. The central tall building resembles a classic landmark, and there are visible construction cranes and varied rooftops. Lighting is natural and evenly lit, giving a crisp, vibrant atmosphere without motion blur or artifacts. Overall composition emphasizes the expansive skyline against a clear sky, conveying an energetic metropolitan mood.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [\n    \"Empire State Building (center, landmark)\",\n    \"dense Manhattan skyline with mid-rise and high-rise buildings\",\n    \"construction cranes on some structures\",\n    \"streets and rooftops with varied brick and concrete facades\",\n    \"clear blue sky with scattered clouds\"\n  ],\n  \"confidence\": 0.82,\n  \"rationale\": \"The scene depicts a static urban cityscape of Manhattan with a dense mix of mid-rise and tall skyscrapers under bright daylight. The central tall building resembles a classic landmark, and there are visible construction cranes and varied rooftops. Lighting is natural and evenly lit, giving a crisp, vibrant atmosphere without motion blur or artifacts. Overall composition emphasizes the expansive skyline against a clear sky, conveying an energetic metropolitan mood.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 1.0,
+          "rationale": "The image is a clear, high-resolution photograph of a cityscape. The composition is well-balanced, showcasing a dense urban environment with a clear sky. The lighting is bright and natural, indicative of daytime, casting subtle shadows. The atmosphere is lively and expansive, characteristic of a major metropolis. There are no discernible artifacts in the image, and the visual quality is excellent.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 1,\n  \"rationale\": \"The image is a clear, high-resolution photograph of a cityscape. The composition is well-balanced, showcasing a dense urban environment with a clear sky. The lighting is bright and natural, indicative of daytime, casting subtle shadows. The atmosphere is lively and expansive, characteristic of a major metropolis. There are no discernible artifacts in the image, and the visual quality is excellent.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a high-quality photograph of a cityscape with a clear blue sky and white clouds. The buildings and streets are densely packed, with a mix of old and new architecture. The overall atmosphere is one of a bustling urban environment. The image appears to be static, with no visible signs of movement, hence a low movement rating. The visual quality is high due to the clarity and detail of the image. There are no noticeable artifacts, resulting in a low artifact presence rating.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image is a high-quality photograph of a cityscape with a clear blue sky and white clouds. The buildings and streets are densely packed, with a mix of old and new architecture. The overall atmosphere is one of a bustling urban environment. The image appears to be static, with no visible signs of movement, hence a low movement rating. The visual quality is high due to the clarity and detail of the image. There are no noticeable artifacts, resulting in a low artifact presence rating.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_003.jpg",
+      "image_name": "image_003.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "construction crane on left",
+            "under-construction building",
+            "dense skyline of high-rise buildings",
+            "Central Park with green forested area",
+            "water bodies/bridges in distance",
+            "clear daytime sky with scattered clouds"
+          ],
+          "confidence": 0.78,
+          "rationale": "The image is a high-resolution daytime panoramic cityscape featuring a large central green park (Central Park) surrounded by dense urban architecture. A construction crane and a partially built skyscraper on the left indicate ongoing development. The scene includes water bodies and distant bridges, with a clear sky and scattered clouds. No people are visible, and the scene appears static with sharp details, suggesting low motion and high visual quality. Minor artifacts may be present due to construction elements and distance, hence a low artifact_presence_rating.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"construction crane on left\",\n    \"under-construction building\",\n    \"dense skyline of high-rise buildings\",\n    \"Central Park with green forested area\",\n    \"water bodies/bridges in distance\",\n    \"clear daytime sky with scattered clouds\"\n  ],\n  \"confidence\": 0.78,\n  \"rationale\": \"The image is a high-resolution daytime panoramic cityscape featuring a large central green park (Central Park) surrounded by dense urban architecture. A construction crane and a partially built skyscraper on the left indicate ongoing development. The scene includes water bodies and distant bridges, with a clear sky and scattered clouds. No people are visible, and the scene appears static with sharp details, suggesting low motion and high visual quality. Minor artifacts may be present due to construction elements and distance, hence a low artifact_presence_rating.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "lens distortion"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image is a high-angle, wide shot of a cityscape, likely New York City given the presence of Central Park and recognizable skyscraper architecture. The scene composition is dominated by the dense urban environment, with Central Park serving as a green oasis in the middle ground. The foreground features several tall buildings, including one under construction with a crane. The lighting conditions suggest a bright, sunny day, likely late morning or early afternoon, as indicated by the clear sky with scattered clouds and the way sunlight casts shadows. The overall atmosphere is one of bustling urban activity and grandeur. The visual quality is good, with sharp details visible in the buildings and trees. Some minor lens distortion is present, particularly noticeable in the straight lines of the buildings appearing slightly curved at the edges. No other significant artifacts are detected.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"lens distortion\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image is a high-angle, wide shot of a cityscape, likely New York City given the presence of Central Park and recognizable skyscraper architecture. The scene composition is dominated by the dense urban environment, with Central Park serving as a green oasis in the middle ground. The foreground features several tall buildings, including one under construction with a crane. The lighting conditions suggest a bright, sunny day, likely late morning or early afternoon, as indicated by the clear sky with scattered clouds and the way sunlight casts shadows. The overall atmosphere is one of bustling urban activity and grandeur. The visual quality is good, with sharp details visible in the buildings and trees. Some minor lens distortion is present, particularly noticeable in the straight lines of the buildings appearing slightly curved at the edges. No other significant artifacts are detected.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a clear and sharp aerial view of New York City with Central Park in the center, surrounded by high-rise buildings. The visual quality is high due to the clarity and detail visible in the image. There are no noticeable artifacts, suggesting a low artifact presence rating.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image is a clear and sharp aerial view of New York City with Central Park in the center, surrounded by high-rise buildings. The visual quality is high due to the clarity and detail visible in the image. There are no noticeable artifacts, suggesting a low artifact presence rating.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_004.jpg",
+      "image_name": "image_004.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "vertical seam / stitching line between left and right panels"
+          ],
+          "confidence": 0.72,
+          "rationale": "The image shows two adjacent cityscapes with tall skyscrapers. Left panel features a prominent Art Deco\u2013style tower surrounded by other high-rise buildings; right panel shows a curved-top modern-highrise and a classical stone building with columns. There are no people or vehicles visible. Lighting is bright daytime with clear blue sky, producing sharp, high-contrast architectural geometry and a lively urban canyon atmosphere. The composition is a split-image montage of two vantage points; a visible seam between panels is the primary artifact. Overall image quality is high, with clean details in the masonry and windows.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"vertical seam / stitching line between left and right panels\"],\n  \"confidence\": 0.72,\n  \"rationale\": \"The image shows two adjacent cityscapes with tall skyscrapers. Left panel features a prominent Art Deco\u2013style tower surrounded by other high-rise buildings; right panel shows a curved-top modern-highrise and a classical stone building with columns. There are no people or vehicles visible. Lighting is bright daytime with clear blue sky, producing sharp, high-contrast architectural geometry and a lively urban canyon atmosphere. The composition is a split-image montage of two vantage points; a visible seam between panels is the primary artifact. Overall image quality is high, with clean details in the masonry and windows.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.8,
+          "rationale": "The image is a composite of two distinct scenes, each depicting urban landscapes dominated by skyscrapers. The scene composition is vertical, showcasing tall buildings in a city environment. The lighting conditions suggest daytime, with clear skies in the left panel and overcast skies in the right panel, resulting in a bright but not harsh illumination. The atmosphere is urban and somewhat majestic due to the grandeur of the buildings. There are no significant artifacts detected.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image is a composite of two distinct scenes, each depicting urban landscapes dominated by skyscrapers. The scene composition is vertical, showcasing tall buildings in a city environment. The lighting conditions suggest daytime, with clear skies in the left panel and overcast skies in the right panel, resulting in a bright but not harsh illumination. The atmosphere is urban and somewhat majestic due to the grandeur of the buildings. There are no significant artifacts detected.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image presents a high-quality comparison of a building's architecture from different perspectives, with clear and detailed visuals. The absence of noticeable artifacts and the sharpness of the images contribute to the high visual quality rating. The confidence level is high due to the clarity and precision of the image details.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image presents a high-quality comparison of a building's architecture from different perspectives, with clear and detailed visuals. The absence of noticeable artifacts and the sharpness of the images contribute to the high visual quality rating. The confidence level is high due to the clarity and precision of the image details.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_005.jpg",
+      "image_name": "image_005.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "vertical seam between left and right panels",
+            "slight exposure/color balance difference between halves"
+          ],
+          "confidence": 0.75,
+          "rationale": "The image shows a split cityscape: left side with multiple mid-rise buildings along a street with some vehicles and pedestrians implied by the road edges, right side with tall modern skyscrapers. No visible people are present. Daylight with clear blue sky on both sides; overall bright and urban atmosphere. The seam where the two scenes meet is a visible artifact, and there is a minor difference in lighting/color between the two halves.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"vertical seam between left and right panels\", \"slight exposure/color balance difference between halves\"],\n  \"confidence\": 0.75,\n  \"rationale\": \"The image shows a split cityscape: left side with multiple mid-rise buildings along a street with some vehicles and pedestrians implied by the road edges, right side with tall modern skyscrapers. No visible people are present. Daylight with clear blue sky on both sides; overall bright and urban atmosphere. The seam where the two scenes meet is a visible artifact, and there is a minor difference in lighting/color between the two halves.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.8,
+          "rationale": "The image is a composite of two separate photographs, likely taken at different times and locations. The left side depicts a street scene with buildings and vehicles under a clear blue sky. The right side shows a collection of skyscrapers against a partly cloudy sky. There is no movement detected in either image, and the visual quality is good, with sharp details and vibrant colors. No artifacts are present.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image is a composite of two separate photographs, likely taken at different times and locations. The left side depicts a street scene with buildings and vehicles under a clear blue sky. The right side shows a collection of skyscrapers against a partly cloudy sky. There is no movement detected in either image, and the visual quality is good, with sharp details and vibrant colors. No artifacts are present.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a composite of two high-quality photographs showcasing cityscapes with tall buildings. The visual quality is high, with clear details in both images. There are no noticeable artifacts, and the confidence in the assessment is high due to the clarity and composition of the images. The movement rating is low as there is no apparent motion in the static images.",
+          "raw_response": "{\"movement_rating\": 1, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image is a composite of two high-quality photographs showcasing cityscapes with tall buildings. The visual quality is high, with clear details in both images. There are no noticeable artifacts, and the confidence in the assessment is high due to the clarity and composition of the images. The movement rating is low as there is no apparent motion in the static images.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_006.jpg",
+      "image_name": "image_006.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.82,
+          "rationale": "Aerial view of a dense urban skyline dominated by a central tall beige skyscraper with a teal-green pyramid roof. Numerous other high-rise buildings fill the frame. No people or vehicles are discernible. No obvious landmark stands out; the scene reads as a generic modern cityscape. Lighting is bright daylight with defined shadows, suggesting midday to afternoon exposure. Overall mood is bustling but orderly, with a crisp, high-contrast composition centered on the prominent tower.",
+          "raw_response": "{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.82,\n  \"rationale\": \"Aerial view of a dense urban skyline dominated by a central tall beige skyscraper with a teal-green pyramid roof. Numerous other high-rise buildings fill the frame. No people or vehicles are discernible. No obvious landmark stands out; the scene reads as a generic modern cityscape. Lighting is bright daylight with defined shadows, suggesting midday to afternoon exposure. Overall mood is bustling but orderly, with a crisp, high-contrast composition centered on the prominent tower.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.95,
+          "rationale": "The image is a high-angle aerial view of a densely packed cityscape, primarily featuring skyscrapers of varying architectural styles and heights. The scene is dominated by buildings, suggesting an urban environment like New York City. There are no discernible people, vehicles, or specific landmarks identified, as the focus is on the architectural landscape. The composition is a wide shot, capturing a significant portion of the city. The lighting conditions indicate a sunny day, with strong shadows cast by the buildings, suggesting the sun is at a moderate elevation, likely mid-morning or mid-afternoon. The overall atmosphere is one of urban grandeur and density, with a sense of order and scale inherent in a major metropolitan area.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.95,\n  \"rationale\": \"The image is a high-angle aerial view of a densely packed cityscape, primarily featuring skyscrapers of varying architectural styles and heights. The scene is dominated by buildings, suggesting an urban environment like New York City. There are no discernible people, vehicles, or specific landmarks identified, as the focus is on the architectural landscape. The composition is a wide shot, capturing a significant portion of the city. The lighting conditions indicate a sunny day, with strong shadows cast by the buildings, suggesting the sun is at a moderate elevation, likely mid-morning or mid-afternoon. The overall atmosphere is one of urban grandeur and density, with a sense of order and scale inherent in a major metropolitan area.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a high-quality aerial photograph of a cityscape with numerous buildings and skyscrapers. The visual quality is high due to the clear details and sharpness of the image. There are no noticeable artifacts or distortions. The movement rating is low because the image appears to be static, with no visible motion.",
+          "raw_response": "{\"movement_rating\": 1, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image is a high-quality aerial photograph of a cityscape with numerous buildings and skyscrapers. The visual quality is high due to the clear details and sharpness of the image. There are no noticeable artifacts or distortions. The movement rating is low because the image appears to be static, with no visible motion.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_001.webp",
+      "image_name": "image_001.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "motion blur on propellers",
+            "watermark/logo overlay",
+            "overall soft focus / low sharpness",
+            "blue color cast / night glow"
+          ],
+          "confidence": 0.65,
+          "rationale": "A white quadcopter/drone is in the foreground, flying over a body of water with a nighttime city skyline in the background. The scene conveys a moody, urban night atmosphere. Propellers show motion blur indicating movement; the image is overall soft with a visible watermark. City lights reflect on water, contributing to a high-contrast, colorful background.",
+          "raw_response": "{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"motion blur on propellers\",\n    \"watermark/logo overlay\",\n    \"overall soft focus / low sharpness\",\n    \"blue color cast / night glow\"\n  ],\n  \"confidence\": 0.65,\n  \"rationale\": \"A white quadcopter/drone is in the foreground, flying over a body of water with a nighttime city skyline in the background. The scene conveys a moody, urban night atmosphere. Propellers show motion blur indicating movement; the image is overall soft with a visible watermark. City lights reflect on water, contributing to a high-contrast, colorful background.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 4.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image depicts a drone in mid-air with a blurred city skyline in the background, suggesting movement. The overall visual quality is reduced due to blur and compression artifacts. A prominent watermark is visible across the drone and background, significantly impacting the visual integrity. The scene is composed with the drone in the foreground and the city as a backdrop. The lighting conditions are low light, characteristic of nighttime or dusk, with artificial lights from the city illuminating the scene. The atmosphere is somewhat futuristic and dynamic due to the presence of the drone and the urban setting at night.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 4,\n  \"detected_artifacts\": [\n    \"watermark\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image depicts a drone in mid-air with a blurred city skyline in the background, suggesting movement. The overall visual quality is reduced due to blur and compression artifacts. A prominent watermark is visible across the drone and background, significantly impacting the visual integrity. The scene is composed with the drone in the foreground and the city as a backdrop. The lighting conditions are low light, characteristic of nighttime or dusk, with artificial lights from the city illuminating the scene. The atmosphere is somewhat futuristic and dynamic due to the presence of the drone and the urban setting at night.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image depicts a white drone flying over a cityscape at dusk or dawn, with a blurred background indicating motion. The visual quality is high, with clear details of the drone and city lights. A watermark is visible, indicating some artifact presence. The scene composition is well-structured, with the drone centered and the cityscape providing a vibrant background.",
+          "raw_response": "{\"movement_rating\": 4, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"watermark\"], \"confidence\": 0.9, \"rationale\": \"The image depicts a white drone flying over a cityscape at dusk or dawn, with a blurred background indicating motion. The visual quality is high, with clear details of the drone and city lights. A watermark is visible, indicating some artifact presence. The scene composition is well-structured, with the drone centered and the cityscape providing a vibrant background.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_002.webp",
+      "image_name": "image_002.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "haze/fog in urban night scene",
+            "glare from city lights and vehicle headlights",
+            "subtle motion blur in distant background (atmospheric)",
+            "compression/digital noise artifacts typical of low-light photography"
+          ],
+          "confidence": 0.72,
+          "rationale": "The scene shows a quadcopter/drone in the foreground over a busy city highway at night. Detected objects include the drone, cars, streetlights, and distant buildings. Composition centers the drone with the highway receding into the background, creating perspective lines. Lighting is low-light with neon and headlight illumination, producing a moody, hazy atmosphere. Minor artifacts are present due to night exposure and processing.",
+          "raw_response": "{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"haze/fog in urban night scene\",\n    \"glare from city lights and vehicle headlights\",\n    \"subtle motion blur in distant background (atmospheric)\",\n    \"compression/digital noise artifacts typical of low-light photography\"\n  ],\n  \"confidence\": 0.72,\n  \"rationale\": \"The scene shows a quadcopter/drone in the foreground over a busy city highway at night. Detected objects include the drone, cars, streetlights, and distant buildings. Composition centers the drone with the highway receding into the background, creating perspective lines. Lighting is low-light with neon and headlight illumination, producing a moody, hazy atmosphere. Minor artifacts are present due to night exposure and processing.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 1.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.95,
+          "rationale": "The image is a still photograph, therefore movement is minimal to none. The visual quality is good, with clear details and appropriate lighting. However, there are prominent watermarks from Dreamstime present on the image, which significantly detracts from the visual quality and indicates the presence of artifacts. The scene depicts a drone hovering over a busy highway at night. The composition places the drone prominently in the foreground, with the highway and city skyline receding into the misty distance. The lighting is atmospheric, with the headlights and taillights of vehicles creating streaks of light on the wet road, and the drone's red lights adding a futuristic glow. The overall atmosphere is one of technological surveillance or advanced aerial photography in an urban, nocturnal environment, with a slightly moody and mysterious feel due to the fog and low light.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 1,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 5,\n  \"detected_artifacts\": [\n    \"watermark\"\n  ],\n  \"confidence\": 0.95,\n  \"rationale\": \"The image is a still photograph, therefore movement is minimal to none. The visual quality is good, with clear details and appropriate lighting. However, there are prominent watermarks from Dreamstime present on the image, which significantly detracts from the visual quality and indicates the presence of artifacts. The scene depicts a drone hovering over a busy highway at night. The composition places the drone prominently in the foreground, with the highway and city skyline receding into the misty distance. The lighting is atmospheric, with the headlights and taillights of vehicles creating streaks of light on the wet road, and the drone's red lights adding a futuristic glow. The overall atmosphere is one of technological surveillance or advanced aerial photography in an urban, nocturnal environment, with a slightly moody and mysterious feel due to the fog and low light.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image depicts a drone flying over a busy highway at night, with a clear view of the road and surrounding cityscape. The visual quality is high, with vibrant colors and clear details. The presence of a watermark is the primary artifact detected.",
+          "raw_response": "{\"movement_rating\": 4, \"visual_quality_rating\": 4, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"watermark\"], \"confidence\": 0.8, \"rationale\": \"The image depicts a drone flying over a busy highway at night, with a clear view of the road and surrounding cityscape. The visual quality is high, with vibrant colors and clear details. The presence of a watermark is the primary artifact detected.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_003.webp",
+      "image_name": "image_003.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 4.0,
+          "detected_artifacts": [
+            "watermark",
+            "motion_blur",
+            "low_resolution",
+            "noise",
+            "compression_artifacts"
+          ],
+          "confidence": 0.58,
+          "rationale": "The image features a drone silhouette foreground with a brightly lit urban nightscape in the background. Objects detected: a quadcopter drone in flight; numerous skyscrapers, streets, and city lights. People: not visible; vehicles: small, indistinct light trails or points suggesting traffic but not clearly identifiable. Landmarks: none clearly discernible due to perspective and blur. Scene composition: drone positioned toward the upper-left, with a dense city grid occupying the frame, creating a dynamic aerial viewpoint. Lighting: predominantly artificial city lights and building illumination; overall low-light conditions with high contrast between dark silhouette and bright lights. Atmosphere: moody, energetic urban night scene with a sense of height and motion.",
+          "raw_response": "{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 4,\n  \"detected_artifacts\": [\"watermark\", \"motion_blur\", \"low_resolution\", \"noise\", \"compression_artifacts\"],\n  \"confidence\": 0.58,\n  \"rationale\": \"The image features a drone silhouette foreground with a brightly lit urban nightscape in the background. Objects detected: a quadcopter drone in flight; numerous skyscrapers, streets, and city lights. People: not visible; vehicles: small, indistinct light trails or points suggesting traffic but not clearly identifiable. Landmarks: none clearly discernible due to perspective and blur. Scene composition: drone positioned toward the upper-left, with a dense city grid occupying the frame, creating a dynamic aerial viewpoint. Lighting: predominantly artificial city lights and building illumination; overall low-light conditions with high contrast between dark silhouette and bright lights. Atmosphere: moody, energetic urban night scene with a sense of height and motion.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 5.0,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "motion blur",
+            "lens flare",
+            "watermark"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image depicts a drone in silhouette flying over a brightly lit city at night. The city skyline is characterized by numerous skyscrapers and illuminated roads, indicating a bustling urban environment. The lighting conditions are typical of a night scene, with artificial lights from buildings and vehicles dominating the view. The overall atmosphere is dynamic and modern, with the drone suggesting surveillance or aerial photography. The presence of significant motion blur, especially in the background city and the drone's propellers, contributes to a sense of movement and dynamism but also reduces the visual clarity. The overall visual quality is compromised by this blur and the presence of a watermark. The rating for movement is high due to the evident blur. Visual quality and artifact presence are rated low and high respectively due to the pronounced blur, motion artifacts, and the watermark. The confidence in this analysis is high.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 5,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 5,\n  \"detected_artifacts\": [\n    \"motion blur\",\n    \"lens flare\",\n    \"watermark\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image depicts a drone in silhouette flying over a brightly lit city at night. The city skyline is characterized by numerous skyscrapers and illuminated roads, indicating a bustling urban environment. The lighting conditions are typical of a night scene, with artificial lights from buildings and vehicles dominating the view. The overall atmosphere is dynamic and modern, with the drone suggesting surveillance or aerial photography. The presence of significant motion blur, especially in the background city and the drone's propellers, contributes to a sense of movement and dynamism but also reduces the visual clarity. The overall visual quality is compromised by this blur and the presence of a watermark. The rating for movement is high due to the evident blur. Visual quality and artifact presence are rated low and high respectively due to the pronounced blur, motion artifacts, and the watermark. The confidence in this analysis is high.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "blur",
+            "watermark"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image captures a drone flying over a cityscape at night, with the drone being the main focus and showing clear movement. The cityscape below is blurred, indicating motion. The visual quality is somewhat compromised by the blur and the presence of a watermark, suggesting it might be a stock image. The overall atmosphere is dynamic and futuristic.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 4,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\"blur\", \"watermark\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image captures a drone flying over a cityscape at night, with the drone being the main focus and showing clear movement. The cityscape below is blurred, indicating motion. The visual quality is somewhat compromised by the blur and the presence of a watermark, suggesting it might be a stock image. The overall atmosphere is dynamic and futuristic.\"\n}\n```"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_004.webp",
+      "image_name": "image_004.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.83,
+          "rationale": "The image shows a futuristic night-cityscape from an aerial vantage. A central quadcopter/drone is in the foreground with another drone visible farther away, suggesting motion and activity. Neon-lit roads and tall buildings form a dense, layered skyline. Prominent blue energy beams and orange neon lines illuminate the scene, creating a high-contrast, cyberpunk atmosphere. No identifiable real-world landmarks are present; the scene emphasizes technology, speed, and a sci-fi metropolis. Movement is implied by the drone in flight and light trails; composition uses perspective lines to convey depth and dynamism.",
+          "raw_response": "{\n  \"movement_rating\": 4,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.83,\n  \"rationale\": \"The image shows a futuristic night-cityscape from an aerial vantage. A central quadcopter/drone is in the foreground with another drone visible farther away, suggesting motion and activity. Neon-lit roads and tall buildings form a dense, layered skyline. Prominent blue energy beams and orange neon lines illuminate the scene, creating a high-contrast, cyberpunk atmosphere. No identifiable real-world landmarks are present; the scene emphasizes technology, speed, and a sci-fi metropolis. Movement is implied by the drone in flight and light trails; composition uses perspective lines to convey depth and dynamism.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 4.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image depicts two drones flying over a futuristic cityscape. The composition is dynamic, with the primary drone in the foreground and a secondary drone in the distance, creating a sense of depth. The lighting is dramatic, with vibrant blue and orange light trails illuminating the city and highlighting the drones. The overall atmosphere is one of advanced technology and futuristic exploration. There is a visible watermark present, impacting the visual quality slightly. The drones appear to be in motion, suggesting a movement rating of 3. The visual quality is generally good, but the presence of artifacts and the stylized nature of the city slightly reduce it. The artifact rating is high due to the prominent watermark.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 4,\n  \"detected_artifacts\": [\n    \"watermark\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image depicts two drones flying over a futuristic cityscape. The composition is dynamic, with the primary drone in the foreground and a secondary drone in the distance, creating a sense of depth. The lighting is dramatic, with vibrant blue and orange light trails illuminating the city and highlighting the drones. The overall atmosphere is one of advanced technology and futuristic exploration. There is a visible watermark present, impacting the visual quality slightly. The drones appear to be in motion, suggesting a movement rating of 3. The visual quality is generally good, but the presence of artifacts and the stylized nature of the city slightly reduce it. The artifact rating is high due to the prominent watermark.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image depicts a futuristic cityscape at night with drones flying, indicating a high level of visual quality and movement. The presence of a watermark is noted as an artifact.",
+          "raw_response": "{\"movement_rating\": 4, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"watermark\"], \"confidence\": 0.8, \"rationale\": \"The image depicts a futuristic cityscape at night with drones flying, indicating a high level of visual quality and movement. The presence of a watermark is noted as an artifact.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_005.webp",
+      "image_name": "image_005.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "white quadcopter drone in foreground",
+            "blurred urban skyline with tall skyscrapers",
+            "motion blur on city lights",
+            "stock image watermark (Dreamstime)",
+            "low-light nighttime illumination"
+          ],
+          "confidence": 0.63,
+          "rationale": "The shot is taken from a drone overlooking a dense urban area with a cluster of tall buildings and warm artificial lights at dusk/night. The drone dominates the foreground; the skyline is blurred due to motion, indicating movement or camera motion. Lighting is predominantly artificial city lighting with warm tones. There are no clearly identifiable people; vehicles are not distinct due to blur. A watermark indicates stock photo usage. The skyline cannot be confidently matched to a specific landmark.",
+          "raw_response": "{\n  \"movement_rating\": 4,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"white quadcopter drone in foreground\",\n    \"blurred urban skyline with tall skyscrapers\",\n    \"motion blur on city lights\",\n    \"stock image watermark (Dreamstime)\",\n    \"low-light nighttime illumination\"\n  ],\n  \"confidence\": 0.63,\n  \"rationale\": \"The shot is taken from a drone overlooking a dense urban area with a cluster of tall buildings and warm artificial lights at dusk/night. The drone dominates the foreground; the skyline is blurred due to motion, indicating movement or camera motion. Lighting is predominantly artificial city lighting with warm tones. There are no clearly identifiable people; vehicles are not distinct due to blur. A watermark indicates stock photo usage. The skyline cannot be confidently matched to a specific landmark.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 5.0,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "motion blur",
+            "watermark"
+          ],
+          "confidence": 0.95,
+          "rationale": "The image depicts a drone in flight over a city at night. The most prominent features are the drone in the foreground and the blurred cityscape in the background. The drone's propellers are spinning, indicated by motion blur. The cityscape is a collection of tall buildings, suggestive of a major urban center, possibly Dubai due to the architectural style. Roads with glowing lights crisscross the city, adding to the nighttime atmosphere. The lighting is dominated by the artificial lights of the city, creating a warm glow, and the headlights of the drone. The overall atmosphere is one of dynamic movement and aerial exploration of a bustling metropolis. The visual quality is significantly degraded by motion blur and a prominent watermark across the center of the image.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 5,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 5,\n  \"detected_artifacts\": [\n    \"motion blur\",\n    \"watermark\"\n  ],\n  \"confidence\": 0.95,\n  \"rationale\": \"The image depicts a drone in flight over a city at night. The most prominent features are the drone in the foreground and the blurred cityscape in the background. The drone's propellers are spinning, indicated by motion blur. The cityscape is a collection of tall buildings, suggestive of a major urban center, possibly Dubai due to the architectural style. Roads with glowing lights crisscross the city, adding to the nighttime atmosphere. The lighting is dominated by the artificial lights of the city, creating a warm glow, and the headlights of the drone. The overall atmosphere is one of dynamic movement and aerial exploration of a bustling metropolis. The visual quality is significantly degraded by motion blur and a prominent watermark across the center of the image.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image shows a drone in the foreground with a blurred cityscape in the background, indicating motion. The visual quality is somewhat compromised by the blur, but the overall scene is clear. A watermark is present, affecting the artifact presence rating.",
+          "raw_response": "{\"movement_rating\": 4, \"visual_quality_rating\": 3, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"watermark\"], \"confidence\": 0.8, \"rationale\": \"The image shows a drone in the foreground with a blurred cityscape in the background, indicating motion. The visual quality is somewhat compromised by the blur, but the overall scene is clear. A watermark is present, affecting the artifact presence rating.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udf06_Scene_Understanding\\image_006.webp",
+      "image_name": "image_006.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "watermark visible across the city skyline",
+            "minor compression artifacts in dark areas"
+          ],
+          "confidence": 0.74,
+          "rationale": "Three quadcopter drones hover above a densely lit urban skyline at night. The composition places the drones in the upper portion of the frame with the cityscape below, creating a sense of height and scale. Lighting is dominated by artificial city lights with a gradient sky, yielding a futuristic and energetic atmosphere. No people are visible; vehicles present are drones. There are identifiable objects (drones, buildings, city lights) but no clearly identifiable landmarks. An image watermark and minor compression artifacts contribute to the overall artifact assessment.",
+          "raw_response": "{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\"watermark visible across the city skyline\", \"minor compression artifacts in dark areas\"],\n  \"confidence\": 0.74,\n  \"rationale\": \"Three quadcopter drones hover above a densely lit urban skyline at night. The composition places the drones in the upper portion of the frame with the cityscape below, creating a sense of height and scale. Lighting is dominated by artificial city lights with a gradient sky, yielding a futuristic and energetic atmosphere. No people are visible; vehicles present are drones. There are identifiable objects (drones, buildings, city lights) but no clearly identifiable landmarks. An image watermark and minor compression artifacts contribute to the overall artifact assessment.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 2.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "watermark"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image depicts three drones flying over a cityscape at dusk or night. The composition is a mid-shot, with the drones prominently featured in the foreground against the backdrop of illuminated skyscrapers. The lighting is atmospheric, characterized by the artificial lights of the city and the soft glow of the twilight sky, creating a cyberpunk-like ambiance. The scene appears to be static in terms of major action, with the drones suggesting a sense of aerial observation or transport. The visual quality is high, with sharp details and vibrant colors. However, there are noticeable watermarks present on the image, which detract slightly from the overall visual integrity. Therefore, a moderate artifact presence rating is assigned.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 2,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"watermark\"\n  ],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image depicts three drones flying over a cityscape at dusk or night. The composition is a mid-shot, with the drones prominently featured in the foreground against the backdrop of illuminated skyscrapers. The lighting is atmospheric, characterized by the artificial lights of the city and the soft glow of the twilight sky, creating a cyberpunk-like ambiance. The scene appears to be static in terms of major action, with the drones suggesting a sense of aerial observation or transport. The visual quality is high, with sharp details and vibrant colors. However, there are noticeable watermarks present on the image, which detract slightly from the overall visual integrity. Therefore, a moderate artifact presence rating is assigned.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 4.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image depicts three drones flying over a cityscape at dusk, with a clear and detailed view of the scene. The drones are in motion, indicated by their positioning in the sky, suggesting a moderate level of movement. The visual quality is high, with vibrant colors and clear details of the city below. There are no noticeable artifacts in the image, contributing to its high visual quality. The confidence in the assessment is high due to the clarity and detail of the image.",
+          "raw_response": "{\"movement_rating\": 4, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image depicts three drones flying over a cityscape at dusk, with a clear and detailed view of the scene. The drones are in motion, indicated by their positioning in the sky, suggesting a moderate level of movement. The visual quality is high, with vibrant colors and clear details of the city below. There are no noticeable artifacts in the image, contributing to its high visual quality. The confidence in the assessment is high due to the clarity and detail of the image.\"}"
+        }
+      }
+    }
+  ],
+  "preset_name": "\ud83c\udf06 Scene Understanding",
+  "task_description": "Identify objects, people, vehicles, and landmarks. Describe the scene composition, lighting conditions, and overall atmosphere.",
+  "selected_models": [
+    "gpt5",
+    "gemini",
+    "llama"
+  ],
+  "timestamp": "2025-10-02T20:38:34.360445",
+  "num_images": 12,
+  "num_models": 3
+}

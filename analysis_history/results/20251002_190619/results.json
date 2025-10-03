@@ -1,0 +1,357 @@
+{
+  "results": [
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_001.jpg",
+      "image_name": "image_001.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "motion blur",
+            "low signal-to-noise ratio",
+            "susceptibility artifact near posterior structures"
+          ],
+          "confidence": 0.52,
+          "rationale": "Single sagittal knee MRI image. Moderate image quality with mild motion-related blur and low SNR, limiting evaluation of articular cartilage and menisci. No definite acute fracture or gross malalignment evident on this single slice. Visible anatomy includes femoral condyle, tibial plateau, and menisci; however, without additional sequences/planes, cannot confidently identify meniscal tears or subtle cartilage/bone marrow abnormalities. Findings are non-specific; if clinical concern persists, correlate with other sequences and clinical exam.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"motion blur\", \"low signal-to-noise ratio\", \"susceptibility artifact near posterior structures\"],\n  \"confidence\": 0.52,\n  \"rationale\": \"Single sagittal knee MRI image. Moderate image quality with mild motion-related blur and low SNR, limiting evaluation of articular cartilage and menisci. No definite acute fracture or gross malalignment evident on this single slice. Visible anatomy includes femoral condyle, tibial plateau, and menisci; however, without additional sequences/planes, cannot confidently identify meniscal tears or subtle cartilage/bone marrow abnormalities. Findings are non-specific; if clinical concern persists, correlate with other sequences and clinical exam.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "susceptibility artifact"
+          ],
+          "confidence": 0.7,
+          "rationale": "The image quality is moderate, with some blurring and signal loss suggestive of minor patient motion and susceptibility artifacts, particularly in the anterior aspect of the knee. Anatomical structures like the femur, tibia, and patella are generally identifiable, but their fine details and signal homogeneity are affected by these limitations. Abnormalities are difficult to definitively assess due to the image quality, but there appear to be some degenerative changes in the cartilage. A definite diagnosis cannot be made without higher quality images.",
+          "raw_response": "```json\n{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"susceptibility artifact\"\n  ],\n  \"confidence\": 0.7,\n  \"rationale\": \"The image quality is moderate, with some blurring and signal loss suggestive of minor patient motion and susceptibility artifacts, particularly in the anterior aspect of the knee. Anatomical structures like the femur, tibia, and patella are generally identifiable, but their fine details and signal homogeneity are affected by these limitations. Abnormalities are difficult to definitively assess due to the image quality, but there appear to be some degenerative changes in the cartilage. A definite diagnosis cannot be made without higher quality images.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 5.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "minor motion artifact"
+          ],
+          "confidence": 0.8,
+          "rationale": "The MRI image shows a clear view of the knee joint with minimal signs of movement or distortion. The visual quality is good, allowing for the identification of anatomical structures. There is a slight indication of minor motion artifact, but it does not significantly impact the overall assessment.",
+          "raw_response": "{\n  \"movement_rating\": 5,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"minor motion artifact\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The MRI image shows a clear view of the knee joint with minimal signs of movement or distortion. The visual quality is good, allowing for the identification of anatomical structures. There is a slight indication of minor motion artifact, but it does not significantly impact the overall assessment.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_003.jpg",
+      "image_name": "image_003.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 2.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "metallic/anchor-like artifact near glenoid-humeral joint in image b",
+            "susceptibility artifact around intra-articular hardware",
+            "potential mild motion blur in some frames (d/e/f)"
+          ],
+          "confidence": 0.58,
+          "rationale": "The series shows shoulder anatomy with intact alignment and no obvious dislocation. Image b contains a metallic implant with associated artifact. Overall image quality is good, though hardware-related artifacts are present and may obscure adjacent structures. A small amount of motion blur in some frames is possible. The dataset does not provide definitive evidence of acute pathology; subtle rotator cuff or labral injuries cannot be ruled out without further sequences or clinical correlation.",
+          "raw_response": "{\n  \"movement_rating\": 2,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"metallic/anchor-like artifact near glenoid-humeral joint in image b\",\n    \"susceptibility artifact around intra-articular hardware\",\n    \"potential mild motion blur in some frames (d/e/f)\"\n  ],\n  \"confidence\": 0.58,\n  \"rationale\": \"The series shows shoulder anatomy with intact alignment and no obvious dislocation. Image b contains a metallic implant with associated artifact. Overall image quality is good, though hardware-related artifacts are present and may obscure adjacent structures. A small amount of motion blur in some frames is possible. The dataset does not provide definitive evidence of acute pathology; subtle rotator cuff or labral injuries cannot be ruled out without further sequences or clinical correlation.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "susceptibility artifact"
+          ],
+          "confidence": 0.8,
+          "rationale": "The images are of good quality, allowing for reasonable visualization of the shoulder joint structures. Image 'b' displays a notable susceptibility artifact, likely due to a metallic implant or calcification, which obscures detailed assessment of the immediate surrounding tissues. Other images show good detail of the glenohumeral joint, rotator cuff tendons, and surrounding bone. The anterior and posterior labrum, as well as the biceps tendon, appear to be visualized well in most slices, though the artifact in 'b' limits assessment in that region. Given the presence of a significant artifact in one of the slices, the artifact presence rating is moderate. Overall confidence is high due to clear visualization in most images, but the artifact in 'b' prevents a perfect score.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"susceptibility artifact\"\n  ],\n  \"confidence\": 0.8,\n  \"rationale\": \"The images are of good quality, allowing for reasonable visualization of the shoulder joint structures. Image 'b' displays a notable susceptibility artifact, likely due to a metallic implant or calcification, which obscures detailed assessment of the immediate surrounding tissues. Other images show good detail of the glenohumeral joint, rotator cuff tendons, and surrounding bone. The anterior and posterior labrum, as well as the biceps tendon, appear to be visualized well in most slices, though the artifact in 'b' limits assessment in that region. Given the presence of a significant artifact in one of the slices, the artifact presence rating is moderate. Overall confidence is high due to clear visualization in most images, but the artifact in 'b' prevents a perfect score.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "Motion artifact not evident; minor signal inhomogeneity"
+          ],
+          "confidence": 0.8,
+          "rationale": "The MRI images provided are of a shoulder, likely showing various sequences of a shoulder joint. The visual quality is generally good with clear delineation of the anatomical structures. There are no obvious motion artifacts, but there might be some minor signal inhomogeneity. The images are likely T2-weighted given the contrast observed, which is typical for assessing soft tissue abnormalities.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"Motion artifact not evident; minor signal inhomogeneity\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The MRI images provided are of a shoulder, likely showing various sequences of a shoulder joint. The visual quality is generally good with clear delineation of the anatomical structures. There are no obvious motion artifacts, but there might be some minor signal inhomogeneity. The images are likely T2-weighted given the contrast observed, which is typical for assessing soft tissue abnormalities.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_004.jpg",
+      "image_name": "image_004.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "annotation overlays (labels pointing to anatomy)",
+            "green highlight circle indicating region of interest",
+            "white pointer/label lines across image"
+          ],
+          "confidence": 0.55,
+          "rationale": "This is a lateral chest radiograph with labeled anatomic regions. Visual quality is good (clear visualization of posterior ribs, diaphragms, and retrosternal space). There are no obvious acute findings such as large pleural effusion, pneumothorax, or focal consolidation on this single view. The green-highlighted region and annotation overlays are non-diagnostic and may obscure subtle details, reducing objective interpretability. The assessment is limited without clinical context or additional views.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"annotation overlays (labels pointing to anatomy)\",\n    \"green highlight circle indicating region of interest\",\n    \"white pointer/label lines across image\"\n  ],\n  \"confidence\": 0.55,\n  \"rationale\": \"This is a lateral chest radiograph with labeled anatomic regions. Visual quality is good (clear visualization of posterior ribs, diaphragms, and retrosternal space). There are no obvious acute findings such as large pleural effusion, pneumothorax, or focal consolidation on this single view. The green-highlighted region and annotation overlays are non-diagnostic and may obscure subtle details, reducing objective interpretability. The assessment is limited without clinical context or additional views.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "overlay text"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image quality is good, with clear visualization of the anatomical structures. The retro-sternal clear space is well-defined. The lobes of the lung are outlined, and the posterior costophrenic angle is visible. There are no apparent abnormalities or anomalies in the visualized structures. The primary artifact is the overlay text which obstructs a small portion of the image but does not significantly hinder interpretation. Movement artifacts are not present.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"overlay text\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image quality is good, with clear visualization of the anatomical structures. The retro-sternal clear space is well-defined. The lobes of the lung are outlined, and the posterior costophrenic angle is visible. There are no apparent abnormalities or anomalies in the visualized structures. The primary artifact is the overlay text which obstructs a small portion of the image but does not significantly hinder interpretation. Movement artifacts are not present.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": 5.0,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image is a clear and well-defined lateral chest X-ray with labeled anatomical structures. The high visual quality and absence of significant artifacts suggest a properly taken X-ray. The confidence is high due to the clarity and labeling of the image.",
+          "raw_response": "{\"movement_rating\": 5, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image is a clear and well-defined lateral chest X-ray with labeled anatomical structures. The high visual quality and absence of significant artifacts suggest a properly taken X-ray. The confidence is high due to the clarity and labeling of the image.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_005.jpg",
+      "image_name": "image_005.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": 3.0,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "mild motion blur in some MRI slices",
+            "intraoperative images present (C, D) which are not standard MRI sequences"
+          ],
+          "confidence": 0.68,
+          "rationale": "Anatomical structures identifiable include the distal femur (femoral condyles), proximal tibia (tibial plateau), and likely meniscal/cartilaginous structures. Panel D shows a focal lesion on the articular surface with an osteochondral defect indicated by a star; corresponding subchondral irregularity is suggested on adjacent MRI slices (A, E, F). The bottom G image with contour/colour mapping highlights surface irregularities consistent with cartilage contour changes. There is no clear evidence of acute fracture or gross ligament rupture. Mild degenerative changes with possible small effusion are suspected. Some images are intraoperative (C, D), which limits their direct comparability to standard MRI sequences. Overall image quality is adequate for assessment. Clinical correlation and, if needed, dedicated MRI sequences or CT for planning may be warranted.",
+          "raw_response": "{\n  \"movement_rating\": 3,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"mild motion blur in some MRI slices\", \"intraoperative images present (C, D) which are not standard MRI sequences\"],\n  \"confidence\": 0.68,\n  \"rationale\": \"Anatomical structures identifiable include the distal femur (femoral condyles), proximal tibia (tibial plateau), and likely meniscal/cartilaginous structures. Panel D shows a focal lesion on the articular surface with an osteochondral defect indicated by a star; corresponding subchondral irregularity is suggested on adjacent MRI slices (A, E, F). The bottom G image with contour/colour mapping highlights surface irregularities consistent with cartilage contour changes. There is no clear evidence of acute fracture or gross ligament rupture. Mild degenerative changes with possible small effusion are suspected. Some images are intraoperative (C, D), which limits their direct comparability to standard MRI sequences. Overall image quality is adequate for assessment. Clinical correlation and, if needed, dedicated MRI sequences or CT for planning may be warranted.\"}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "suspected metal artifact in image F"
+          ],
+          "confidence": 0.8,
+          "rationale": "The images display various aspects of the knee joint, including MRI scans (A, B, E, F, G) and surgical views (C, D). Anatomical structures like the femur, tibia, patella, and cruciate ligaments appear discernible in the MRI sequences. Image F exhibits a possible artifact, potentially related to metal, indicated by a localized signal abnormality. Image G presents a quantitative assessment of cartilage, likely T1 mapping, with a color overlay. The overall image quality is good, allowing for reasonable assessment of the knee structures. Movement artifact is not apparent.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"suspected metal artifact in image F\"\n  ],\n  \"confidence\": 0.8,\n  \"rationale\": \"The images display various aspects of the knee joint, including MRI scans (A, B, E, F, G) and surgical views (C, D). Anatomical structures like the femur, tibia, patella, and cruciate ligaments appear discernible in the MRI sequences. Image F exhibits a possible artifact, potentially related to metal, indicated by a localized signal abnormality. Image G presents a quantitative assessment of cartilage, likely T1 mapping, with a color overlay. The overall image quality is good, allowing for reasonable assessment of the knee structures. Movement artifact is not apparent.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "motion artifact not visible",
+            "some minor artifact presence"
+          ],
+          "confidence": 0.8,
+          "rationale": "The MRI images provided show clear visualization of the knee joint with some minor artifacts. The visual quality is generally good, allowing for the identification of anatomical structures and abnormalities. The presence of minor artifacts suggests some potential issues with image acquisition or processing, but they do not significantly impact the overall diagnostic quality.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"motion artifact not visible\", \"some minor artifact presence\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The MRI images provided show clear visualization of the knee joint with some minor artifacts. The visual quality is generally good, allowing for the identification of anatomical structures and abnormalities. The presence of minor artifacts suggests some potential issues with image acquisition or processing, but they do not significantly impact the overall diagnostic quality.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_006.jpg",
+      "image_name": "image_006.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "motion artifact",
+            "image blur",
+            "noise"
+          ],
+          "confidence": 0.58,
+          "rationale": "Anatomical structures visible: fibular collateral ligament (lateral collateral ligament) and biceps femoris tendon. No clear evidence of full-thickness tear or gross ligament disruption on this single sagittal-like sequence. No obvious meniscal tear or large joint effusion identified; evaluation limited by moderate image resolution and mild motion-related artifacts. Image quality is fair to good. Artifacts include mild motion blur and graininess, which may obscure subtle findings. For a more definitive assessment, correlate clinically and obtain additional knee sequences (e.g., PD or fat-saturated T2 in multiple planes) with improved resolution.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"motion artifact\", \"image blur\", \"noise\"],\n  \"confidence\": 0.58,\n  \"rationale\": \"Anatomical structures visible: fibular collateral ligament (lateral collateral ligament) and biceps femoris tendon. No clear evidence of full-thickness tear or gross ligament disruption on this single sagittal-like sequence. No obvious meniscal tear or large joint effusion identified; evaluation limited by moderate image resolution and mild motion-related artifacts. Image quality is fair to good. Artifacts include mild motion blur and graininess, which may obscure subtle findings. For a more definitive assessment, correlate clinically and obtain additional knee sequences (e.g., PD or fat-saturated T2 in multiple planes) with improved resolution.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "Gibbs ringing"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image quality is moderate, with some noise and Gibbs ringing artifact present. Anatomical structures such as the fibular collateral ligament and biceps femoris tendon are visible and labeled, however, their integrity cannot be definitively assessed without higher quality images and more views. There are no obvious severe abnormalities, but the image quality limits the confidence in a complete assessment.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"Gibbs ringing\"\n  ],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image quality is moderate, with some noise and Gibbs ringing artifact present. Anatomical structures such as the fibular collateral ligament and biceps femoris tendon are visible and labeled, however, their integrity cannot be definitively assessed without higher quality images and more views. There are no obvious severe abnormalities, but the image quality limits the confidence in a complete assessment.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "minor motion artifact"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image appears to be a high-quality MRI scan with clear visualization of anatomical structures such as the fibular collateral ligament and biceps femoris tendon. However, there are minor artifacts present, likely due to slight motion during the scan. The overall visual quality is good, but not perfect.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 4, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"minor motion artifact\"], \"confidence\": 0.8, \"rationale\": \"The image appears to be a high-quality MRI scan with clear visualization of anatomical structures such as the fibular collateral ligament and biceps femoris tendon. However, there are minor artifacts present, likely due to slight motion during the scan. The overall visual quality is good, but not perfect.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_002.webp",
+      "image_name": "image_002.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.42,
+          "rationale": "The image is a low-resolution slide showing a small sagittal knee MRI frame. Visible anatomical cues are limited to general knee structures (likely femoral condyle and tibial plateau) with insufficient detail to assess menisci, ligaments, or cartilage. No definitive abnormalities can be identified due to poor image quality and limited field of view. Unable to reliably evaluate for pathology or artifacts from this image alone.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": null,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.42,\n  \"rationale\": \"The image is a low-resolution slide showing a small sagittal knee MRI frame. Visible anatomical cues are limited to general knee structures (likely femoral condyle and tibial plateau) with insufficient detail to assess menisci, ligaments, or cartilage. No definitive abnormalities can be identified due to poor image quality and limited field of view. Unable to reliably evaluate for pathology or artifacts from this image alone.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "Gibbs ringing"
+          ],
+          "confidence": 0.85,
+          "rationale": "The image displays an MRI of a knee joint. Anatomical structures such as the femur, tibia, and patella are identifiable. There are no obvious gross abnormalities or anomalies visible in this sagittal view. The image quality is moderate, with some Gibbs ringing artifact present, particularly visible as step-like artifacts along areas of high signal intensity. This artifact slightly degrades the clarity of fine details but does not obscure the major anatomical structures or preclude a basic assessment. Movement artifacts are not apparent.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 3, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"Gibbs ringing\"], \"confidence\": 0.85, \"rationale\": \"The image displays an MRI of a knee joint. Anatomical structures such as the femur, tibia, and patella are identifiable. There are no obvious gross abnormalities or anomalies visible in this sagittal view. The image quality is moderate, with some Gibbs ringing artifact present, particularly visible as step-like artifacts along areas of high signal intensity. This artifact slightly degrades the clarity of fine details but does not obscure the major anatomical structures or preclude a basic assessment. Movement artifacts are not apparent.\"}"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "image truncation"
+          ],
+          "confidence": 0.8,
+          "rationale": "The MRI image of the knee joint appears to be of good visual quality, with clear delineation of the anatomical structures. However, there is a minor artifact due to image truncation at the top edge. The overall quality is not significantly compromised.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 4, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"image truncation\"], \"confidence\": 0.8, \"rationale\": \"The MRI image of the knee joint appears to be of good visual quality, with clear delineation of the anatomical structures. However, there is a minor artifact due to image truncation at the top edge. The overall quality is not significantly compromised.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_003.webp",
+      "image_name": "image_003.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [],
+          "confidence": 0.45,
+          "rationale": "Two chest radiographs (PA-like and AP-like) with identifiable anatomy: lungs, heart, mediastinum, diaphragms, clavicles, ribs, and scapulae. No acute cardiopulmonary abnormality detected: no focal consolidation, pleural effusion, or pneumothorax observed on either view. Cardiomediastinal silhouette within normal size for projection. Mild basilar atelectasis or scar suspected, more conspicuous on the left (PA-like) view, possibly related to shallow inspiration. In the AP-like view the scapulae overlapped the lung fields as expected for that projection. Overall image quality is moderate with some projection-related limitations and mild overlap in one view, which limits subtle finding detection.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.45,\n  \"rationale\": \"Two chest radiographs (PA-like and AP-like) with identifiable anatomy: lungs, heart, mediastinum, diaphragms, clavicles, ribs, and scapulae. No acute cardiopulmonary abnormality detected: no focal consolidation, pleural effusion, or pneumothorax observed on either view. Cardiomediastinal silhouette within normal size for projection. Mild basilar atelectasis or scar suspected, more conspicuous on the left (PA-like) view, possibly related to shallow inspiration. In the AP-like view the scapulae overlapped the lung fields as expected for that projection. Overall image quality is moderate with some projection-related limitations and mild overlap in one view, which limits subtle finding detection.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "slight underexposure"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image is a chest X-ray with both PA and AP views. The PA view shows the scapulae out of the lung fields, clavicles projecting onto the lung field, and posterior ribs distinct, consistent with a PA projection. The AP view shows the scapulae overlapping the lung fields, clavicles above the apices of the lung, and anterior ribs distinct, consistent with an AP projection. The image quality is fair, with some underexposure, making it difficult to fully assess finer details of the lung parenchyma. No significant abnormalities or anomalies are readily apparent in the visualized structures. The comparison table accurately describes the expected findings for each view.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\n    \"slight underexposure\"\n  ],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image is a chest X-ray with both PA and AP views. The PA view shows the scapulae out of the lung fields, clavicles projecting onto the lung field, and posterior ribs distinct, consistent with a PA projection. The AP view shows the scapulae overlapping the lung fields, clavicles above the apices of the lung, and anterior ribs distinct, consistent with an AP projection. The image quality is fair, with some underexposure, making it difficult to fully assess finer details of the lung parenchyma. No significant abnormalities or anomalies are readily apparent in the visualized structures. The comparison table accurately describes the expected findings for each view.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "Scapula overlapping lung fields",
+            "Clavicles not ideally positioned"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image presents two chest X-ray views (PA and AP) with annotations highlighting differences in technique and quality. The PA view is generally considered of higher quality due to better positioning (e.g., scapula not overlapping lung fields). The AP view shows some artifacts and less ideal positioning (e.g., scapula overlapping lung fields, clavicles above apices). Overall, the visual quality is good, but there are noticeable differences in artifact presence between the two views.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"Scapula overlapping lung fields\", \"Clavicles not ideally positioned\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image presents two chest X-ray views (PA and AP) with annotations highlighting differences in technique and quality. The PA view is generally considered of higher quality due to better positioning (e.g., scapula not overlapping lung fields). The AP view shows some artifacts and less ideal positioning (e.g., scapula overlapping lung fields, clavicles above apices). Overall, the visual quality is good, but there are noticeable differences in artifact presence between the two views.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfe5_Medical_Image_Analysis\\image_004.webp",
+      "image_name": "image_004.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "motion artifact",
+            "low resolution",
+            "low contrast"
+          ],
+          "confidence": 0.42,
+          "rationale": "The image appears to be a single frame from a dynamic knee imaging context, with the accompanying slide text suggesting patellar tracking. However, the frame is low in resolution and shows blur/noise, limiting clear visualization of joint structures. Movement assessment cannot be reliably performed from a single frame. Artifacts such as motion and reduced contrast degrade image quality, preventing definitive identification of anatomical structures or abnormalities. Possible knee joint elements (femur, tibia, patella) may be present but are not clearly discernible in this image.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\"motion artifact\", \"low resolution\", \"low contrast\"],\n  \"confidence\": 0.42,\n  \"rationale\": \"The image appears to be a single frame from a dynamic knee imaging context, with the accompanying slide text suggesting patellar tracking. However, the frame is low in resolution and shows blur/noise, limiting clear visualization of joint structures. Movement assessment cannot be reliably performed from a single frame. Artifacts such as motion and reduced contrast degrade image quality, preventing definitive identification of anatomical structures or abnormalities. Possible knee joint elements (femur, tibia, patella) may be present but are not clearly discernible in this image.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 3.0,
+          "detected_artifacts": [
+            "motion artifact"
+          ],
+          "confidence": 0.7,
+          "rationale": "The image quality is moderate, with some blurring and signal loss consistent with motion artifact, as indicated by the \"Dynamic Imaging\" title and the visual appearance of the structures. The anatomical structures of the knee, including the femur, tibia, patella, and surrounding soft tissues, are generally discernible but not sharply defined. There are no obvious gross abnormalities or anomalies visible, but the motion artifact limits the diagnostic confidence in assessing fine details. A rating of 3 for visual quality and artifact presence reflects this moderate image quality and the presence of noticeable, albeit common in dynamic imaging, artifacts.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 3,\n  \"detected_artifacts\": [\n    \"motion artifact\"\n  ],\n  \"confidence\": 0.7,\n  \"rationale\": \"The image quality is moderate, with some blurring and signal loss consistent with motion artifact, as indicated by the \\\"Dynamic Imaging\\\" title and the visual appearance of the structures. The anatomical structures of the knee, including the femur, tibia, patella, and surrounding soft tissues, are generally discernible but not sharply defined. There are no obvious gross abnormalities or anomalies visible, but the motion artifact limits the diagnostic confidence in assessing fine details. A rating of 3 for visual quality and artifact presence reflects this moderate image quality and the presence of noticeable, albeit common in dynamic imaging, artifacts.\"\n}\n```"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "Motion artifacts are not evident, but some noise is present"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image appears to be an MRI scan of a knee joint, and the quality is generally good. The text on the left describes dynamic imaging, which is useful for visualizing patellar tracking. The image on the right shows a clear view of the knee joint, but some noise is visible.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 4,\n  \"artifact_presence_rating\": 2,\n  \"detected_artifacts\": [\"Motion artifacts are not evident, but some noise is present\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image appears to be an MRI scan of a knee joint, and the quality is generally good. The text on the left describes dynamic imaging, which is useful for visualizing patellar tracking. The image on the right shows a clear view of the knee joint, but some noise is visible.\"\n}\n```"
+        }
+      }
+    }
+  ],
+  "preset_name": "\ud83c\udfe5 Medical Image Analysis",
+  "task_description": "Identify anatomical structures, detect any abnormalities or anomalies, assess image quality, and provide diagnostic observations.",
+  "selected_models": [
+    "gpt5",
+    "gemini",
+    "llama"
+  ],
+  "timestamp": "2025-10-02T19:06:19.504560",
+  "num_images": 8,
+  "num_models": 3
+}

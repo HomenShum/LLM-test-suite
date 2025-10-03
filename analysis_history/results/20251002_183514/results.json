@@ -1,0 +1,397 @@
+{
+  "results": [
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_003.jpg",
+      "image_name": "image_003.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Based on the image provided, the product appears to be in excellent condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws.\n\n**Product Quality Rating: 5/5**",
+          "raw_response": "Based on the image provided, the product appears to be in excellent condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws.\n\n**Product Quality Rating: 5/5**"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The product appears to be a high-quality softbox lighting kit with a Neewer brand logo. The image shows a well-designed and manufactured product with no visible defects, scratches, dents, or discoloration. The visual quality is excellent, and there are no noticeable artifacts.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The product appears to be a high-quality softbox lighting kit with a Neewer brand logo. The image shows a well-designed and manufactured product with no visible defects, scratches, dents, or discoloration. The visual quality is excellent, and there are no noticeable artifacts.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_006.jpg",
+      "image_name": "image_006.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The product appears to be in good condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws. The product quality is rated as a 5.",
+          "raw_response": "The product appears to be in good condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws. The product quality is rated as a 5."
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The product appears well-assembled and of high quality. The image shows no visible defects, scratches, dents, or discoloration. The Neewer brand is consistently displayed on the product, indicating a uniform manufacturing quality. The presence of additional colored parts suggests customization options, which can be seen as a positive feature.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.9,\n  \"rationale\": \"The product appears well-assembled and of high quality. The image shows no visible defects, scratches, dents, or discoloration. The Neewer brand is consistently displayed on the product, indicating a uniform manufacturing quality. The presence of additional colored parts suggests customization options, which can be seen as a positive feature.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_002.jpg",
+      "image_name": "image_002.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The image shows significant peeling and cracking of the paint, revealing a red layer underneath. This indicates poor paint adhesion and a potential defect in the product's finish. There are no visible scratches, dents, or discoloration beyond the expected wear and tear.\n\n**Product Quality Rating: 1/5**",
+          "raw_response": "The image shows significant peeling and cracking of the paint, revealing a red layer underneath. This indicates poor paint adhesion and a potential defect in the product's finish. There are no visible scratches, dents, or discoloration beyond the expected wear and tear.\n\n**Product Quality Rating: 1/5**"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 1.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "peeling paint",
+            "discoloration",
+            "surface damage"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image shows a wall with significant peeling paint, exposing a red layer underneath. The peeling is extensive and irregular, indicating poor surface preparation or damage. The visual quality is severely impacted by this defect.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 1,\n  \"artifact_presence_rating\": 5,\n  \"detected_artifacts\": [\"peeling paint\", \"discoloration\", \"surface damage\"],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image shows a wall with significant peeling paint, exposing a red layer underneath. The peeling is extensive and irregular, indicating poor surface preparation or damage. The visual quality is severely impacted by this defect.\"\n}\n```"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_002.jpg",
+      "image_name": "image_002.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 2.0,
+          "artifact_presence_rating": 4.0,
+          "detected_artifacts": [
+            "peeling/flaking paint layer",
+            "red underlying layer exposed",
+            "surface cracking along peeling edge",
+            "discoloration between layers"
+          ],
+          "confidence": 0.72,
+          "rationale": "The image shows a large area of peeling paint/coating with an exposed red layer underneath and irregular, cracked edges. This indicates a surface finish defect and degradation. No motion blur is present; the main issue is the coating failure and color mismatch.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 2,\n  \"artifact_presence_rating\": 4,\n  \"detected_artifacts\": [\n    \"peeling/flaking paint layer\",\n    \"red underlying layer exposed\",\n    \"surface cracking along peeling edge\",\n    \"discoloration between layers\"\n  ],\n  \"confidence\": 0.72,\n  \"rationale\": \"The image shows a large area of peeling paint/coating with an exposed red layer underneath and irregular, cracked edges. This indicates a surface finish defect and degradation. No motion blur is present; the main issue is the coating failure and color mismatch.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Visible defects: The image shows significant peeling and flaking of the top layer of paint, revealing a reddish layer underneath. This indicates poor adhesion and potential wear or corrosion.\n\nProduct quality rating: 1/5",
+          "raw_response": "Visible defects: The image shows significant peeling and flaking of the top layer of paint, revealing a reddish layer underneath. This indicates poor adhesion and potential wear or corrosion.\n\nProduct quality rating: 1/5"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 1.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "peeling paint",
+            "discoloration",
+            "damage to surface"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image shows a significant portion of paint peeling off, revealing a reddish layer underneath, indicating poor adhesion or damage. The surface appears to be damaged, with visible discoloration and peeling paint, suggesting a low visual quality rating. The presence of artifacts is high due to the extensive peeling and damage.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 1, \"artifact_presence_rating\": 5, \"detected_artifacts\": [\"peeling paint\", \"discoloration\", \"damage to surface\"], \"confidence\": 0.9, \"rationale\": \"The image shows a significant portion of paint peeling off, revealing a reddish layer underneath, indicating poor adhesion or damage. The surface appears to be damaged, with visible discoloration and peeling paint, suggesting a low visual quality rating. The presence of artifacts is high due to the extensive peeling and damage.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_004.jpg",
+      "image_name": "image_004.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The product appears to be in excellent condition. There are no visible defects, scratches, dents, discoloration, or manufacturing flaws. The reflective surface is clear and the red plastic housing is uniformly colored.\n\n**Product Quality Rating:** 5/5",
+          "raw_response": "The product appears to be in excellent condition. There are no visible defects, scratches, dents, discoloration, or manufacturing flaws. The reflective surface is clear and the red plastic housing is uniformly colored.\n\n**Product Quality Rating:** 5/5"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image shows a high-quality car tail light with a clear red lens and no visible defects, scratches, dents, or discoloration. The product appears to be well-manufactured with a smooth finish.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image shows a high-quality car tail light with a clear red lens and no visible defects, scratches, dents, or discoloration. The product appears to be well-manufactured with a smooth finish.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_002.jpg",
+      "image_name": "image_002.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The image shows significant peeling and delamination of the paint or coating. The underlying material, which appears to be red, is exposed and shows a rough, likely metallic, texture underneath. There is a visible seam or weld line running horizontally across the image, which is also affected by the paint failure. The white paint is flaking off in irregular patches. There are no visible scratches, dents, or obvious discoloration beyond the contrast between the white and red layers, nor are there any clear manufacturing flaws visible; the issues are primarily related to the integrity of the coating.\n\n**Product Quality Rating:** 1/5",
+          "raw_response": "The image shows significant peeling and delamination of the paint or coating. The underlying material, which appears to be red, is exposed and shows a rough, likely metallic, texture underneath. There is a visible seam or weld line running horizontally across the image, which is also affected by the paint failure. The white paint is flaking off in irregular patches. There are no visible scratches, dents, or obvious discoloration beyond the contrast between the white and red layers, nor are there any clear manufacturing flaws visible; the issues are primarily related to the integrity of the coating.\n\n**Product Quality Rating:** 1/5"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 1.0,
+          "artifact_presence_rating": 5.0,
+          "detected_artifacts": [
+            "peeling paint",
+            "discoloration",
+            "surface damage"
+          ],
+          "confidence": 0.9,
+          "rationale": "The image shows a significant area of peeling paint and surface damage, indicating poor maintenance or aging. The visual quality is severely impacted by the peeling and discoloration.",
+          "raw_response": "```json\n{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 1,\n  \"artifact_presence_rating\": 5,\n  \"detected_artifacts\": [\"peeling paint\", \"discoloration\", \"surface damage\"],\n  \"confidence\": 0.9,\n  \"rationale\": \"The image shows a significant area of peeling paint and surface damage, indicating poor maintenance or aging. The visual quality is severely impacted by the peeling and discoloration.\"\n}\n```"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_003.jpg",
+      "image_name": "image_003.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.92,
+          "rationale": "The softbox and mounting hardware appear intact with no visible scratches, dents, discoloration, or manufacturing flaws. The fabric, grid, and outer edge look clean and uniform; no artifacts are evident in the image.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.92,\n  \"rationale\": \"The softbox and mounting hardware appear intact with no visible scratches, dents, discoloration, or manufacturing flaws. The fabric, grid, and outer edge look clean and uniform; no artifacts are evident in the image.\"\n}"
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The product appears to be in good condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws.\n\n**Product Quality Rating: 5/5**",
+          "raw_response": "The product appears to be in good condition with no visible defects, scratches, dents, discoloration, or manufacturing flaws.\n\n**Product Quality Rating: 5/5**"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The product appears to be a high-quality softbox light modifier with a sturdy construction and a professional finish. The 'Neewer' branding is clearly visible and well-printed. There are no visible defects, scratches, dents, or discoloration on the product. The overall visual quality is excellent, suggesting a well-manufactured product.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 5,\n  \"artifact_presence_rating\": 1,\n  \"detected_artifacts\": [],\n  \"confidence\": 0.9,\n  \"rationale\": \"The product appears to be a high-quality softbox light modifier with a sturdy construction and a professional finish. The 'Neewer' branding is clearly visible and well-printed. There are no visible defects, scratches, dents, or discoloration on the product. The overall visual quality is excellent, suggesting a well-manufactured product.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_004.jpg",
+      "image_name": "image_004.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "No visible defects, scratches, dents, discoloration, or manufacturing flaws were detected. The product appears to be in excellent condition.\n\n**Product Quality Rating: 5/5**",
+          "raw_response": "No visible defects, scratches, dents, discoloration, or manufacturing flaws were detected. The product appears to be in excellent condition.\n\n**Product Quality Rating: 5/5**"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 5.0,
+          "artifact_presence_rating": 1.0,
+          "detected_artifacts": [],
+          "confidence": 0.9,
+          "rationale": "The image shows a car tail light with a clear and transparent plastic body, and a red lens. The product appears to be well-manufactured, with no visible defects, scratches, dents, or discoloration. The visual quality is high, and there are no noticeable artifacts.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 5, \"artifact_presence_rating\": 1, \"detected_artifacts\": [], \"confidence\": 0.9, \"rationale\": \"The image shows a car tail light with a clear and transparent plastic body, and a red lens. The product appears to be well-manufactured, with no visible defects, scratches, dents, or discoloration. The visual quality is high, and there are no noticeable artifacts.\"}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_006.webp",
+      "image_name": "image_006.webp",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "The product has noticeable scratches and swirling marks on its surface. There are also some lighter streaks that could indicate discoloration or uneven finishing.\n\n**Rating: 2/5**",
+          "raw_response": "The product has noticeable scratches and swirling marks on its surface. There are also some lighter streaks that could indicate discoloration or uneven finishing.\n\n**Rating: 2/5**"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 3.0,
+          "artifact_presence_rating": 4.0,
+          "detected_artifacts": [
+            "scratch",
+            "discoloration"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image shows a close-up of a brown plastic object with a glossy finish. There is a noticeable scratch or flaw on the surface, which affects the visual quality. The presence of this artifact is significant, hence the rating of 4 for artifact presence. The overall visual quality is average due to the presence of the scratch, hence a rating of 3.",
+          "raw_response": "{\n  \"movement_rating\": null,\n  \"visual_quality_rating\": 3,\n  \"artifact_presence_rating\": 4,\n  \"detected_artifacts\": [\"scratch\", \"discoloration\"],\n  \"confidence\": 0.8,\n  \"rationale\": \"The image shows a close-up of a brown plastic object with a glossy finish. There is a noticeable scratch or flaw on the surface, which affects the visual quality. The presence of this artifact is significant, hence the rating of 4 for artifact presence. The overall visual quality is average due to the presence of the scratch, hence a rating of 3.\"\n}"
+        }
+      }
+    },
+    {
+      "image_path": "test_dataset\\visual_llm_images\\\ud83c\udfed_Product_Defect_Detection\\image_001.jpg",
+      "image_name": "image_001.jpg",
+      "model_results": {
+        "GPT-5 Vision": {
+          "model_name": "GPT-5 Vision (gpt-5-nano)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Unable to parse structured response.",
+          "raw_response": ""
+        },
+        "Gemini 2.5 Vision": {
+          "model_name": "Gemini 2.5 Vision (gemini-2.5-flash-lite)",
+          "movement_rating": null,
+          "visual_quality_rating": null,
+          "artifact_presence_rating": null,
+          "detected_artifacts": [],
+          "confidence": 0.0,
+          "rationale": "Upon close inspection of the provided image, there are no visible defects such as scratches, dents, discoloration, or manufacturing flaws. The surface appears smooth and uniform, with a consistent red finish. The reflections indicate a glossy coating that is free from imperfections.\n\n**Product Quality Rating:** 5/5",
+          "raw_response": "Upon close inspection of the provided image, there are no visible defects such as scratches, dents, discoloration, or manufacturing flaws. The surface appears smooth and uniform, with a consistent red finish. The reflections indicate a glossy coating that is free from imperfections.\n\n**Product Quality Rating:** 5/5"
+        },
+        "Llama 3.2 Vision": {
+          "model_name": "Llama 3.2 Vision (meta-llama/llama-3.2-90b-vision-instruct)",
+          "movement_rating": null,
+          "visual_quality_rating": 4.0,
+          "artifact_presence_rating": 2.0,
+          "detected_artifacts": [
+            "minor reflections",
+            "visible seams"
+          ],
+          "confidence": 0.8,
+          "rationale": "The image shows a red metallic surface with a glossy finish. The surface appears to be well-manufactured with no visible dents or discoloration. However, there are visible seams and reflections, indicating a minor presence of artifacts. The overall visual quality is good, but not perfect due to the reflections and seams.",
+          "raw_response": "{\"movement_rating\": null, \"visual_quality_rating\": 4, \"artifact_presence_rating\": 2, \"detected_artifacts\": [\"minor reflections\", \"visible seams\"], \"confidence\": 0.8, \"rationale\": \"The image shows a red metallic surface with a glossy finish. The surface appears to be well-manufactured with no visible dents or discoloration. However, there are visible seams and reflections, indicating a minor presence of artifacts. The overall visual quality is good, but not perfect due to the reflections and seams.\"}"
+        }
+      }
+    }
+  ],
+  "preset_name": "\ud83c\udfed Product Defect Detection",
+  "task_description": "Detect any visible defects, scratches, dents, discoloration, or manufacturing flaws. Rate the product quality on a scale of 1-5.",
+  "selected_models": [
+    "gpt5",
+    "gemini",
+    "llama"
+  ],
+  "timestamp": "2025-10-02T18:35:14.990719",
+  "num_images": 10,
+  "num_models": 3
+}

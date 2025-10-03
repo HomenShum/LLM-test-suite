@@ -1,0 +1,1854 @@
+{
+  "cached_at": "2025-10-02T15:16:14.984933",
+  "models": {
+    "anthropic/claude-sonnet-4.5": {
+      "id": "anthropic/claude-sonnet-4.5",
+      "name": "Anthropic: Claude Sonnet 4.5",
+      "context_length": 1000000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "google/gemini-2.5-flash-preview-09-2025": {
+      "id": "google/gemini-2.5-flash-preview-09-2025",
+      "name": "Google: Gemini 2.5 Flash Preview 09-2025",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 3e-07,
+        "completion": 2.5e-06,
+        "image": 0.001238
+      },
+      "input_modalities": [
+        "image",
+        "file",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemini-2.5-flash-lite-preview-09-2025": {
+      "id": "google/gemini-2.5-flash-lite-preview-09-2025",
+      "name": "Google: Gemini 2.5 Flash Lite Preview 09-2025",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "qwen/qwen3-vl-235b-a22b-thinking": {
+      "id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "name": "Qwen: Qwen3 VL 235B A22B Thinking",
+      "context_length": 65536,
+      "pricing": {
+        "prompt": 5e-07,
+        "completion": 3.5e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "qwen/qwen3-vl-235b-a22b-instruct": {
+      "id": "qwen/qwen3-vl-235b-a22b-instruct",
+      "name": "Qwen: Qwen3 VL 235B A22B Instruct",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 3e-07,
+        "completion": 1.5e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "openai/gpt-5-codex": {
+      "id": "openai/gpt-5-codex",
+      "name": "OpenAI: GPT-5 Codex",
+      "context_length": 400000,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "x-ai/grok-4-fast:free": {
+      "id": "x-ai/grok-4-fast:free",
+      "name": "xAI: Grok 4 Fast (free)",
+      "context_length": 2000000,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "x-ai"
+    },
+    "x-ai/grok-4-fast": {
+      "id": "x-ai/grok-4-fast",
+      "name": "xAI: Grok 4 Fast",
+      "context_length": 2000000,
+      "pricing": {
+        "prompt": 2e-07,
+        "completion": 5e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "x-ai"
+    },
+    "opengvlab/internvl3-78b": {
+      "id": "opengvlab/internvl3-78b",
+      "name": "OpenGVLab: InternVL3 78B",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 3e-08,
+        "completion": 1.3e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "opengvlab"
+    },
+    "deepcogito/cogito-v2-preview-llama-109b-moe": {
+      "id": "deepcogito/cogito-v2-preview-llama-109b-moe",
+      "name": "Cogito V2 Preview Llama 109B",
+      "context_length": 32767,
+      "pricing": {
+        "prompt": 1.8e-07,
+        "completion": 5.9e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "deepcogito"
+    },
+    "stepfun-ai/step3": {
+      "id": "stepfun-ai/step3",
+      "name": "StepFun: Step3",
+      "context_length": 65536,
+      "pricing": {
+        "prompt": 5.7e-07,
+        "completion": 1.42e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "stepfun-ai"
+    },
+    "google/gemini-2.5-flash-image-preview": {
+      "id": "google/gemini-2.5-flash-image-preview",
+      "name": "Gemini 2.5 Flash Image (Nano Banana)",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 3e-07,
+        "completion": 2.5e-06,
+        "image": 0.001238
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "provider": "google"
+    },
+    "mistralai/mistral-medium-3.1": {
+      "id": "mistralai/mistral-medium-3.1",
+      "name": "Mistral: Mistral Medium 3.1",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4e-07,
+        "completion": 2e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "baidu/ernie-4.5-vl-28b-a3b": {
+      "id": "baidu/ernie-4.5-vl-28b-a3b",
+      "name": "Baidu: ERNIE 4.5 VL 28B A3B",
+      "context_length": 30000,
+      "pricing": {
+        "prompt": 1.4e-07,
+        "completion": 5.6e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "baidu"
+    },
+    "z-ai/glm-4.5v": {
+      "id": "z-ai/glm-4.5v",
+      "name": "Z.AI: GLM 4.5V",
+      "context_length": 65536,
+      "pricing": {
+        "prompt": 6e-07,
+        "completion": 1.8e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "z-ai"
+    },
+    "openai/gpt-5-chat": {
+      "id": "openai/gpt-5-chat",
+      "name": "OpenAI: GPT-5 Chat",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-5": {
+      "id": "openai/gpt-5",
+      "name": "OpenAI: GPT-5",
+      "context_length": 400000,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-5-mini": {
+      "id": "openai/gpt-5-mini",
+      "name": "OpenAI: GPT-5 Mini",
+      "context_length": 400000,
+      "pricing": {
+        "prompt": 2.5e-07,
+        "completion": 2e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-5-nano": {
+      "id": "openai/gpt-5-nano",
+      "name": "OpenAI: GPT-5 Nano",
+      "context_length": 400000,
+      "pricing": {
+        "prompt": 5e-08,
+        "completion": 4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "anthropic/claude-opus-4.1": {
+      "id": "anthropic/claude-opus-4.1",
+      "name": "Anthropic: Claude Opus 4.1",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.5e-05,
+        "completion": 7.5e-05,
+        "image": 0.024
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "bytedance/ui-tars-1.5-7b": {
+      "id": "bytedance/ui-tars-1.5-7b",
+      "name": "ByteDance: UI-TARS 7B ",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 2e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "bytedance"
+    },
+    "google/gemini-2.5-flash-lite": {
+      "id": "google/gemini-2.5-flash-lite",
+      "name": "Google: Gemini 2.5 Flash Lite",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "thudm/glm-4.1v-9b-thinking": {
+      "id": "thudm/glm-4.1v-9b-thinking",
+      "name": "THUDM: GLM 4.1V 9B Thinking",
+      "context_length": 65536,
+      "pricing": {
+        "prompt": 3.5e-08,
+        "completion": 1.38e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "thudm"
+    },
+    "x-ai/grok-4": {
+      "id": "x-ai/grok-4",
+      "name": "xAI: Grok 4",
+      "context_length": 256000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "x-ai"
+    },
+    "baidu/ernie-4.5-vl-424b-a47b": {
+      "id": "baidu/ernie-4.5-vl-424b-a47b",
+      "name": "Baidu: ERNIE 4.5 VL 424B A47B ",
+      "context_length": 123000,
+      "pricing": {
+        "prompt": 4.2e-07,
+        "completion": 1.25e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "baidu"
+    },
+    "mistralai/mistral-small-3.2-24b-instruct:free": {
+      "id": "mistralai/mistral-small-3.2-24b-instruct:free",
+      "name": "Mistral: Mistral Small 3.2 24B (free)",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "mistralai/mistral-small-3.2-24b-instruct": {
+      "id": "mistralai/mistral-small-3.2-24b-instruct",
+      "name": "Mistral: Mistral Small 3.2 24B",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 6e-08,
+        "completion": 1.8e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "google/gemini-2.5-flash-lite-preview-06-17": {
+      "id": "google/gemini-2.5-flash-lite-preview-06-17",
+      "name": "Google: Gemini 2.5 Flash Lite Preview 06-17",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemini-2.5-flash": {
+      "id": "google/gemini-2.5-flash",
+      "name": "Google: Gemini 2.5 Flash",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 3e-07,
+        "completion": 2.5e-06,
+        "image": 0.001238
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemini-2.5-pro": {
+      "id": "google/gemini-2.5-pro",
+      "name": "Google: Gemini 2.5 Pro",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.00516
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "openai/o3-pro": {
+      "id": "openai/o3-pro",
+      "name": "OpenAI: o3 Pro",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 2e-05,
+        "completion": 8e-05,
+        "image": 0.0153
+      },
+      "input_modalities": [
+        "text",
+        "file",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "google/gemini-2.5-pro-preview": {
+      "id": "google/gemini-2.5-pro-preview",
+      "name": "Google: Gemini 2.5 Pro Preview 06-05",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.00516
+      },
+      "input_modalities": [
+        "file",
+        "image",
+        "text",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "anthropic/claude-opus-4": {
+      "id": "anthropic/claude-opus-4",
+      "name": "Anthropic: Claude Opus 4",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.5e-05,
+        "completion": 7.5e-05,
+        "image": 0.024
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "anthropic/claude-sonnet-4": {
+      "id": "anthropic/claude-sonnet-4",
+      "name": "Anthropic: Claude Sonnet 4",
+      "context_length": 1000000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "openai/codex-mini": {
+      "id": "openai/codex-mini",
+      "name": "OpenAI: Codex Mini",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.5e-06,
+        "completion": 6e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "mistralai/mistral-medium-3": {
+      "id": "mistralai/mistral-medium-3",
+      "name": "Mistral: Mistral Medium 3",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4e-07,
+        "completion": 2e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "google/gemini-2.5-pro-preview-05-06": {
+      "id": "google/gemini-2.5-pro-preview-05-06",
+      "name": "Google: Gemini 2.5 Pro Preview 05-06",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1.25e-06,
+        "completion": 1e-05,
+        "image": 0.00516
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "arcee-ai/spotlight": {
+      "id": "arcee-ai/spotlight",
+      "name": "Arcee AI: Spotlight",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 1.8e-07,
+        "completion": 1.8e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "arcee-ai"
+    },
+    "meta-llama/llama-guard-4-12b": {
+      "id": "meta-llama/llama-guard-4-12b",
+      "name": "Meta: Llama Guard 4 12B",
+      "context_length": 163840,
+      "pricing": {
+        "prompt": 1.8e-07,
+        "completion": 1.8e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "openai/o4-mini-high": {
+      "id": "openai/o4-mini-high",
+      "name": "OpenAI: o4 Mini High",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.1e-06,
+        "completion": 4.4e-06,
+        "image": 0.0008415
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/o3": {
+      "id": "openai/o3",
+      "name": "OpenAI: o3",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 2e-06,
+        "completion": 8e-06,
+        "image": 0.00153
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/o4-mini": {
+      "id": "openai/o4-mini",
+      "name": "OpenAI: o4 Mini",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.1e-06,
+        "completion": 4.4e-06,
+        "image": 0.0008415
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4.1": {
+      "id": "openai/gpt-4.1",
+      "name": "OpenAI: GPT-4.1",
+      "context_length": 1047576,
+      "pricing": {
+        "prompt": 2e-06,
+        "completion": 8e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4.1-mini": {
+      "id": "openai/gpt-4.1-mini",
+      "name": "OpenAI: GPT-4.1 Mini",
+      "context_length": 1047576,
+      "pricing": {
+        "prompt": 4e-07,
+        "completion": 1.6e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4.1-nano": {
+      "id": "openai/gpt-4.1-nano",
+      "name": "OpenAI: GPT-4.1 Nano",
+      "context_length": 1047576,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "moonshotai/kimi-vl-a3b-thinking:free": {
+      "id": "moonshotai/kimi-vl-a3b-thinking:free",
+      "name": "MoonshotAI: Kimi VL A3B Thinking (free)",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "moonshotai"
+    },
+    "moonshotai/kimi-vl-a3b-thinking": {
+      "id": "moonshotai/kimi-vl-a3b-thinking",
+      "name": "MoonshotAI: Kimi VL A3B Thinking",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 2e-08,
+        "completion": 7e-08,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "image",
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "moonshotai"
+    },
+    "meta-llama/llama-4-maverick:free": {
+      "id": "meta-llama/llama-4-maverick:free",
+      "name": "Meta: Llama 4 Maverick (free)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "meta-llama/llama-4-maverick": {
+      "id": "meta-llama/llama-4-maverick",
+      "name": "Meta: Llama 4 Maverick",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1.5e-07,
+        "completion": 6e-07,
+        "image": 0.0006684
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "meta-llama/llama-4-scout:free": {
+      "id": "meta-llama/llama-4-scout:free",
+      "name": "Meta: Llama 4 Scout (free)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "meta-llama/llama-4-scout": {
+      "id": "meta-llama/llama-4-scout",
+      "name": "Meta: Llama 4 Scout",
+      "context_length": 327680,
+      "pricing": {
+        "prompt": 8e-08,
+        "completion": 3e-07,
+        "image": 0.0003342
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "allenai/molmo-7b-d": {
+      "id": "allenai/molmo-7b-d",
+      "name": "AllenAI: Molmo 7B D",
+      "context_length": 4096,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 2e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "allenai"
+    },
+    "qwen/qwen2.5-vl-32b-instruct:free": {
+      "id": "qwen/qwen2.5-vl-32b-instruct:free",
+      "name": "Qwen: Qwen2.5 VL 32B Instruct (free)",
+      "context_length": 8192,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "qwen/qwen2.5-vl-32b-instruct": {
+      "id": "qwen/qwen2.5-vl-32b-instruct",
+      "name": "Qwen: Qwen2.5 VL 32B Instruct",
+      "context_length": 16384,
+      "pricing": {
+        "prompt": 4e-08,
+        "completion": 1.4e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "openai/o1-pro": {
+      "id": "openai/o1-pro",
+      "name": "OpenAI: o1-pro",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 0.00015,
+        "completion": 0.0006,
+        "image": 0.21675
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "mistralai/mistral-small-3.1-24b-instruct:free": {
+      "id": "mistralai/mistral-small-3.1-24b-instruct:free",
+      "name": "Mistral: Mistral Small 3.1 24B (free)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "mistralai/mistral-small-3.1-24b-instruct": {
+      "id": "mistralai/mistral-small-3.1-24b-instruct",
+      "name": "Mistral: Mistral Small 3.1 24B",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4e-08,
+        "completion": 1.5e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "google/gemma-3-4b-it:free": {
+      "id": "google/gemma-3-4b-it:free",
+      "name": "Google: Gemma 3 4B (free)",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemma-3-4b-it": {
+      "id": "google/gemma-3-4b-it",
+      "name": "Google: Gemma 3 4B",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4e-08,
+        "completion": 8e-08,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemma-3-12b-it:free": {
+      "id": "google/gemma-3-12b-it:free",
+      "name": "Google: Gemma 3 12B (free)",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemma-3-12b-it": {
+      "id": "google/gemma-3-12b-it",
+      "name": "Google: Gemma 3 12B",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4e-08,
+        "completion": 1.3e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemma-3-27b-it:free": {
+      "id": "google/gemma-3-27b-it:free",
+      "name": "Google: Gemma 3 27B (free)",
+      "context_length": 96000,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "google/gemma-3-27b-it": {
+      "id": "google/gemma-3-27b-it",
+      "name": "Google: Gemma 3 27B",
+      "context_length": 96000,
+      "pricing": {
+        "prompt": 7e-08,
+        "completion": 2.6e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "microsoft/phi-4-multimodal-instruct": {
+      "id": "microsoft/phi-4-multimodal-instruct",
+      "name": "Microsoft: Phi 4 Multimodal Instruct",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 5e-08,
+        "completion": 1e-07,
+        "image": 0.00017685
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "microsoft"
+    },
+    "perplexity/sonar-reasoning-pro": {
+      "id": "perplexity/sonar-reasoning-pro",
+      "name": "Perplexity: Sonar Reasoning Pro",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 2e-06,
+        "completion": 8e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "perplexity"
+    },
+    "perplexity/sonar-pro": {
+      "id": "perplexity/sonar-pro",
+      "name": "Perplexity: Sonar Pro",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "perplexity"
+    },
+    "google/gemini-2.0-flash-lite-001": {
+      "id": "google/gemini-2.0-flash-lite-001",
+      "name": "Google: Gemini 2.0 Flash Lite",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 7.5e-08,
+        "completion": 3e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "anthropic/claude-3.7-sonnet": {
+      "id": "anthropic/claude-3.7-sonnet",
+      "name": "Anthropic: Claude 3.7 Sonnet",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "anthropic/claude-3.7-sonnet:thinking": {
+      "id": "anthropic/claude-3.7-sonnet:thinking",
+      "name": "Anthropic: Claude 3.7 Sonnet (thinking)",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "google/gemini-2.0-flash-001": {
+      "id": "google/gemini-2.0-flash-001",
+      "name": "Google: Gemini 2.0 Flash",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 4e-07,
+        "image": 2.58e-05
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file",
+        "audio"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "qwen/qwen-vl-plus": {
+      "id": "qwen/qwen-vl-plus",
+      "name": "Qwen: Qwen VL Plus",
+      "context_length": 7500,
+      "pricing": {
+        "prompt": 2.1e-07,
+        "completion": 6.3e-07,
+        "image": 0.0002688
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "qwen/qwen-vl-max": {
+      "id": "qwen/qwen-vl-max",
+      "name": "Qwen: Qwen VL Max",
+      "context_length": 7500,
+      "pricing": {
+        "prompt": 8e-07,
+        "completion": 3.2e-06,
+        "image": 0.001024
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "qwen/qwen2.5-vl-72b-instruct:free": {
+      "id": "qwen/qwen2.5-vl-72b-instruct:free",
+      "name": "Qwen: Qwen2.5 VL 72B Instruct (free)",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "qwen/qwen2.5-vl-72b-instruct": {
+      "id": "qwen/qwen2.5-vl-72b-instruct",
+      "name": "Qwen: Qwen2.5 VL 72B Instruct",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 7e-08,
+        "completion": 2.8e-07,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "perplexity/sonar": {
+      "id": "perplexity/sonar",
+      "name": "Perplexity: Sonar",
+      "context_length": 127072,
+      "pricing": {
+        "prompt": 1e-06,
+        "completion": 1e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "perplexity"
+    },
+    "minimax/minimax-01": {
+      "id": "minimax/minimax-01",
+      "name": "MiniMax: MiniMax-01",
+      "context_length": 1000192,
+      "pricing": {
+        "prompt": 2e-07,
+        "completion": 1.1e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "minimax"
+    },
+    "openai/o1": {
+      "id": "openai/o1",
+      "name": "OpenAI: o1",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.5e-05,
+        "completion": 6e-05,
+        "image": 0.021675
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "google/gemini-2.0-flash-exp:free": {
+      "id": "google/gemini-2.0-flash-exp:free",
+      "name": "Google: Gemini 2.0 Flash Experimental (free)",
+      "context_length": 1048576,
+      "pricing": {
+        "prompt": 0.0,
+        "completion": 0.0,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "google"
+    },
+    "amazon/nova-lite-v1": {
+      "id": "amazon/nova-lite-v1",
+      "name": "Amazon: Nova Lite 1.0",
+      "context_length": 300000,
+      "pricing": {
+        "prompt": 6e-08,
+        "completion": 2.4e-07,
+        "image": 9e-05
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "amazon"
+    },
+    "amazon/nova-pro-v1": {
+      "id": "amazon/nova-pro-v1",
+      "name": "Amazon: Nova Pro 1.0",
+      "context_length": 300000,
+      "pricing": {
+        "prompt": 8e-07,
+        "completion": 3.2e-06,
+        "image": 0.0012
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "amazon"
+    },
+    "openai/gpt-4o-2024-11-20": {
+      "id": "openai/gpt-4o-2024-11-20",
+      "name": "OpenAI: GPT-4o (2024-11-20)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 2.5e-06,
+        "completion": 1e-05,
+        "image": 0.003613
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "mistralai/pixtral-large-2411": {
+      "id": "mistralai/pixtral-large-2411",
+      "name": "Mistral: Pixtral Large 2411",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 2e-06,
+        "completion": 6e-06,
+        "image": 0.002888
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "anthropic/claude-3.5-haiku": {
+      "id": "anthropic/claude-3.5-haiku",
+      "name": "Anthropic: Claude 3.5 Haiku",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 8e-07,
+        "completion": 4e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "anthropic/claude-3.5-haiku-20241022": {
+      "id": "anthropic/claude-3.5-haiku-20241022",
+      "name": "Anthropic: Claude 3.5 Haiku (2024-10-22)",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 8e-07,
+        "completion": 4e-06,
+        "image": 0.0
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "anthropic/claude-3.5-sonnet": {
+      "id": "anthropic/claude-3.5-sonnet",
+      "name": "Anthropic: Claude 3.5 Sonnet",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "meta-llama/llama-3.2-90b-vision-instruct": {
+      "id": "meta-llama/llama-3.2-90b-vision-instruct",
+      "name": "Meta: Llama 3.2 90B Vision Instruct",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 3.5e-07,
+        "completion": 4e-07,
+        "image": 0.0005058
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "meta-llama/llama-3.2-11b-vision-instruct": {
+      "id": "meta-llama/llama-3.2-11b-vision-instruct",
+      "name": "Meta: Llama 3.2 11B Vision Instruct",
+      "context_length": 131072,
+      "pricing": {
+        "prompt": 4.9e-08,
+        "completion": 4.9e-08,
+        "image": 7.948e-05
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "meta-llama"
+    },
+    "mistralai/pixtral-12b": {
+      "id": "mistralai/pixtral-12b",
+      "name": "Mistral: Pixtral 12B",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 1e-07,
+        "completion": 1e-07,
+        "image": 0.0001445
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "mistralai"
+    },
+    "qwen/qwen-2.5-vl-7b-instruct": {
+      "id": "qwen/qwen-2.5-vl-7b-instruct",
+      "name": "Qwen: Qwen2.5-VL 7B Instruct",
+      "context_length": 32768,
+      "pricing": {
+        "prompt": 2e-07,
+        "completion": 2e-07,
+        "image": 0.0001445
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "qwen"
+    },
+    "openai/chatgpt-4o-latest": {
+      "id": "openai/chatgpt-4o-latest",
+      "name": "OpenAI: ChatGPT-4o",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 5e-06,
+        "completion": 1.5e-05,
+        "image": 0.007225
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4o-2024-08-06": {
+      "id": "openai/gpt-4o-2024-08-06",
+      "name": "OpenAI: GPT-4o (2024-08-06)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 2.5e-06,
+        "completion": 1e-05,
+        "image": 0.003613
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4o-mini": {
+      "id": "openai/gpt-4o-mini",
+      "name": "OpenAI: GPT-4o-mini",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 1.5e-07,
+        "completion": 6e-07,
+        "image": 0.000217
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4o-mini-2024-07-18": {
+      "id": "openai/gpt-4o-mini-2024-07-18",
+      "name": "OpenAI: GPT-4o-mini (2024-07-18)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 1.5e-07,
+        "completion": 6e-07,
+        "image": 0.007225
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "anthropic/claude-3.5-sonnet-20240620": {
+      "id": "anthropic/claude-3.5-sonnet-20240620",
+      "name": "Anthropic: Claude 3.5 Sonnet (2024-06-20)",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 3e-06,
+        "completion": 1.5e-05,
+        "image": 0.0048
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "openai/gpt-4o": {
+      "id": "openai/gpt-4o",
+      "name": "OpenAI: GPT-4o",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 2.5e-06,
+        "completion": 1e-05,
+        "image": 0.003613
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4o:extended": {
+      "id": "openai/gpt-4o:extended",
+      "name": "OpenAI: GPT-4o (extended)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 6e-06,
+        "completion": 1.8e-05,
+        "image": 0.007225
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4o-2024-05-13": {
+      "id": "openai/gpt-4o-2024-05-13",
+      "name": "OpenAI: GPT-4o (2024-05-13)",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 5e-06,
+        "completion": 1.5e-05,
+        "image": 0.007225
+      },
+      "input_modalities": [
+        "text",
+        "image",
+        "file"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "openai/gpt-4-turbo": {
+      "id": "openai/gpt-4-turbo",
+      "name": "OpenAI: GPT-4 Turbo",
+      "context_length": 128000,
+      "pricing": {
+        "prompt": 1e-05,
+        "completion": 3e-05,
+        "image": 0.01445
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "openai"
+    },
+    "anthropic/claude-3-haiku": {
+      "id": "anthropic/claude-3-haiku",
+      "name": "Anthropic: Claude 3 Haiku",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 2.5e-07,
+        "completion": 1.25e-06,
+        "image": 0.0004
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    },
+    "anthropic/claude-3-opus": {
+      "id": "anthropic/claude-3-opus",
+      "name": "Anthropic: Claude 3 Opus",
+      "context_length": 200000,
+      "pricing": {
+        "prompt": 1.5e-05,
+        "completion": 7.5e-05,
+        "image": 0.024
+      },
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "provider": "anthropic"
+    }
+  }
+}

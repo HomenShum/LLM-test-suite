@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-10-02T18:25:39.189302",
+  "task": "Detect any visible defects, scratches, dents, discoloration, or manufacturing flaws. Rate the product quality on a scale of 1-5.",
+  "preset": "\ud83c\udfed Product Defect Detection",
+  "master_model": "gpt-5-mini",
+  "queries_generated": [
+    {
+      "query": "high-resolution macro close-up images of metal and plastic surfaces, diffuse/cross-polarized lighting, focus-stacked, neutral background, with scale/ruler \u2014 professional product QC photography showing scratches, fine dents, discoloration, paint defects (>=20MP)",
+      "rationale": "Macro, cross-polarized and focus-stacked captures maximize visibility of fine surface defects (micro-scratches, hairline cracks, subtle dents, color shifts). Including a scale/ruler ensures measurable defect sizing for quality rating.",
+      "expected_results": "Sharp, high-resolution close-ups revealing micro-scratches, abrasion marks, small dents, edge chipping, paint runs or discoloration with size reference; minimal specular highlights so surface texture and color variations are clear.",
+      "priority": 1
+    },
+    {
+      "query": "high-resolution multi-angle / 360\u00b0 product inspection photos (8\u201312 views) on white seamless background, softbox/diffuse lighting, with caliper or ruler visible, professional QC imaging \u2014 full-part views for dents, deformations, misalignment, assembly defects",
+      "rationale": "Multi-angle inspection images reveal macroscopic defects: dents, warping, misaligned assemblies, missing parts or asymmetric discoloration. Controlled lighting and scale allow consistent visual quality assessment across whole object.",
+      "expected_results": "Clear, consistent high-res images from multiple angles showing overall shape, dents, bends, panel gaps, misaligned seams, major scratches or surface anomalies with a size reference and even lighting.",
+      "priority": 2
+    },
+    {
+      "query": "high-resolution annotated/close-up photos of manufacturing defects: injection-molding sink marks, flash, weld lines, burrs, flow lines, stamping scratches, paint orange-peel, blistering/delamination, corrosion/pitting \u2014 macro, sharp focus, professional inspection images",
+      "rationale": "Searching for specific manufacturing-flaw terminology (sink marks, flash, weld lines, orange-peel) returns images that exemplify common production defects and help train/compare defect signatures. Annotated examples speed identification and grading.",
+      "expected_results": "Close-up images showing clear examples of specific manufacturing defects (e.g., mold flash, sink marks, weld beads, paint texture defects, corrosion pits) often with annotations or captions identifying the defect type; high clarity for feature recognition.",
+      "priority": 3
+    }
+  ],
+  "images_evaluated": 18,
+  "images_selected": 10,
+  "images_rejected": 0,
+  "rejection_reasons": []
+}
