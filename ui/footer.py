@@ -29,4 +29,6 @@ def render_footer() -> None:
                 pass
 
         st.divider()
+        st.caption("Live App: https://llm-test-suite-cafecorner.streamlit.app/")
+
         st.code("streamlit run streamlit_app.py", language="bash")

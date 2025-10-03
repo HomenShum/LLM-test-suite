@@ -1,5 +1,10 @@
 # LLM Test Suite
 
+
+## 🌐 Live App
+
+- Deployed Streamlit app: https://llm-test-suite-cafecorner.streamlit.app/
+
 A comprehensive evaluation framework for testing and benchmarking Large Language Models (LLMs) with multi-agent orchestration, cost tracking, and interactive dashboards.
 
 ## 🚀 Features
