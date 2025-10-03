@@ -1,4 +1,4 @@
-# streamlit_app.py
+﻿# streamlit_app.py
 # ============================================================
 # Structured classification + evaluation suite (Enhanced Version)
 # - Uses your file context, env ingestion, and async style
@@ -270,8 +270,12 @@ OLLAMA_BASE_URL = st.secrets.get("OLLAMA_BASE_URL", "http://localhost:11434/api/
 OLLAMA_MODEL = st.secrets.get("OLLAMA_MODEL", "mistral-small:24b-instruct-2501-q4_K_M")
 
 # Optional third model (env-driven)
-THIRD_KIND = st.secrets.get("THIRD_KIND", "None")
-THIRD_MODEL = st.secrets.get("THIRD_MODEL", "mistralai/mistral-small-3.2-24b-instruct" if THIRD_KIND == "OpenRouter" else "gpt-5-mini")
+THIRD_KIND = st.secrets.get("THIRD_KIND", "OpenAI")
+THIRD_MODEL = st.secrets.get("THIRD_MODEL", "gpt-4.1-mini" if THIRD_KIND == "OpenAI" else "mistralai/mistral-small-3.2-24b-instruct")
+if "third_model_kind" not in st.session_state:
+    st.session_state["third_model_kind"] = THIRD_KIND
+if "third_model" not in st.session_state:
+    st.session_state["third_model"] = THIRD_MODEL
 
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", "")
 # --- FIX: Use latest Gemini 2.5 series as default (OpenRouter format) ---
@@ -572,6 +576,7 @@ test6_visual_llm.render_test6_tab(tabs[6])
 agent_dashboard.configure(globals())
 agent_dashboard.render_agent_dashboard(tabs[7])
 footer.render_footer()
+
 
 
 

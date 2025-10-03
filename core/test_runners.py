@@ -56,6 +56,21 @@ def run_classification_flow(
     third_kind_eff = third_kind_override if third_kind_override is not None else (_CONFIG.get('THIRD_KIND', 'None') if include_third_model else "None")
     third_model_eff = third_model_override if third_model_override is not None else (_CONFIG.get('THIRD_MODEL', '') if include_third_model else "")
 
+    if include_third_model:
+        if third_kind_eff == "None" or not third_model_eff:
+            st.error("Test 2 and Test 3 require a configured third model. Set it in the sidebar before running.")
+            return
+        openai_key = st.session_state.get('OPENAI_API_KEY') or _CONFIG.get('OPENAI_API_KEY') or st.secrets.get('OPENAI_API_KEY', '')
+        openrouter_key = st.session_state.get('OPENROUTER_API_KEY') or _CONFIG.get('OPENROUTER_API_KEY') or st.secrets.get('OPENROUTER_API_KEY', '')
+        if third_kind_eff == "OpenAI" and not openai_key:
+            st.error("OPENAI_API_KEY is required for the third model. Add it in the sidebar secrets.")
+            return
+        if third_kind_eff == "OpenRouter" and not openrouter_key:
+            st.error("OPENROUTER_API_KEY is required for the third model. Add it in the sidebar secrets.")
+            return
+        st.session_state['third_model_kind'] = third_kind_eff
+        st.session_state['third_model'] = third_model_eff
+
     # Check if any provider is selected for the current run
     provider_enabled = (
         use_openai_eff or use_ollama_eff or use_ollama_local_eff or

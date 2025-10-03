@@ -1,4 +1,4 @@
-"""
+﻿"""
 API client functions for classification and data generation.
 Extracted from streamlit_test_v5.py to reduce main file size.
 
@@ -30,6 +30,8 @@ from core.models import (
     ToolCallSequenceItem,
     PruningDataItem
 )
+from core.ensemble_weights import EnsembleWeightStore
+from core.prompt_versions import CLASSIFICATION_PROMPT_REVISION
 
 # Import pricing
 from core.pricing import (
@@ -50,6 +52,107 @@ _rate_limiter = Semaphore(10)  # Max 10 concurrent API calls
 
 # API configuration (will be imported from main file's globals)
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+
+_WEIGHT_STORE = EnsembleWeightStore.load()
+
+
+def reload_weight_store() -> None:
+    """Reload ensemble weights from disk (used after retraining)."""
+    global _WEIGHT_STORE
+    _WEIGHT_STORE = EnsembleWeightStore.load()
+
+
+def _safe_probability_dict(raw: Any) -> Dict[str, float]:
+    if isinstance(raw, dict):
+        out: Dict[str, float] = {}
+        for key, value in raw.items():
+            try:
+                out[str(key)] = float(value)
+            except (TypeError, ValueError):
+                continue
+        return out
+    if isinstance(raw, str):
+        try:
+            parsed = json.loads(raw)
+        except (TypeError, ValueError):
+            return {}
+        return _safe_probability_dict(parsed)
+    return {}
+
+
+def _build_probability_map(
+    result: ClassificationWithConf,
+    allowed_labels: Optional[List[str]],
+    predicted_label: str,
+) -> Dict[str, float]:
+    allowed_norm = []
+    if allowed_labels:
+        allowed_norm = [lbl for lbl in (_normalize_label(label) for label in allowed_labels) if lbl]
+
+    prob_map = _safe_probability_dict(result.class_probabilities or {})
+    normalized_map: Dict[str, float] = {}
+    for label, value in prob_map.items():
+        norm = _normalize_label(label)
+        if not norm:
+            continue
+        normalized_map[norm] = max(value, 0.0)
+
+    if predicted_label:
+        if predicted_label not in normalized_map:
+            try:
+                normalized_map[predicted_label] = float(result.confidence or 0.0)
+            except (TypeError, ValueError):
+                normalized_map[predicted_label] = 0.0
+
+    for label in allowed_norm:
+        normalized_map.setdefault(label, 0.0)
+
+    total = sum(normalized_map.values())
+    if total <= 0 and predicted_label:
+        fallback_value = 1.0
+        try:
+            fallback_value = max(float(result.confidence or 1.0), 0.0)
+        except (TypeError, ValueError):
+            pass
+        normalized_map = {label: 0.0 for label in (allowed_norm or [predicted_label])}
+        normalized_map[predicted_label] = fallback_value or 1.0
+        total = sum(normalized_map.values())
+
+    if total > 0:
+        for label in list(normalized_map.keys()):
+            normalized_map[label] = float(normalized_map[label] / total)
+
+    return normalized_map
+
+
+def _prepare_probability_outputs(
+    result: ClassificationWithConf,
+    provider: str,
+    model_name: str,
+    allowed_labels: Optional[List[str]],
+) -> Tuple[str, Optional[float], Dict[str, float], Dict[str, float]]:
+    predicted_label = _normalize_label(str(result.classification_result or ""))
+    raw_probs = _build_probability_map(result, allowed_labels, predicted_label)
+    confidence: Optional[float]
+    try:
+        confidence = float(result.confidence) if result.confidence is not None else None
+    except (TypeError, ValueError):
+        confidence = None
+
+    if _WEIGHT_STORE:
+        calibrated = _WEIGHT_STORE.calibrate_distribution(
+            provider,
+            model_name,
+            CLASSIFICATION_PROMPT_REVISION,
+            raw_probs,
+            predicted_label,
+        )
+    else:
+        calibrated = raw_probs
+
+    result.class_probabilities = raw_probs
+    return predicted_label, confidence, raw_probs, calibrated
 
 
 _CONFIG = {}
@@ -97,13 +200,50 @@ async def classify_with_openai(text: str, allowed: List[str],
 
     async with _rate_limiter:
         client = AsyncOpenAI(api_key=openai_api_key)
-        allowed_hint = f"Allowed labels: {allowed if allowed else '[unconstrained]'}.\nPick exactly ONE of these values in 'classification_result'."
+
+        # Enhanced system prompt with clear category distinctions and few-shot examples
+        system_prompt = """You are a text classifier for an IT support chatbot. Classify user queries into one of these categories:
+
+1. **general_chat**: Casual conversation, greetings, small talk, questions about support availability/hours, non-technical questions, or general inquiries that don't require specific product/service knowledge.
+   Examples:
+   - "Hi there, how are you doing today?"
+   - "What time does the support team usually respond?"
+   - "Just checking in, is support open on weekends?"
+   - "What's the weather like at your location?"
+   - "Thanks for the help earlier!"
+
+2. **kb_lookup**: Questions requiring specific product/service knowledge, IT concepts, tools, best practices, or documentation lookup. These ask for factual information about products, services, or technical topics.
+   Examples:
+   - "What is the difference between RAID 0 and RAID 1?"
+   - "How do I configure SSL certificates?"
+   - "What are the system requirements for Windows 11?"
+   - "Explain the OSI model layers"
+
+3. **tool**: Requests requiring specific tool/API calls, database queries, system lookups, or actions on specific resources (devices, accounts, tickets).
+   Examples:
+   - "Look up my ticket #12345"
+   - "Check the status of device MAC:00:1A:2B:3C:4D:5E"
+   - "Query the database for user john.doe@company.com"
+   - "Run a network diagnostic on my connection"
+
+**Key Distinction**:
+- general_chat = conversational/social questions (even if they ask for information about support itself)
+- kb_lookup = questions requiring specific technical/product knowledge from documentation
+- tool = requests to perform actions or look up specific resources
+
+Return a structured classification with optional confidence 0..1."""
+
+        if allowed:
+            system_prompt += f"\n\nAllowed labels: {allowed}. You MUST use exactly one of these labels."
+
+        system_prompt += "\n\nProvide a JSON object named 'class_probabilities' with a probability for every allowed label (values between 0 and 1 that sum to 1)."
+
         try:
             resp = await client.chat.completions.parse(
                 model=native_model,
                 messages=[
-                    {"role": "system", "content": "Return a structured classification with optional confidence 0..1."},
-                    {"role": "user", "content": f"{allowed_hint}\nText: {text}\nRespond as JSON with keys: classification_result, rationale, confidence (0..1 optional)."}
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Text to classify: {text}"}
                 ],
                 response_format=ClassificationWithConf
             )
@@ -116,11 +256,12 @@ async def classify_with_openai(text: str, allowed: List[str],
             parsed = resp.choices[0].message.parsed
             return parsed if isinstance(parsed, ClassificationWithConf) else ClassificationWithConf.model_validate(parsed)
         except Exception:
+            # Fallback to non-structured completion with same enhanced prompt
             comp = await client.chat.completions.create(
                 model=native_model,
                 messages=[
-                    {"role": "system", "content": "Respond ONLY with JSON having keys classification_result, rationale, confidence (0..1 optional)."},
-                    {"role": "user", "content": f"{allowed_hint}\nText: {text}"}
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Text to classify: {text}\n\nRespond as JSON with keys: classification_result, rationale, confidence (0..1 optional), class_probabilities (label->probability mapping)."}
                 ],
             )
             # Track the fallback API call
@@ -139,6 +280,8 @@ async def classify_with_openai(text: str, allowed: List[str],
                     data["confidence"] = float(data["confidence"])
                 except Exception:
                     data["confidence"] = None
+            if "class_probabilities" in data:
+                data["class_probabilities"] = _safe_probability_dict(data["class_probabilities"])
             return ClassificationWithConf.model_validate(data)
 
 
@@ -293,11 +436,43 @@ async def classify_with_openrouter(text: str, allowed: List[str], model: Optiona
     if model is None:
         model = openrouter_model
 
+    # Enhanced system prompt with clear category distinctions and few-shot examples
+    system_prompt = """You are a text classifier for an IT support chatbot. Classify user queries into one of these categories:
+
+1. **general_chat**: Casual conversation, greetings, small talk, questions about support availability/hours, non-technical questions, or general inquiries that don't require specific product/service knowledge.
+   Examples:
+   - "Hi there, how are you doing today?"
+   - "What time does the support team usually respond?"
+   - "Just checking in, is support open on weekends?"
+   - "What's the weather like at your location?"
+   - "Thanks for the help earlier!"
+
+2. **kb_lookup**: Questions requiring specific product/service knowledge, IT concepts, tools, best practices, or documentation lookup. These ask for factual information about products, services, or technical topics.
+   Examples:
+   - "What is the difference between RAID 0 and RAID 1?"
+   - "How do I configure SSL certificates?"
+   - "What are the system requirements for Windows 11?"
+   - "Explain the OSI model layers"
+
+3. **tool**: Requests requiring specific tool/API calls, database queries, system lookups, or actions on specific resources (devices, accounts, tickets).
+   Examples:
+   - "Look up my ticket #12345"
+   - "Check the status of device MAC:00:1A:2B:3C:4D:5E"
+   - "Query the database for user john.doe@company.com"
+   - "Run a network diagnostic on my connection"
+
+**Key Distinction**:
+- general_chat = conversational/social questions (even if they ask for information about support itself)
+- kb_lookup = questions requiring specific technical/product knowledge from documentation
+- tool = requests to perform actions or look up specific resources
+
+Return ONLY compact JSON with keys: classification_result, rationale, confidence (0..1 optional), class_probabilities (label->probability mapping)."""
+
+    if allowed:
+        system_prompt += f"\n\nAllowed labels: {allowed}. You MUST use exactly one of these labels."
+
     messages = [
-        {"role": "system", "content": (
-            "Return ONLY compact JSON with keys: classification_result, rationale, confidence (0..1 optional)." +
-            (f" Allowed labels: {allowed}." if allowed else "")
-        )},
+        {"role": "system", "content": system_prompt},
         {"role": "user", "content": text}
     ]
 
@@ -452,15 +627,48 @@ async def _classify_df_async(
                     native_model = _to_native_model_id(third_model)
                     if not openai_api_key:
                         raise ValueError("OPENAI_API_KEY not set for third model classification")
+
+                    # Use enhanced classification prompt for third model too
+                    enhanced_system_prompt = """You are a text classifier for an IT support chatbot. Classify user queries into one of these categories:
+
+1. **general_chat**: Casual conversation, greetings, small talk, questions about support availability/hours, non-technical questions, or general inquiries that don't require specific product/service knowledge.
+   Examples:
+   - "Hi there, how are you doing today?"
+   - "What time does the support team usually respond?"
+   - "Just checking in, is support open on weekends?"
+   - "What's the weather like at your location?"
+   - "Thanks for the help earlier!"
+
+2. **kb_lookup**: Questions requiring specific product/service knowledge, IT concepts, tools, best practices, or documentation lookup. These ask for factual information about products, services, or technical topics.
+   Examples:
+   - "What is the difference between RAID 0 and RAID 1?"
+   - "How do I configure SSL certificates?"
+   - "What are the system requirements for Windows 11?"
+   - "Explain the OSI model layers"
+
+3. **tool**: Requests requiring specific tool/API calls, database queries, system lookups, or actions on specific resources (devices, accounts, tickets).
+   Examples:
+   - "Look up my ticket #12345"
+   - "Check the status of device MAC:00:1A:2B:3C:4D:5E"
+   - "Query the database for user john.doe@company.com"
+   - "Run a network diagnostic on my connection"
+
+**Key Distinction**:
+- general_chat = conversational/social questions (even if they ask for information about support itself)
+- kb_lookup = questions requiring specific technical/product knowledge from documentation
+- tool = requests to perform actions or look up specific resources
+
+Respond ONLY with JSON having keys classification_result, rationale, confidence (0..1 optional), class_probabilities (label->probability mapping)."""
+
+                    if labels:
+                        enhanced_system_prompt += f"\n\nAllowed labels: {labels}. You MUST use exactly one of these labels."
+
                     client = AsyncOpenAI(api_key=openai_api_key)
                     comp = await client.chat.completions.create(
                         model=native_model,
                         messages=[
-                            {
-                                "role": "system",
-                                "content": "Respond ONLY with JSON having keys classification_result, rationale, confidence (0..1 optional).",
-                            },
-                            {"role": "user", "content": text},
+                            {"role": "system", "content": enhanced_system_prompt},
+                            {"role": "user", "content": f"Text to classify: {text}"},
                         ],
                     )
                     content = comp.choices[0].message.content or "{}"
@@ -472,9 +680,13 @@ async def _classify_df_async(
                             data["confidence"] = float(data["confidence"])
                         except Exception:
                             data["confidence"] = None
+                    if "class_probabilities" in data:
+                        data["class_probabilities"] = _safe_probability_dict(data["class_probabilities"])
                     return ClassificationWithConf.model_validate(data)
                 if third_kind == "OpenRouter":
-                    return await classify_with_openrouter(text, labels, model=third_model)
+                    if not openrouter_api_key:
+                        raise ValueError("OPENROUTER_API_KEY not set for third model classification")
+                    return await classify_with_openrouter(text, labels, model=third_model, openrouter_api_key=openrouter_api_key)
                 return ClassificationWithConf(
                     classification_result="",
                     rationale="Unsupported third model kind",
@@ -577,39 +789,56 @@ async def _classify_df_async(
         st.session_state.last_progress_metadata = {}
     st.session_state.last_progress_metadata['classification'] = progress_metadata
 
-    if tracker:
-        tracker.emit(
-            test_name,
-            "complete",
-            "classification_run",
-            "Classification Run",
-            "orchestrator",
-            total_items=len(df),
-            total_batches=len(progress_metadata['batch_timestamps']),
-        )
+    openai_model_identifier = openai_model
+    third_model_identifier = third_model
+    third_provider_for_store = third_kind if third_kind in {"OpenAI", "OpenRouter"} else third_kind
 
     for idx, oai_res, oll_res, thd_res, gmn_res in all_results:
         if (oll := oll_res["result"]) is not None:
-            df.loc[idx, "classification_result_openrouter_mistral"] = _normalize_label(
-                str(oll.classification_result or "")
+            pred, conf, raw_probs, calibrated = _prepare_probability_outputs(
+                oll,
+                provider="OpenRouter",
+                model_name=openrouter_model,
+                allowed_labels=labels,
             )
+            df.loc[idx, "classification_result_openrouter_mistral"] = pred
             df.loc[idx, "classification_result_openrouter_mistral_rationale"] = oll.rationale or "(no rationale)"
-            df.loc[idx, "classification_result_openrouter_mistral_confidence"] = oll.confidence
+            df.loc[idx, "classification_result_openrouter_mistral_confidence"] = conf
+            df.loc[idx, "probabilities_openrouter_mistral_raw"] = json.dumps(raw_probs)
+            df.loc[idx, "probabilities_openrouter_mistral_calibrated"] = json.dumps(calibrated)
             df.loc[idx, "latency_openrouter_mistral"] = oll_res["latency"]
         if (oai := oai_res["result"]) is not None:
-            df.loc[idx, "classification_result_openai"] = _normalize_label(str(oai.classification_result or ""))
+            pred, conf, raw_probs, calibrated = _prepare_probability_outputs(
+                oai,
+                provider="OpenAI",
+                model_name=openai_model_identifier,
+                allowed_labels=labels,
+            )
+            df.loc[idx, "classification_result_openai"] = pred
             df.loc[idx, "classification_result_openai_rationale"] = oai.rationale or "(no rationale)"
-            df.loc[idx, "classification_result_openai_confidence"] = oai.confidence
+            df.loc[idx, "classification_result_openai_confidence"] = conf
+            df.loc[idx, "probabilities_openai_raw"] = json.dumps(raw_probs)
+            df.loc[idx, "probabilities_openai_calibrated"] = json.dumps(calibrated)
             df.loc[idx, "latency_openai"] = oai_res["latency"]
         if (gmn := gmn_res["result"]) is not None:
             df.loc[idx, "classification_result_gemini"] = _normalize_label(str(gmn.classification_result or ""))
             df.loc[idx, "classification_result_gemini_rationale"] = gmn.rationale or "(no rationale)"
             df.loc[idx, "classification_result_gemini_confidence"] = gmn.confidence
             df.loc[idx, "latency_gemini"] = gmn_res["latency"]
-        if (thd := thd_res["result"]) is not None:
-            df.loc[idx, "classification_result_third"] = _normalize_label(str(thd.classification_result or ""))
+        if (thd := thd_res["result"]) is not None and third_kind != "None":
+            provider_for_third = third_provider_for_store or "Third"
+            model_for_third = third_model_identifier or third_model
+            pred, conf, raw_probs, calibrated = _prepare_probability_outputs(
+                thd,
+                provider=provider_for_third or "Third",
+                model_name=model_for_third or "unknown",
+                allowed_labels=labels,
+            )
+            df.loc[idx, "classification_result_third"] = pred
             df.loc[idx, "classification_result_third_rationale"] = thd.rationale or "(no rationale)"
-            df.loc[idx, "classification_result_third_confidence"] = thd.confidence
+            df.loc[idx, "classification_result_third_confidence"] = conf
+            df.loc[idx, "probabilities_third_raw"] = json.dumps(raw_probs)
+            df.loc[idx, "probabilities_third_calibrated"] = json.dumps(calibrated)
             df.loc[idx, "latency_third"] = thd_res["latency"]
 
     return df
@@ -768,6 +997,7 @@ async def generate_text_async(prompt: str, use_ollama: bool = True, use_openai: 
             return f"Error during OpenAI call: {e}"
 
     return "Error: No text generation provider is configured or enabled."
+
 
 
 

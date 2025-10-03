@@ -92,17 +92,48 @@ def render_kpi_metrics(df: pd.DataFrame, test_type: str = "classification", mode
             st.metric("Test Cost", f"${ct.totals['total_cost_usd']:.4f}")
 
     elif test_type == "pruning" and len(df) > 0:
-        cols = st.columns(3)
+        total_cases = len(df)
+        cols = st.columns(5)
         with cols[0]:
-            st.metric("Total Cases", len(df))
+            st.metric("Total Cases", total_cases)
+
+        pruned_accuracy = None
+        if "Pruned Correct Bool" in df.columns:
+            pruned_accuracy = df["Pruned Correct Bool"].mean()
+        elif "Action Correct" in df.columns:
+            pruned_accuracy = df["Action Correct"].astype(str).str.contains("✅").mean()
+
+        baseline_accuracy = None
+        if "Baseline Correct Bool" in df.columns:
+            baseline_accuracy = df["Baseline Correct Bool"].mean()
+
         with cols[1]:
-            if "Action Correct" in df.columns:
-                correct = df["Action Correct"].str.contains("✅").sum()
-                st.metric("Action Accuracy", f"{correct / len(df):.1%}")
+            if pruned_accuracy is not None:
+                st.metric("Pruned Accuracy", f"{pruned_accuracy:.1%}")
+            else:
+                st.metric("Pruned Accuracy", "n/a")
+
         with cols[2]:
+            if baseline_accuracy is not None:
+                delta = None
+                if pruned_accuracy is not None:
+                    delta = f"{(pruned_accuracy - baseline_accuracy) * 100:.1f} pts"
+                st.metric("Baseline Accuracy", f"{baseline_accuracy:.1%}", delta=delta)
+            else:
+                st.metric("Baseline Accuracy", "n/a")
+
+        with cols[3]:
             if "Key Score (Jaccard)" in df.columns:
                 avg_score = df["Key Score (Jaccard)"].mean()
                 st.metric("Avg Key Similarity", f"{avg_score:.3f}")
+            else:
+                st.metric("Avg Key Similarity", "n/a")
+
+        with cols[4]:
+            if "Action Shift Bool" in df.columns:
+                st.metric("Action Shift Rate", f"{df['Action Shift Bool'].mean():.1%}")
+            else:
+                st.metric("Action Shift Rate", "n/a")
 
 
 def render_cost_dashboard():

@@ -2,30 +2,68 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple, List
 
 import asyncio
 import os
+import json
 import pandas as pd
 import streamlit as st
 
 from utils.data_helpers import _normalize_label, _style_selected_rows, _subset_for_run
 from utils.plotly_config import PLOTLY_CONFIG
+from core.golden_training import train_golden_ensemble
+from core.api_clients import reload_weight_store
+from core.prompt_versions import CLASSIFICATION_PROMPT_REVISION
 
 def _smarter_weighted_pick_row(row: pd.Series, f1_maps: Dict[str, Dict[str, float]]) -> Tuple[Optional[str], Optional[str]]:
-    scores = {}
+    scores: Dict[str, float] = {}
     model_preds = {
-        "mistral": {"pred": row.get("classification_result_openrouter_mistral"), "conf": row.get("classification_result_openrouter_mistral_confidence")},
-        "gpt5": {"pred": row.get("classification_result_openai"), "conf": row.get("classification_result_openai_confidence")},
-        "third": {"pred": row.get("classification_result_third"), "conf": row.get("classification_result_third_confidence")}
+        "mistral": {
+            "pred": row.get("classification_result_openrouter_mistral"),
+            "conf": row.get("classification_result_openrouter_mistral_confidence"),
+            "prob_col": "probabilities_openrouter_mistral_calibrated",
+        },
+        "gpt5": {
+            "pred": row.get("classification_result_openai"),
+            "conf": row.get("classification_result_openai_confidence"),
+            "prob_col": "probabilities_openai_calibrated",
+        },
+        "third": {
+            "pred": row.get("classification_result_third"),
+            "conf": row.get("classification_result_third_confidence"),
+            "prob_col": "probabilities_third_calibrated",
+        },
     }
 
     for model, data in model_preds.items():
-        pred = _normalize_label(data["pred"])
+        pred = _normalize_label(data.get("pred"))
         if pred and model in f1_maps:
-            conf = float(data["conf"] or 0.0)
-            class_f1 = f1_maps[model].get(pred, 0.0) # Use F1 for the predicted class
-            scores[model] = class_f1 * conf
+            prob = 0.0
+            prob_col = data.get("prob_col")
+            if prob_col and prob_col in row:
+                raw_blob = row.get(prob_col)
+                try:
+                    if isinstance(raw_blob, str):
+                        prob_map = json.loads(raw_blob)
+                    elif isinstance(raw_blob, dict):
+                        prob_map = raw_blob
+                    else:
+                        prob_map = {}
+                except (TypeError, ValueError):
+                    prob_map = {}
+                if isinstance(prob_map, dict):
+                    try:
+                        prob = float(prob_map.get(pred, 0.0))
+                    except (TypeError, ValueError):
+                        prob = 0.0
+            if prob <= 0.0:
+                try:
+                    prob = float(data.get("conf") or 0.0)
+                except (TypeError, ValueError):
+                    prob = 0.0
+            class_f1 = f1_maps[model].get(pred, 0.0)
+            scores[model] = class_f1 * prob
 
     if not scores:
         return None, None
@@ -33,6 +71,32 @@ def _smarter_weighted_pick_row(row: pd.Series, f1_maps: Dict[str, Dict[str, floa
     model_pick = max(scores, key=scores.get)
     label_pick = model_preds[model_pick]["pred"]
     return model_pick, label_pick
+
+
+def _collect_error_buckets(df: pd.DataFrame, model_column_map: Dict[str, str]) -> Dict[Tuple[str, str, str], int]:
+    buckets: Dict[Tuple[str, str, str], int] = {}
+    for _, row in df.iterrows():
+        true_label = _normalize_label(row.get("classification"))
+        if not true_label:
+            continue
+        for model_key, column in model_column_map.items():
+            pred_label = _normalize_label(row.get(column))
+            if pred_label and pred_label != true_label:
+                buckets[(model_key, true_label, pred_label)] = buckets.get((model_key, true_label, pred_label), 0) + 1
+    return buckets
+
+
+def _format_prompt_suggestions(buckets: Dict[Tuple[str, str, str], int], model_name_map: Dict[str, str]) -> List[str]:
+    suggestions: List[str] = []
+    sorted_items = sorted(buckets.items(), key=lambda item: item[1], reverse=True)
+    for (model_key, true_label, predicted_label), count in sorted_items:
+        model_display = model_name_map.get(model_key, model_key)
+        suggestions.append(
+            f"{model_display} misclassified {count} example(s): expected '{true_label}' but predicted '{predicted_label}'. "
+            "Add contrastive few-shots and explicit rubric language to separate these classes."
+        )
+    return suggestions
+
 
 # --- UPDATED: Flexible Judge and Pruner Functions ---
 JUDGE_SCHEMA = {"type": "object","properties": {"final_choice_model": {"type": "string", "description": "One of: mistral, gpt5, third"}, "final_label": {"type": "string"}, "judge_rationale": {"type": "string"}},"required": ["final_choice_model", "final_label", "judge_rationale"], "additionalProperties": False}
@@ -49,6 +113,51 @@ def configure(context: Dict[str, Any]) -> None:
         globals()[key] = value
     _CONFIGURED = True
 
+def _get_pricing_badge_color(price: float) -> str:
+    """Determine badge color based on price per 1M tokens."""
+    if price < 0.50:
+        return "green"
+    elif price <= 2.00:
+        return "orange"
+    else:
+        return "red"
+
+def _display_model_pricing_badge(model_id: str, metadata: Dict[str, Dict[str, str]], label: str = None) -> None:
+    """Display pricing information for a model using st.caption."""
+    if model_id not in metadata:
+        return
+
+    model_info = metadata[model_id]
+    input_cost = model_info.get('input_cost', 'Unknown')
+    output_cost = model_info.get('output_cost', 'Unknown')
+
+    # Format display name
+    display_name = label or model_id.split('/')[-1]
+
+    # Display caption
+    if input_cost != 'Unknown' and output_cost != 'Unknown':
+        st.caption(f"{display_name}: In={input_cost}/1M Out={output_cost}/1M")
+    elif input_cost != 'Unknown':
+        st.caption(f"{display_name}: {input_cost}/1M")
+    else:
+        st.caption(f"{display_name}: Pricing unavailable")
+
+def _display_model_pricing_badge_auto(model_id: str, label: str = None) -> None:
+    """Display pricing information for a model, automatically detecting the correct metadata source."""
+    # Try to find the model in the appropriate metadata dictionary
+    # Check OpenRouter first (most models)
+    if model_id in globals().get('OPENROUTER_MODEL_METADATA', {}):
+        _display_model_pricing_badge(model_id, globals()['OPENROUTER_MODEL_METADATA'], label)
+    # Check OpenAI
+    elif model_id in globals().get('OPENAI_MODEL_METADATA', {}):
+        _display_model_pricing_badge(model_id, globals()['OPENAI_MODEL_METADATA'], label)
+    # Check Gemini
+    elif model_id in globals().get('GEMINI_MODEL_METADATA', {}):
+        _display_model_pricing_badge(model_id, globals()['GEMINI_MODEL_METADATA'], label)
+    else:
+        # Model not found in any metadata
+        st.caption(f"{label or model_id.split('/')[-1]}: Pricing unavailable")
+
 def render_test1_tab(tab) -> None:
     if not _CONFIGURED:
         st.error("Test tab module not configured. Call configure() first.")
@@ -62,6 +171,125 @@ def render_test1_tab(tab) -> None:
         with tabs[1]:
             # Dashboard header
             render_test_flow_diagram(1, "Test 1: Two-Model Classification + F1/Latency Analysis")
+
+            # Add documentation popover
+            with st.popover("ℹ️ How Test 1 Works", help="Click to see test orchestration details"):
+                st.markdown("**Test 1: Two-Model Classification + F1/Latency Analysis**")
+                st.markdown("This test compares two LLM models on a classification task and evaluates their performance.")
+
+                st.markdown("**Orchestration Flow:**")
+                st.code("""
+# 1. Load classification dataset
+df = load_dataset(CLASSIFICATION_DATASET_PATH)
+
+# 2. Run classification with 2 models in parallel
+for row in df:
+    results = await asyncio.gather(
+        classify_with_openrouter(row.query, model_1),
+        classify_with_openai(row.query, model_2)
+    )
+
+# 3. Evaluate performance metrics
+- F1 Score (per class and macro average)
+- Latency (response time per model)
+- Confidence scores
+- Error analysis (confusion matrix)
+                """, language="python")
+
+                st.markdown("**Key Functions:**")
+                st.code("""
+run_classification_flow(
+    include_third_model=False,
+    use_openai_override=True,
+    use_ollama_override=True,
+    openrouter_model_override="mistral-small"
+)
+                """, language="python")
+
+                st.markdown("---")
+                st.markdown("**Example Input:**")
+                st.code("""
+# Sample CSV rows
+query,classification
+"How do I reset my password?","account_management"
+"My order hasn't arrived yet","shipping_issue"
+"I want to cancel my subscription","billing"
+                """, language="csv")
+
+                st.markdown("**Example Output:**")
+                st.code("""
+# Row 1: "How do I reset my password?"
+Mistral (OpenRouter):
+  - Prediction: "account_management"
+  - Confidence: 0.92
+  - Latency: 1.2s
+
+OpenAI (GPT-5):
+  - Prediction: "account_management"
+  - Confidence: 0.95
+  - Latency: 0.8s
+
+# Row 2: "My order hasn't arrived yet"
+Mistral (OpenRouter):
+  - Prediction: "shipping_issue"
+  - Confidence: 0.88
+  - Latency: 1.1s
+
+OpenAI (GPT-5):
+  - Prediction: "shipping_issue"
+  - Confidence: 0.91
+  - Latency: 0.9s
+                """, language="text")
+
+                st.markdown("**Calculation Steps:**")
+                st.markdown("**Step 1: Build Confusion Matrix**")
+                st.code("""
+# After classifying all rows, count predictions vs. ground truth
+                    Predicted
+                    acct  ship  bill
+Actual  acct        45    2     1
+        ship        1     38    2
+        bill        0     1     42
+
+# True Positives (TP), False Positives (FP), False Negatives (FN)
+account_management: TP=45, FP=1, FN=3
+shipping_issue:     TP=38, FP=3, FN=3
+billing:            TP=42, FP=3, FN=1
+                """, language="text")
+
+                st.markdown("**Step 2: Calculate Precision, Recall, F1**")
+                st.code("""
+# For "account_management" class:
+Precision = TP / (TP + FP) = 45 / (45 + 1) = 0.978
+Recall    = TP / (TP + FN) = 45 / (45 + 3) = 0.938
+F1        = 2 * (P * R) / (P + R)
+          = 2 * (0.978 * 0.938) / (0.978 + 0.938)
+          = 2 * 0.917 / 1.916
+          = 0.957
+
+# Macro Average F1 (average across all classes):
+F1_macro = (0.957 + 0.912 + 0.955) / 3 = 0.941
+                """, language="text")
+
+                st.markdown("**Step 3: Compare Models**")
+                st.code("""
+Model Comparison:
+┌─────────────┬──────────┬─────────────┬─────────┐
+│ Model       │ F1 Score │ Avg Latency │ Winner  │
+├─────────────┼──────────┼─────────────┼─────────┤
+│ Mistral     │ 0.941    │ 1.15s       │         │
+│ OpenAI      │ 0.958    │ 0.85s       │ ✓       │
+└─────────────┴──────────┴─────────────┴─────────┘
+
+OpenAI wins: Higher F1 (0.958 > 0.941) AND faster (0.85s < 1.15s)
+                """, language="text")
+
+                st.markdown("---")
+                st.markdown("**Expected Outputs:**")
+                st.markdown("- Classification results with confidence scores")
+                st.markdown("- F1 scores and confusion matrices for each model")
+                st.markdown("- Latency comparison charts")
+                st.markdown("- Error analysis highlighting misclassifications")
 
             # Dataset preview for classification tests (Tests 1-3)
             st.subheader("Dataset Preview (Classification)")
@@ -92,7 +320,17 @@ def render_test1_tab(tab) -> None:
                 _t1_oai_ids = list(OPENAI_MODEL_METADATA.keys())
                 _t1_oai_default = _t1_oai_ids.index(OPENAI_MODEL) if OPENAI_MODEL in _t1_oai_ids else 0
                 t1_openai_model = st.selectbox("OpenAI model (Test 1)", options=_t1_oai_ids, index=_t1_oai_default, key="t1_oai_model")
-        
+
+            # Pricing information badges
+            st.markdown("**💰 Pricing Information:**")
+            pricing_col1, pricing_col2 = st.columns(2)
+            with pricing_col1:
+                if t1_use_ollama:
+                    _display_model_pricing_badge(t1_openrouter_model, OPENROUTER_MODEL_METADATA, "OpenRouter")
+            with pricing_col2:
+                if t1_use_openai:
+                    _display_model_pricing_badge(t1_openai_model, OPENAI_MODEL_METADATA, "OpenAI")
+
             # Collapsible configuration section
             with st.expander("⚙️ Test Configuration", expanded=False):
                 row_limit_display = [k for k, v in ROW_LIMIT_OPTIONS.items() if v == ROW_LIMIT_N]
@@ -174,8 +412,144 @@ def render_test2_tab(tab) -> None:
         with tabs[2]:
             # Dashboard header
             render_test_flow_diagram(2, "Test 2: Advanced Ensembling with Per-Class F1 Weighting")
-        
-        
+
+            # Add documentation popover
+            with st.popover("ℹ️ How Test 2 Works", help="Click to see test orchestration details"):
+                st.markdown("**Test 2: Advanced Ensembling with Per-Class F1 Weighting**")
+                st.markdown("This test uses 3 models and combines their predictions using a smart weighted ensemble strategy.")
+
+                st.markdown("**Orchestration Flow:**")
+                st.code("""
+# 1. Run classification with 3 models
+results = await asyncio.gather(
+    classify_with_model_1(query),
+    classify_with_model_2(query),
+    classify_with_model_3(query)
+)
+
+# 2. Calculate per-class F1 scores for each model
+f1_maps = {
+    "model_1": {class: f1_score for each class},
+    "model_2": {class: f1_score for each class},
+    "model_3": {class: f1_score for each class}
+}
+
+# 3. Weighted ensemble selection
+for each prediction:
+    score = confidence × f1_score_of_predicted_class
+    final_prediction = model_with_highest_score
+                """, language="python")
+
+                st.markdown("**Key Functions:**")
+                st.code("""
+# Ensemble weighting function
+def _smarter_weighted_pick_row(row, f1_maps):
+    scores = {}
+    for model in models:
+        pred = row[f"{model}_prediction"]
+        conf = row[f"{model}_confidence"]
+        class_f1 = f1_maps[model][pred]
+        scores[model] = class_f1 * conf
+    return max(scores, key=scores.get)
+                """, language="python")
+
+                st.markdown("---")
+                st.markdown("**Example Input:**")
+                st.code("""
+# Query: "I need help with my refund"
+# Ground Truth: "billing"
+
+# Model predictions:
+Model 1 (Mistral):  "billing",    confidence=0.85
+Model 2 (OpenAI):   "billing",    confidence=0.92
+Model 3 (Claude):   "account_management", confidence=0.78
+                """, language="text")
+
+                st.markdown("**Example Output:**")
+                st.code("""
+# Per-class F1 scores from previous validation:
+f1_maps = {
+    "mistral": {
+        "billing": 0.91,
+        "account_management": 0.88,
+        "shipping_issue": 0.85
+    },
+    "gpt5": {
+        "billing": 0.94,
+        "account_management": 0.90,
+        "shipping_issue": 0.87
+    },
+    "third": {
+        "billing": 0.89,
+        "account_management": 0.92,
+        "shipping_issue": 0.84
+    }
+}
+                """, language="python")
+
+                st.markdown("**Calculation Steps:**")
+                st.markdown("**Step 1: Calculate Weighted Scores**")
+                st.code("""
+# For each model, multiply confidence by F1 score of predicted class
+
+Model 1 (Mistral):
+  Predicted: "billing"
+  Confidence: 0.85
+  F1 for "billing": 0.91
+  Score = 0.85 × 0.91 = 0.774
+
+Model 2 (OpenAI):
+  Predicted: "billing"
+  Confidence: 0.92
+  F1 for "billing": 0.94
+  Score = 0.92 × 0.94 = 0.865  ← HIGHEST
+
+Model 3 (Claude):
+  Predicted: "account_management"
+  Confidence: 0.78
+  F1 for "account_management": 0.92
+  Score = 0.78 × 0.92 = 0.718
+                """, language="text")
+
+                st.markdown("**Step 2: Select Best Model**")
+                st.code("""
+Weighted Scores:
+┌─────────┬────────────┬────────┬──────────┬───────┐
+│ Model   │ Prediction │ Conf   │ Class F1 │ Score │
+├─────────┼────────────┼────────┼──────────┼───────┤
+│ Mistral │ billing    │ 0.85   │ 0.91     │ 0.774 │
+│ OpenAI  │ billing    │ 0.92   │ 0.94     │ 0.865 │ ← Winner
+│ Claude  │ acct_mgmt  │ 0.78   │ 0.92     │ 0.718 │
+└─────────┴────────────┴────────┴──────────┴───────┘
+
+Ensemble Pick: "billing" (from OpenAI, score=0.865)
+Ground Truth:  "billing" ✓ CORRECT
+                """, language="text")
+
+                st.markdown("**Step 3: Ensemble Performance**")
+                st.code("""
+# After processing all queries:
+Individual Model F1 Scores:
+  Mistral: 0.91
+  OpenAI:  0.94
+  Claude:  0.89
+
+Ensemble F1 Score: 0.96  ← Better than any individual model!
+
+Why? The ensemble leverages:
+  - High confidence from best models
+  - Per-class F1 scores (some models better at certain classes)
+  - Avoids low-confidence predictions
+                """, language="text")
+
+                st.markdown("---")
+                st.markdown("**Expected Outputs:**")
+                st.markdown("- Individual model performance metrics")
+                st.markdown("- Ensemble performance (often better than individual models)")
+                st.markdown("- Confidence distribution analysis")
+                st.markdown("- Model agreement visualization")
+
+
             # --- Per-Test Model Selection (Test 2) ---
             st.subheader("Model Selection (Test 2)")
             t2_c1, t2_c2 = st.columns(2)
@@ -196,6 +570,22 @@ def render_test2_tab(tab) -> None:
                 t2_third_model = st.selectbox("Third model (OpenRouter)", options=_t2_or_ids, key="t2_third_model_or")
             elif t2_third_kind == "OpenAI":
                 t2_third_model = st.selectbox("Third model (OpenAI)", options=_t2_oai_ids, key="t2_third_model_oai")
+
+            # Pricing information badges
+            st.markdown("**💰 Pricing Information:**")
+            pricing_col1, pricing_col2, pricing_col3 = st.columns(3)
+            with pricing_col1:
+                if t2_use_ollama:
+                    _display_model_pricing_badge(t2_openrouter_model, OPENROUTER_MODEL_METADATA, "OpenRouter")
+            with pricing_col2:
+                if t2_use_openai:
+                    _display_model_pricing_badge(t2_openai_model, OPENAI_MODEL_METADATA, "OpenAI")
+            with pricing_col3:
+                if t2_third_kind == "OpenRouter" and t2_third_model:
+                    _display_model_pricing_badge(t2_third_model, OPENROUTER_MODEL_METADATA, "Third (OR)")
+                elif t2_third_kind == "OpenAI" and t2_third_model:
+                    _display_model_pricing_badge(t2_third_model, OPENAI_MODEL_METADATA, "Third (OAI)")
+
             # Collapsible configuration section
             with st.expander("⚙️ Test Configuration", expanded=False):
                 row_limit_display = [k for k, v in ROW_LIMIT_OPTIONS.items() if v == ROW_LIMIT_N]
@@ -211,10 +601,18 @@ def render_test2_tab(tab) -> None:
             st.info("This test uses a smarter weighting: score = confidence * F1-score-of-the-predicted-class.")
         
         
-            if st.button("▶️ Run Test 2", type="primary", use_container_width=True):
+            run_test2 = st.button("▶️ Run Test 2", type="primary", use_container_width=True)
+            if run_test2:
+                if t2_third_kind == "None":
+                    st.error("Test 2 requires a third model. Configure it in the sidebar before running.")
+                    return
+                if not t2_third_model:
+                    st.error("Select a specific third model before running Test 2.")
+                    return
+
                 # Persist per-test OpenAI model override for this run
                 st.session_state['openai_model_override'] = t2_openai_model
-        
+
                 overrides = {
                     'use_openai': t2_use_openai,
                     'openai_model': t2_openai_model,
@@ -226,22 +624,82 @@ def render_test2_tab(tab) -> None:
                 capture_run_config("Test 2", overrides)  # CAPTURE
                 # First, run classification for configured models
                 run_classification_flow(
-                    include_third_model=(t2_third_kind != "None"),
+                    include_third_model=True,
                     use_openai_override=t2_use_openai,
                     use_ollama_override=t2_use_ollama,
                     openrouter_model_override=t2_openrouter_model,
                     third_kind_override=t2_third_kind,
                     third_model_override=t2_third_model,
                 )
-        
-        
-        
+
+
+
                 # First, ensure classifications exist by running Test 1 logic
                 # ... (classification run logic as in Test 1) ...
                 df = _subset_for_run(st.session_state.df, ROW_LIMIT_N)
+                refinement_artifact: Optional[str] = None
+                refinement_suggestions: List[str] = []
                 if len(df):
+                    if 'classification_result_third' not in df.columns or df['classification_result_third'].dropna().empty:
+                        st.error("Third model produced no predictions. Verify API keys and model configuration.")
+                        return
+                    try:
+                        store = train_golden_ensemble(
+                            df,
+                            t2_openrouter_model,
+                            t2_openai_model,
+                            t2_third_model,
+                            t2_third_kind,
+                        )
+                        reload_weight_store()
+                        probability_columns = [
+                            "probabilities_openrouter_mistral_raw",
+                            "probabilities_openrouter_mistral_calibrated",
+                            "probabilities_openai_raw",
+                            "probabilities_openai_calibrated",
+                        ]
+                        if t2_third_kind != "None":
+                            probability_columns.extend(["probabilities_third_raw", "probabilities_third_calibrated"])
+                        for col in probability_columns:
+                            if col in df.columns and col in st.session_state.df.columns:
+                                st.session_state.df.loc[df.index, col] = df[col]
+                        st.info("Ensemble weights recalibrated on the golden dataset.")
+                    except Exception as training_error:
+                        st.warning(f"Could not retrain ensemble weights: {training_error}")
+
                     # --- PATCH 13: Dynamic name for reporting ---
                     third_model_name = get_third_model_display_name()
+                    model_column_map = {"mistral": "classification_result_openrouter_mistral", "gpt5": "classification_result_openai", "third": "classification_result_third"}
+                    model_display_map = {
+                        "mistral": f"Mistral ({t2_openrouter_model})",
+                        "gpt5": f"OpenAI ({t2_openai_model})",
+                        "third": third_model_name,
+                    }
+                    error_buckets = _collect_error_buckets(df, model_column_map)
+                    if error_buckets:
+                        refinement_suggestions = _format_prompt_suggestions(error_buckets, model_display_map)
+                        refinement_artifact = json.dumps({
+                            "prompt_revision": CLASSIFICATION_PROMPT_REVISION,
+                            "models": model_display_map,
+                            "error_buckets": [
+                                {
+                                    "model": model_display_map.get(model_key, model_key),
+                                    "expected": true_lbl,
+                                    "predicted": pred_lbl,
+                                    "count": count,
+                                }
+                                for (model_key, true_lbl, pred_lbl), count in error_buckets.items()
+                            ],
+                            "suggestions": refinement_suggestions,
+                        }, indent=2)
+                    else:
+                        refinement_artifact = json.dumps({
+                            "prompt_revision": CLASSIFICATION_PROMPT_REVISION,
+                            "models": model_display_map,
+                            "error_buckets": [],
+                            "suggestions": [],
+                        }, indent=2)
+
         
                     y_true = df["classification"].tolist()
                     # Generate reports including the third model (for ensemble calculation)
@@ -277,7 +735,15 @@ def render_test2_tab(tab) -> None:
                     )
         
                     st.divider()
-        
+
+                    if refinement_suggestions:
+                        st.subheader("Prompt Refinement Targets")
+                        for suggestion in refinement_suggestions[:5]:
+                            st.markdown(f"- {suggestion}")
+                    else:
+                        st.subheader("Prompt Refinement Targets")
+                        st.markdown("All models agree with the golden dataset; no refinement targets detected.")
+
                     # 2.5. Confidence Distribution Analysis
                     st.subheader("📊 Confidence Distribution Analysis")
         
@@ -321,7 +787,7 @@ def render_test2_tab(tab) -> None:
                     # --- PATCH 7: Structured Summary Call for Test 2 ---
                     report_text = f"Test 2 Ensemble Results (N={len(df)}): Weighted Pick Macro F1: {report_m.get('weighted avg', {}).get('f1-score', 0.0):.4f}. Focus analysis on model disagreement."
                     loop = asyncio.get_event_loop()
-                    loop.run_until_complete(display_final_summary_for_test("Test 2 Advanced Ensembling", report_text))
+                    loop.run_until_complete(display_final_summary_for_test("Test 2 Advanced Ensembling", report_text, refinement_artifact))
                     # ----------------------------------------------------
         
 
@@ -338,7 +804,166 @@ def render_test3_tab(tab) -> None:
         with tabs[3]:
             # Dashboard header
             render_test_flow_diagram(3, "Test 3: LLM as Judge")
-        
+
+            # Add documentation popover
+            with st.popover("ℹ️ How Test 3 Works", help="Click to see test orchestration details"):
+                st.markdown("**Test 3: LLM as Judge**")
+                st.markdown("This test uses an LLM judge to select the best prediction from 3 competing models.")
+
+                st.markdown("**Orchestration Flow:**")
+                st.code("""
+# 1. Get predictions from 3 models (same as Test 2)
+model_predictions = await classify_with_all_models(query)
+
+# 2. Calculate weighted scores
+weighted_scores = {
+    model: f1_score * confidence
+    for model in models
+}
+
+# 3. LLM Judge evaluates and selects best answer
+judge_prompt = f'''
+Query: {query}
+Candidates:
+- Model 1: {pred_1} (confidence: {conf_1}, score: {score_1})
+- Model 2: {pred_2} (confidence: {conf_2}, score: {score_2})
+- Model 3: {pred_3} (confidence: {conf_3}, score: {score_3})
+
+Select the best answer and explain why.
+'''
+
+judge_decision = await run_judge_ollama(judge_prompt)
+                """, language="python")
+
+                st.markdown("**Key Functions:**")
+                st.code("""
+# Judge evaluation
+async def run_judge_ollama(payload):
+    response = await openrouter_json(
+        model=judge_model,
+        messages=[{
+            "role": "system",
+            "content": JUDGE_INSTRUCTIONS
+        }, {
+            "role": "user",
+            "content": json.dumps(payload)
+        }],
+        response_format=JUDGE_SCHEMA
+    )
+    return response
+                """, language="python")
+
+                st.markdown("---")
+                st.markdown("**Example Input:**")
+                st.code("""
+# Query: "Can I change my delivery address?"
+# Ground Truth: "shipping_issue"
+
+# Candidate predictions:
+{
+  "query": "Can I change my delivery address?",
+  "candidates": {
+    "mistral": {
+      "label": "shipping_issue",
+      "confidence": 0.82,
+      "rationale": "Query about delivery modification"
+    },
+    "gpt5": {
+      "label": "account_management",
+      "confidence": 0.75,
+      "rationale": "Changing account settings"
+    },
+    "third": {
+      "label": "shipping_issue",
+      "confidence": 0.88,
+      "rationale": "Delivery address is shipping-related"
+    }
+  },
+  "weighted_scores": {
+    "mistral": 0.746,  # 0.82 × 0.91 (F1 for shipping_issue)
+    "gpt5": 0.675,     # 0.75 × 0.90 (F1 for account_management)
+    "third": 0.792     # 0.88 × 0.90 (F1 for shipping_issue)
+  }
+}
+                """, language="json")
+
+                st.markdown("**Example Output:**")
+                st.code("""
+# Judge Decision:
+{
+  "final_choice_model": "third",
+  "final_label": "shipping_issue",
+  "judge_rationale": "While all three models provided reasonable
+    predictions, I select the third model's answer 'shipping_issue'
+    because:
+
+    1. Highest weighted score (0.792) indicates strong confidence
+       backed by good historical performance
+    2. Two out of three models agree on 'shipping_issue'
+    3. The rationale is most accurate - delivery address changes
+       are fundamentally shipping operations, not account settings
+    4. The query explicitly mentions 'delivery address' which is
+       a shipping domain term
+
+    The gpt5 model's 'account_management' prediction, while having
+    some merit, misses the shipping-specific context."
+}
+                """, language="json")
+
+                st.markdown("**Calculation Steps:**")
+                st.markdown("**Step 1: Weighted Score Calculation**")
+                st.code("""
+# Weighted scores already provided in input:
+mistral: 0.82 (conf) × 0.91 (F1) = 0.746
+gpt5:    0.75 (conf) × 0.90 (F1) = 0.675
+third:   0.88 (conf) × 0.90 (F1) = 0.792  ← Highest
+                """, language="text")
+
+                st.markdown("**Step 2: Judge Evaluation Process**")
+                st.code("""
+Judge considers:
+┌────────────────────────┬─────────┬──────┬───────┬───────┐
+│ Factor                 │ Mistral │ GPT5 │ Third │ Notes │
+├────────────────────────┼─────────┼──────┼───────┼───────┤
+│ Weighted Score         │ 0.746   │ 0.675│ 0.792 │ Third │
+│ Confidence             │ 0.82    │ 0.75 │ 0.88  │ Third │
+│ Rationale Quality      │ Good    │ Fair │ Best  │ Third │
+│ Model Agreement        │ 2/3 agree on "shipping_issue"  │
+│ Domain Relevance       │ High    │ Low  │ High  │       │
+└────────────────────────┴─────────┴──────┴───────┴───────┘
+
+Decision: Select "third" model's prediction
+                """, language="text")
+
+                st.markdown("**Step 3: Judge Performance Evaluation**")
+                st.code("""
+# After judging all queries:
+Individual Model Accuracy:
+  Mistral: 87/100 = 87%
+  GPT5:    91/100 = 91%
+  Third:   89/100 = 89%
+
+Judge Accuracy: 94/100 = 94%  ← Better than any individual!
+
+Judge Selection Distribution:
+  Selected Mistral: 28 times
+  Selected GPT5:    45 times (most reliable)
+  Selected Third:   27 times
+
+Why Judge Wins:
+  - Leverages weighted scores (confidence × F1)
+  - Considers model agreement
+  - Evaluates rationale quality
+  - Makes context-aware decisions
+                """, language="text")
+
+                st.markdown("---")
+                st.markdown("**Expected Outputs:**")
+                st.markdown("- Judge's final selection for each query")
+                st.markdown("- Judge rationale explaining the decision")
+                st.markdown("- Judge performance vs. individual models")
+                st.markdown("- Sankey diagram showing judge's model preferences")
+
             # --- Classification Models (Test 3) ---
             st.subheader("Classification Models (Test 3)")
             t3_c1, t3_c2 = st.columns(2)
@@ -359,7 +984,22 @@ def render_test3_tab(tab) -> None:
                 t3_third_model = st.selectbox("Third model (OpenRouter)", options=_t3_or_ids, key="t3_third_model_or")
             elif t3_third_kind == "OpenAI":
                 t3_third_model = st.selectbox("Third model (OpenAI)", options=_t3_oai_ids, key="t3_third_model_oai")
-        
+
+            # Pricing information badges for classification models
+            st.markdown("**💰 Classification Models Pricing:**")
+            pricing_col1, pricing_col2, pricing_col3 = st.columns(3)
+            with pricing_col1:
+                if t3_use_ollama:
+                    _display_model_pricing_badge(t3_openrouter_model, OPENROUTER_MODEL_METADATA, "OpenRouter")
+            with pricing_col2:
+                if t3_use_openai:
+                    _display_model_pricing_badge(t3_openai_model, OPENAI_MODEL_METADATA, "OpenAI")
+            with pricing_col3:
+                if t3_third_kind == "OpenRouter" and t3_third_model:
+                    _display_model_pricing_badge(t3_third_model, OPENROUTER_MODEL_METADATA, "Third (OR)")
+                elif t3_third_kind == "OpenAI" and t3_third_model:
+                    _display_model_pricing_badge(t3_third_model, OPENAI_MODEL_METADATA, "Third (OAI)")
+
             # Collapsible configuration section
             with st.expander("⚙️ Test Configuration", expanded=False):
                 row_limit_display = [k for k, v in ROW_LIMIT_OPTIONS.items() if v == ROW_LIMIT_N]
@@ -380,9 +1020,9 @@ def render_test3_tab(tab) -> None:
                 default_judge_model = "openai/gpt-5-mini"
                 if default_judge_model not in AVAILABLE_MODELS:
                     default_judge_model = AVAILABLE_MODELS[0] if AVAILABLE_MODELS else OPENAI_MODEL
-        
+
                 default_judge_index = AVAILABLE_MODELS.index(default_judge_model) if default_judge_model in AVAILABLE_MODELS else 0
-        
+
                 judge_model = st.selectbox(
                     "Judge Model",
                     options=AVAILABLE_MODELS,
@@ -390,35 +1030,39 @@ def render_test3_tab(tab) -> None:
                     key='judge_model',
                     help="Select the model to act as the judge. Defaults to gpt-5-mini for cost-effectiveness."
                 )
-        
+
             with col2:
                 st.metric("Judge Model", _to_native_model_id(judge_model))
-        
-            if st.button("▶️ Run Test 3 (Judge)", type="primary", use_container_width=True):
-                # Persist per-test OpenAI model override for this run
-                st.session_state['openai_model_override'] = t3_openai_model
-        
-                overrides = {
-                    'use_openai': t3_use_openai,
-                    'openai_model': t3_openai_model,
-                    'use_ollama': t3_use_ollama,
-                    'openrouter_model': t3_openrouter_model,
-                    'third_kind': t3_third_kind,
-                    'third_model': t3_third_model,
-                }
-                capture_run_config("Test 3", overrides)  # CAPTURE
-                # Always ensure fresh classification data is available for all models
+
+            # Judge model pricing
+            st.markdown("**💰 Judge Model Pricing:**")
+            _display_model_pricing_badge_auto(judge_model, "Judge")
+
+            run_test3 = st.button("▶️ Run Test 3 (Judge)", type="primary", use_container_width=True)
+            if run_test3:
+                if t3_third_kind == "None":
+                    st.error("Test 3 requires a third model. Configure it in the sidebar before running.")
+                    return
+                if not t3_third_model:
+                    st.error("Select a specific third model before running Test 3.")
+                    return
+
                 run_classification_flow(
-                    include_third_model=(t3_third_kind != "None"),
+                    include_third_model=True,
                     use_openai_override=t3_use_openai,
                     use_ollama_override=t3_use_ollama,
                     openrouter_model_override=t3_openrouter_model,
                     third_kind_override=t3_third_kind,
                     third_model_override=t3_third_model,
                 )
-        
+
+
+
                 df = _subset_for_run(st.session_state.df, ROW_LIMIT_N)
-        
+                df = _subset_for_run(st.session_state.df, ROW_LIMIT_N)
+                judge_artifact: Optional[str] = None
+                judge_refinement_suggestions: List[str] = []
+
                 if not len(df):
                     st.info("No rows to judge.")
                 else:
@@ -456,11 +1100,15 @@ def render_test3_tab(tab) -> None:
                                         "gpt5": {"label": row.get("classification_result_openai"), "confidence": row.get("classification_result_openai_confidence"), "rationale": row.get("classification_result_openai_rationale")},
                                         "third": {"label": row.get("classification_result_third"), "confidence": row.get("classification_result_third_confidence"), "rationale": row.get("classification_result_third_rationale")} if pd.notna(row.get("classification_result_third")) else None
                                     },
-                                    "weighted_scores": {k: v for k, v in [
-                                        ("mistral", (f1_scores.get("mistral", 0) * float(row.get("classification_result_openrouter_mistral_confidence") or 0))),
-                                        ("gpt5", (f1_scores.get("gpt5", 0) * float(row.get("classification_result_openai_confidence") or 0))),
-                                        ("third", (f1_scores.get("third", 0) * float(row.get("classification_result_third_confidence") or 0)))
-                                    ] if v > 0}
+                                    "weighted_scores": {
+                                    key: f1_scores.get(key, 0) * prob
+                                    for key, prob in [
+                                        ("mistral", json.loads(row.get("probabilities_openrouter_mistral_calibrated") or "{}").get(_normalize_label(row.get("classification_result_openrouter_mistral")), 0.0)),
+                                        ("gpt5", json.loads(row.get("probabilities_openai_calibrated") or "{}").get(_normalize_label(row.get("classification_result_openai")), 0.0)),
+                                        ("third", json.loads(row.get("probabilities_third_calibrated") or "{}").get(_normalize_label(row.get("classification_result_third")), 0.0)),
+                                    ]
+                                    if prob and f1_scores.get(key, 0)
+                                }
                                 }
                                 try:
                                     # Using run_judge_ollama as the primary (which calls OpenRouter)
@@ -488,6 +1136,39 @@ def render_test3_tab(tab) -> None:
                         # Get fresh data with judge results
                         final_df = _subset_for_run(st.session_state.df, ROW_LIMIT_N)
                         third_model_name = get_third_model_display_name()
+                        model_column_map = {"mistral": "classification_result_openrouter_mistral", "gpt5": "classification_result_openai", "third": "classification_result_third"}
+                        model_display_map = {
+                            "mistral": f"Mistral ({t3_openrouter_model})",
+                            "gpt5": f"OpenAI ({t3_openai_model})",
+                            "third": third_model_name,
+                        }
+                        error_buckets = _collect_error_buckets(final_df, model_column_map)
+                        if error_buckets:
+                            judge_refinement_suggestions = _format_prompt_suggestions(error_buckets, model_display_map)
+                            judge_artifact = json.dumps({
+                                "prompt_revision": CLASSIFICATION_PROMPT_REVISION,
+                                "judge_prompt": JUDGE_INSTRUCTIONS,
+                                "models": model_display_map,
+                                "error_buckets": [
+                                    {
+                                        "model": model_display_map.get(model_key, model_key),
+                                        "expected": true_lbl,
+                                        "predicted": pred_lbl,
+                                        "count": count,
+                                    }
+                                    for (model_key, true_lbl, pred_lbl), count in error_buckets.items()
+                                ],
+                                "suggestions": judge_refinement_suggestions,
+                            }, indent=2)
+                        else:
+                            judge_artifact = json.dumps({
+                                "prompt_revision": CLASSIFICATION_PROMPT_REVISION,
+                                "judge_prompt": JUDGE_INSTRUCTIONS,
+                                "models": model_display_map,
+                                "error_buckets": [],
+                                "suggestions": [],
+                            }, indent=2)
+
         
                         # 1. FIRST: Progress replay
                         st.subheader("📈 Processing Timeline")
@@ -505,7 +1186,15 @@ def render_test3_tab(tab) -> None:
                         )
         
                         st.divider()
-        
+
+                        if judge_refinement_suggestions:
+                            st.subheader("Prompt Refinement Targets")
+                            for suggestion in judge_refinement_suggestions[:5]:
+                                st.markdown(f"- {suggestion}")
+                        else:
+                            st.subheader("Prompt Refinement Targets")
+                            st.markdown("All models agree with the golden dataset; no refinement targets detected.")
+
                         # 2.5. Judge Decision Flow Visualization
                         st.subheader("👨‍⚖️ Judge Decision Flow")
         
@@ -580,7 +1269,7 @@ def render_test3_tab(tab) -> None:
                             # Download option
                             csv = display_df[existing_cols].to_csv(index=False).encode('utf-8')
                             st.download_button(
-                                "⬇️ Download Judge Results",
+                                "📥 Download Judge Results",
                                 data=csv,
                                 file_name="test3_judge_results.csv",
                                 mime="text/csv",
@@ -592,7 +1281,7 @@ def render_test3_tab(tab) -> None:
                         # --- PATCH 7: Structured Summary Call for Test 3 ---
                         report_text = f"Test 3 LLM Judge Results (N={len(final_df)}): Judge selection finalized. Focus analysis on optimizing judge prompt or candidate presentation."
                         loop = asyncio.get_event_loop()
-                        loop.run_until_complete(display_final_summary_for_test("Test 3 LLM as Judge", report_text, JUDGE_INSTRUCTIONS))
+                        loop.run_until_complete(display_final_summary_for_test("Test 3 LLM as Judge", report_text, judge_artifact))
                         # ----------------------------------------------------
         
         
@@ -609,10 +1298,199 @@ def render_test4_tab(tab) -> None:
     with tab:
         with tabs[4]:
             show_main_df_previews = False
-        
+
             # Dashboard header
             render_test_flow_diagram(4, "Test 4: Quantitative Context Pruning & Action")
-        
+
+            # Add documentation popover
+            with st.popover("ℹ️ How Test 4 Works", help="Click to see test orchestration details"):
+                st.markdown("**Test 4: Quantitative Context Pruning & Action Prediction**")
+                st.markdown("This test evaluates an LLM's ability to prune irrelevant context and predict the correct action.")
+
+                st.markdown("**Orchestration Flow:**")
+                st.code("""
+# 1. Load context pruning test data
+test_data = load_pruning_dataset()
+# Each row contains:
+# - instruction, summary, user_msgs, agent_resps, tool_logs
+# - new_question
+# - expected_action, expected_kept_keys
+
+# 2. For each test case, run pruner
+for test_case in test_data:
+    context = {
+        "instruction": test_case.instruction,
+        "summary": test_case.summary,
+        "user_messages": test_case.user_msgs,
+        "agent_responses": test_case.agent_resps,
+        "tool_logs": test_case.tool_logs
+    }
+
+    result = await run_pruner({
+        "context": context,
+        "new_question": test_case.new_question
+    })
+
+    # 3. Evaluate pruner output
+    action_correct = (result.action == expected_action)
+    jaccard_score = jaccard_similarity(
+        result.kept_keys,
+        expected_kept_keys
+    )
+                """, language="python")
+
+                st.markdown("**Key Functions:**")
+                st.code("""
+async def run_pruner(payload):
+    response = await openrouter_json(
+        model=pruner_model,
+        messages=[{
+            "role": "system",
+            "content": PRUNER_INSTRUCTIONS
+        }, {
+            "role": "user",
+            "content": json.dumps(payload)
+        }],
+        response_format=PRUNER_SCHEMA
+    )
+    return response
+                """, language="python")
+
+                st.markdown("---")
+                st.markdown("**Example Input:**")
+                st.code("""
+# Context items:
+{
+  "instruction": "You are a helpful customer service agent",
+  "summary": "User wants to track their order #12345",
+  "user_messages": [
+    "Hi, I need help",
+    "I want to track my order",
+    "Order number is 12345"
+  ],
+  "agent_responses": [
+    "Hello! How can I help?",
+    "I can help with that",
+    "Let me look up order 12345"
+  ],
+  "tool_logs": [
+    "search_orders(query='12345')",
+    "get_order_status(order_id='12345')",
+    "Result: Order shipped, arriving tomorrow"
+  ]
+}
+
+# New question:
+"What's the delivery date?"
+
+# Expected output:
+{
+  "action": "answer_from_context",
+  "kept_keys": ["summary", "tool_logs"]
+}
+                """, language="json")
+
+                st.markdown("**Example Output:**")
+                st.code("""
+# Pruner decision:
+{
+  "action": "answer_from_context",
+  "kept_context_keys": ["summary", "tool_logs"],
+  "rationale": "The question asks about delivery date. The
+    tool_logs contain the answer ('arriving tomorrow'). The
+    summary provides context about the order. The instruction,
+    user_messages, and agent_responses are not needed to answer
+    this specific question."
+}
+                """, language="json")
+
+                st.markdown("**Calculation Steps:**")
+                st.markdown("**Step 1: Pruner Decision**")
+                st.code("""
+# Pruner evaluates each context key for relevance:
+
+instruction: "You are a helpful customer service agent"
+  → Not needed for this specific question ✗
+
+summary: "User wants to track their order #12345"
+  → Provides order context ✓
+
+user_messages: ["Hi, I need help", "I want to track...", ...]
+  → Historical conversation, not needed ✗
+
+agent_responses: ["Hello! How can I help?", ...]
+  → Historical conversation, not needed ✗
+
+tool_logs: ["search_orders...", "Result: Order shipped, arriving tomorrow"]
+  → Contains the answer! ✓
+
+Decision:
+  Action: "answer_from_context" (answer is in tool_logs)
+  Keep: ["summary", "tool_logs"]
+                """, language="text")
+
+                st.markdown("**Step 2: Action Accuracy**")
+                st.code("""
+# Compare with expected output:
+Expected Action: "answer_from_context"
+Pruner Action:   "answer_from_context"
+Action Correct:  ✓ YES
+
+Action Accuracy = Correct / Total
+                = 1 / 1
+                = 100%
+                """, language="text")
+
+                st.markdown("**Step 3: Jaccard Similarity for Kept Keys**")
+                st.code("""
+# Compare kept keys:
+Expected Keys: {"summary", "tool_logs"}
+Pruner Keys:   {"summary", "tool_logs"}
+
+Intersection: {"summary", "tool_logs"}  → 2 items
+Union:        {"summary", "tool_logs"}  → 2 items
+
+Jaccard Similarity = |Intersection| / |Union|
+                   = 2 / 2
+                   = 1.0 (perfect match!)
+
+# Example with partial match:
+Expected Keys: {"summary", "tool_logs", "instruction"}
+Pruner Keys:   {"summary", "tool_logs"}
+
+Intersection: {"summary", "tool_logs"}  → 2 items
+Union:        {"summary", "tool_logs", "instruction"}  → 3 items
+
+Jaccard Similarity = 2 / 3 = 0.667
+                """, language="text")
+
+                st.markdown("**Step 4: Aggregate Metrics**")
+                st.code("""
+# After processing all test cases:
+┌──────────────────────┬────────┐
+│ Metric               │ Value  │
+├──────────────────────┼────────┤
+│ Action Accuracy      │ 92%    │
+│ Avg Jaccard Score    │ 0.847  │
+│ Perfect Matches      │ 68/100 │
+│ Partial Matches      │ 24/100 │
+│ Complete Mismatches  │ 8/100  │
+└──────────────────────┴────────┘
+
+Action Distribution:
+  answer_from_context: 45 cases
+  search_knowledge:    30 cases
+  ask_clarification:   15 cases
+  escalate:            10 cases
+                """, language="text")
+
+                st.markdown("---")
+                st.markdown("**Expected Outputs:**")
+                st.markdown("- Action accuracy (% correct predictions)")
+                st.markdown("- Jaccard similarity for kept context keys")
+                st.markdown("- Heatmap: Action vs. number of kept keys")
+                st.markdown("- Key distribution by action type")
+
             # Collapsible configuration section
             with st.expander("⚙️ Test Configuration", expanded=False):
                 st.markdown(f"""
@@ -643,7 +1521,11 @@ def render_test4_tab(tab) -> None:
         
             with col2:
                 st.metric("Pruner Model", _to_native_model_id(pruner_model))
-        
+
+            # Pruner model pricing
+            st.markdown("**💰 Pruner Model Pricing:**")
+            _display_model_pricing_badge_auto(pruner_model, "Pruner")
+
             st.info(f"This test runs the pruner against either generated data or `{CONTEXT_PRUNING_DATASET_PATH}`.")
             st.code("Expected columns: instruction, summary, user_msgs, agent_resps, tool_logs, new_question, expected_action, expected_kept_keys (comma-separated)")
         
@@ -669,11 +1551,11 @@ def render_test4_tab(tab) -> None:
             if st.button("▶️ Run Test 4 (Pruning)", type="primary", use_container_width=True) and pruning_df is not None:
                 capture_run_config("Test 4") # CAPTURE
                 async def run_all_pruners():
-                    results = []
+                    pruner_tasks = []
+                    baseline_tasks = []
                     # Note: The logic below assumes the column names match the PruningDataItem schema,
                     # which is guaranteed if loaded from session state (PATCH 17) or if the CSV is compliant.
                     for _, row in pruning_df.iterrows():
-                        # The columns in the dataframe are already assumed to be strings/pipe-separated.
                         context_items = {
                             "instruction": row.get("instruction", ""),
                             "summary": row.get("summary", ""),
@@ -682,48 +1564,82 @@ def render_test4_tab(tab) -> None:
                             "tool_logs": str(row.get("tool_logs", "")).split("||"),
                         }
                         payload = { "context": context_items, "new_question": row.get("new_question", "") }
-                        results.append(run_pruner(payload))
-                    return await asyncio.gather(*results)
+                        pruner_tasks.append(run_pruner(payload, pruner_model))
+                        baseline_tasks.append(run_action_without_pruning(payload, pruner_model))
+                    pruned_outputs, baseline_outputs = await asyncio.gather(
+                        asyncio.gather(*pruner_tasks),
+                        asyncio.gather(*baseline_tasks),
+                    )
+                    return pruned_outputs, baseline_outputs
         
                 with st.spinner(f"Running pruner on {len(pruning_df)} test cases..."):
-                    pruner_outputs = asyncio.run(run_all_pruners())
-        
-                correct_actions, key_scores = 0, []
+                    pruner_outputs, baseline_outputs = asyncio.run(run_all_pruners())
+
+                correct_actions, baseline_correct_actions = 0, 0
+                action_shift_count = 0
+                pruned_beats_baseline = 0
+                baseline_beats_pruned = 0
+                key_scores = []
                 results_data = [] # For the detailed results table
         
                 for i, row in pruning_df.iterrows():
                     output = pruner_outputs[i]
-        
+                    baseline_output = baseline_outputs[i]
+
                     # --- Action Comparison ---
                     model_action = output.get('action')
+                    baseline_action = baseline_output.get('action')
                     expected_action = row['expected_action']
                     action_correct = (model_action == expected_action)
+                    baseline_correct = (baseline_action == expected_action)
+
                     if action_correct:
                         correct_actions += 1
-        
+                    if baseline_correct:
+                        baseline_correct_actions += 1
+
+                    if action_correct and not baseline_correct:
+                        pruned_beats_baseline += 1
+                    elif baseline_correct and not action_correct:
+                        baseline_beats_pruned += 1
+
+                    action_shift = baseline_action != model_action
+                    if action_shift:
+                        action_shift_count += 1
+
                     # --- Kept Keys Comparison (Jaccard) ---
-                    # Ensure expected_kept_keys is treated as a string before splitting
                     expected_keys = set(str(row.get('expected_kept_keys', '')).split(','))
-                    expected_keys.discard('') # Remove empty string if split results in one
+                    expected_keys.discard('')
                     model_keys_raw = output.get('kept_context_keys', [])
                     model_keys = set(model_keys_raw) if isinstance(model_keys_raw, list) else set()
-        
+
                     intersection = len(expected_keys.intersection(model_keys))
                     union = len(expected_keys.union(model_keys))
                     jaccard_score = intersection / union if union > 0 else 0
                     key_scores.append(jaccard_score)
-        
+
                     results_data.append({
                         "Question": row['new_question'],
                         "Expected Action": expected_action,
                         "Model Action": model_action,
+                        "Baseline Action": baseline_action,
                         "Action Correct": "✅" if action_correct else "❌",
+                        "Baseline Correct": "✅" if baseline_correct else "❌",
+                        "Action Delta": "Changed" if action_shift else "Same",
                         "Expected Keys": ", ".join(sorted(expected_keys)),
                         "Model Keys": ", ".join(sorted(model_keys)),
-                        "Key Score (Jaccard)": jaccard_score
+                        "Key Score (Jaccard)": jaccard_score,
+                        "Pruned Correct Bool": action_correct,
+                        "Baseline Correct Bool": baseline_correct,
+                        "Action Shift Bool": action_shift,
+                        "Pruned Beats Baseline": action_correct and not baseline_correct,
+                        "Baseline Beats Pruned": baseline_correct and not action_correct,
                     })
-        
+
                 action_accuracy = correct_actions / len(pruning_df) if len(pruning_df) > 0 else 0
+                baseline_accuracy = baseline_correct_actions / len(pruning_df) if len(pruning_df) > 0 else 0
+                action_shift_rate = action_shift_count / len(pruning_df) if len(pruning_df) > 0 else 0
+                avg_key_score = sum(key_scores) / len(key_scores) if key_scores else 0
                 avg_key_score = sum(key_scores) / len(key_scores) if key_scores else 0
         
                 # Create results DataFrame
@@ -732,6 +1648,7 @@ def render_test4_tab(tab) -> None:
                 # Use organized rendering
                 st.subheader("📊 Test Results")
                 render_kpi_metrics(results_df, test_type="pruning")
+                st.caption(f"Pruned beat baseline in {pruned_beats_baseline} case(s); baseline beat pruned in {baseline_beats_pruned}.")
         
                 st.divider()
                 st.subheader("📊 Pruning Analysis Visualizations")
@@ -824,13 +1741,28 @@ def render_test4_tab(tab) -> None:
                         st.plotly_chart(fig_stacked, use_container_width=True, config=PLOTLY_CONFIG)
                     else:
                         st.info("No key data available for visualization.")
-        
+
+                if 'Pruned Correct Bool' in results_df.columns and 'Baseline Correct Bool' in results_df.columns:
+                    st.subheader("Pruned vs. Baseline Accuracy by Action")
+                    comparison_df = results_df.groupby('Expected Action')[['Pruned Correct Bool', 'Baseline Correct Bool']].mean().reset_index()
+                    fig_compare = go.Figure(data=[
+                        go.Bar(name='Pruned', x=comparison_df['Expected Action'], y=comparison_df['Pruned Correct Bool']),
+                        go.Bar(name='Baseline', x=comparison_df['Expected Action'], y=comparison_df['Baseline Correct Bool'])
+                    ])
+                    fig_compare.update_layout(barmode='group', yaxis_title='Accuracy', xaxis_title='Expected Action', yaxis_tickformat='.0%')
+                    st.plotly_chart(fig_compare, use_container_width=True, config=PLOTLY_CONFIG)
+
                 st.divider()
         
                 # Show detailed results in organized format
                 with st.expander("📋 Detailed Row-by-Row Results", expanded=True):
                     # Truncate long rationale columns for display
                     display_df = results_df.copy()
+                    drop_columns = [
+                        "Pruned Correct Bool", "Baseline Correct Bool", "Action Shift Bool",
+                        "Pruned Beats Baseline", "Baseline Beats Pruned",
+                    ]
+                    display_df = display_df.drop(columns=drop_columns, errors="ignore")
                     rationale_cols = [c for c in display_df.columns if c.endswith("_rationale") or c == "judge_rationale"]
                     for col in rationale_cols:
                         if col in display_df.columns:
@@ -840,7 +1772,7 @@ def render_test4_tab(tab) -> None:
                     # Download option
                     csv = results_df.to_csv(index=False).encode('utf-8')
                     st.download_button(
-                        "⬇️ Download Pruning Results",
+                        "📥 Download Pruning Results",
                         data=csv,
                         file_name="test4_pruning_results.csv",
                         mime="text/csv",
@@ -850,9 +1782,24 @@ def render_test4_tab(tab) -> None:
                 # --- Save results at the end of the test run ---
                 save_results_df(results_df, "Test 4", len(pruning_df), is_pruning_test=True)
                 # --- PATCH 7: Structured Summary Call for Test 4 ---
-                report_text = f"Test 4 Pruning Results (N={len(pruning_df)}): Action Accuracy: {action_accuracy:.2%}, Avg Key Similarity: {avg_key_score:.3f}. Focus analysis on context key pruning efficiency."
+                differences_sample = []
+                if "Action Shift Bool" in results_df.columns:
+                    differences_sample = results_df[results_df["Action Shift Bool"]][['Question', 'Expected Action', 'Model Action', 'Baseline Action']].head(10).to_dict('records')
+                pruning_artifact = json.dumps({
+                    "pruned_accuracy": action_accuracy,
+                    "baseline_accuracy": baseline_accuracy,
+                    "action_shift_rate": action_shift_rate,
+                    "avg_key_similarity": avg_key_score,
+                    "pruned_beats_baseline": pruned_beats_baseline,
+                    "baseline_beats_pruned": baseline_beats_pruned,
+                    "differences_sample": differences_sample,
+                }, indent=2)
+                report_text = (
+                    f"Test 4 Pruning Results (N={len(pruning_df)}): Pruned Accuracy {action_accuracy:.2%} vs Baseline {baseline_accuracy:.2%}; "
+                    f"Action Shift Rate {action_shift_rate:.2%}; Avg Key Similarity {avg_key_score:.3f}. Focus analysis on context key pruning efficiency."
+                )
                 loop = asyncio.get_event_loop()
-                loop.run_until_complete(display_final_summary_for_test("Test 4 Quantitative Context Pruning", report_text, PRUNER_INSTRUCTIONS))
+                loop.run_until_complete(display_final_summary_for_test("Test 4 Quantitative Context Pruning", report_text, pruning_artifact))
                 # ----------------------------------------------------
         
         
@@ -870,42 +1817,271 @@ def render_test5_tab(tab) -> None:
         with tabs[5]:
             # Dashboard header
             render_test_flow_diagram(5, "Test 5: Unified Orchestrator (Three Modes)")
-        
+
+            # Add documentation popover
+            with st.popover("ℹ️ How Test 5 Works", help="Click to see test orchestration details"):
+                st.markdown("**Test 5: Unified Orchestrator with Multi-Agent Coordination**")
+                st.markdown("This test demonstrates a unified orchestrator that can handle three different execution modes with multiple coordination patterns.")
+
+                st.markdown("**Orchestration Flow:**")
+                st.code("""
+# 1. Auto-detect mode from goal
+mode = detect_mode(goal)  # inference, analysis, or research
+
+# 2. Select coordination pattern
+patterns = ["solo", "subagent", "multi_agent", "leaf_scaffold"]
+
+# 3. Execute based on mode
+if mode == "inference":
+    # Pattern matching, classification, prediction
+    for turn in range(max_turns):
+        prediction = await generate_prediction(context)
+        evaluation = await evaluate_prediction(prediction)
+        if converged(evaluation):
+            break
+        context = refine_context(evaluation)
+
+elif mode == "analysis":
+    # Computational analysis with code execution
+    plan = await plan_computational_analysis(goal)
+    code = await generate_analysis_code(plan)
+    results = await execute_code(code)
+    insights = await synthesize_insights(results)
+
+elif mode == "research":
+    # Multi-source information gathering
+    subtasks = await decompose_goal(goal)
+    results = await asyncio.gather(*[
+        execute_subtask(task) for task in subtasks
+    ])
+    synthesis = await synthesize_results(results)
+                """, language="python")
+
+                st.markdown("**Coordination Patterns:**")
+                st.code("""
+# Solo: Single agent execution
+result = await orchestrator.run_solo()
+
+# Subagent: Hierarchical delegation
+result = await orchestrator.run_with_subagents()
+
+# Multi-Agent: Peer consensus
+result = await orchestrator.run_with_multi_agent()
+
+# Leaf Scaffold: Supervisor + specialized agents
+result = await orchestrator.run_with_leaf_scaffold([
+    "web_researcher",
+    "code_executor",
+    "content_generator",
+    "validator"
+])
+                """, language="python")
+
+                st.markdown("---")
+                st.markdown("**Example Input:**")
+                st.code("""
+# Goal: "Analyze customer sentiment trends from Q4 2024 support tickets"
+
+# Auto-detected mode: "analysis" (computational analysis needed)
+# Selected pattern: "leaf_scaffold" (multiple specialized agents)
+                """, language="text")
+
+                st.markdown("**Example Output:**")
+                st.code("""
+# Task Decomposition:
+{
+  "mode": "analysis",
+  "pattern": "leaf_scaffold",
+  "subtasks": [
+    {
+      "id": "task_1",
+      "agent": "data_loader",
+      "description": "Load Q4 2024 support tickets from database",
+      "dependencies": []
+    },
+    {
+      "id": "task_2",
+      "agent": "sentiment_analyzer",
+      "description": "Analyze sentiment for each ticket",
+      "dependencies": ["task_1"]
+    },
+    {
+      "id": "task_3",
+      "agent": "trend_detector",
+      "description": "Identify temporal trends in sentiment",
+      "dependencies": ["task_2"]
+    },
+    {
+      "id": "task_4",
+      "agent": "visualizer",
+      "description": "Create trend visualizations",
+      "dependencies": ["task_3"]
+    },
+    {
+      "id": "task_5",
+      "agent": "synthesizer",
+      "description": "Generate insights and recommendations",
+      "dependencies": ["task_3", "task_4"]
+    }
+  ]
+}
+                """, language="json")
+
+                st.markdown("**Calculation Steps:**")
+                st.markdown("**Step 1: Mode Detection**")
+                st.code("""
+# Analyze goal keywords:
+Goal: "Analyze customer sentiment trends from Q4 2024 support tickets"
+
+Keywords detected:
+  - "Analyze" → suggests analysis mode
+  - "trends" → requires computational analysis
+  - "sentiment" → NLP analysis task
+  - "Q4 2024" → temporal analysis
+
+Mode Decision Tree:
+  Contains "classify" or "predict"? → NO
+  Contains "analyze" or "compute"? → YES → Mode: "analysis"
+  Contains "research" or "find"? → NO
+
+Selected Mode: "analysis"
+                """, language="text")
+
+                st.markdown("**Step 2: Pattern Selection**")
+                st.code("""
+# Evaluate coordination patterns:
+
+Solo:
+  - Single agent handles everything
+  - Complexity Score: HIGH (sentiment + trends + viz)
+  - Suitable: ✗ (too complex for solo)
+
+Subagent:
+  - Main agent delegates to helpers
+  - Complexity Score: HIGH
+  - Suitable: ✓ (possible but not optimal)
+
+Multi-Agent:
+  - Peer agents collaborate
+  - Complexity Score: HIGH
+  - Suitable: ✓ (good for parallel tasks)
+
+Leaf Scaffold:
+  - Supervisor + specialized agents
+  - Complexity Score: HIGH
+  - Suitable: ✓✓ (BEST - clear task hierarchy)
+
+Selected Pattern: "leaf_scaffold"
+Reason: Task has clear dependencies and needs specialized agents
+                """, language="text")
+
+                st.markdown("**Step 3: Execution Timeline**")
+                st.code("""
+Turn 1 (t=0.0s):
+  - Supervisor decomposes goal into 5 subtasks
+  - Assigns agents: data_loader, sentiment_analyzer,
+    trend_detector, visualizer, synthesizer
+
+Turn 2 (t=2.3s):
+  - data_loader executes task_1
+  - Loads 1,247 support tickets from Q4 2024
+  - Status: ✓ Complete
+
+Turn 3 (t=5.8s):
+  - sentiment_analyzer executes task_2 (depends on task_1)
+  - Analyzes sentiment for all 1,247 tickets
+  - Results: 62% positive, 28% neutral, 10% negative
+  - Status: ✓ Complete
+
+Turn 4 (t=8.1s):
+  - trend_detector executes task_3 (depends on task_2)
+  - Identifies weekly sentiment trends
+  - Finds: Sentiment declined in weeks 3-4 (holiday stress)
+  - Status: ✓ Complete
+
+Turn 5 (t=10.5s):
+  - visualizer executes task_4 (depends on task_3)
+  - Creates time-series plots and heatmaps
+  - Status: ✓ Complete
+
+Turn 6 (t=13.2s):
+  - synthesizer executes task_5 (depends on task_3, task_4)
+  - Generates insights and recommendations
+  - Status: ✓ Complete
+
+Convergence: All tasks complete, no errors
+Total Time: 13.2s
+                """, language="text")
+
+                st.markdown("**Step 4: Final Synthesis**")
+                st.code("""
+# Synthesizer output:
+{
+  "insights": [
+    "Overall Q4 sentiment: 62% positive (above target of 60%)",
+    "Sentiment dip in weeks 3-4 correlates with holiday rush",
+    "Recovery in week 5 after additional support staff added",
+    "Top positive drivers: fast response time, helpful agents",
+    "Top negative drivers: long wait times, shipping delays"
+  ],
+  "recommendations": [
+    "Increase staffing during holiday periods (weeks 3-4)",
+    "Implement proactive shipping delay notifications",
+    "Maintain current response time standards (< 2 hours)"
+  ],
+  "confidence": 0.89,
+  "data_quality": "high",
+  "sample_size": 1247
+}
+                """, language="json")
+
+                st.markdown("---")
+                st.markdown("**Expected Outputs:**")
+                st.markdown("- Task decomposition and execution plan")
+                st.markdown("- Agent coordination timeline")
+                st.markdown("- Convergence metrics and turn-by-turn progress")
+                st.markdown("- Final synthesis with confidence scores")
+
+            # Pricing information for orchestrator model
+            st.markdown("**💰 Orchestrator Model Pricing:**")
+            # The orchestrator uses Gemini 2.5 Flash by default
+            _display_model_pricing_badge_auto("google/gemini-2.5-flash", "Gemini 2.5 Flash")
+
             # Collapsible configuration section
             with st.expander("⚙️ Test Configuration", expanded=False):
                 st.markdown("""
                 **Architecture:** Unified orchestrator with three execution modes
-        
+
                 **Execution Modes:**
                 1. **🎯 Direct Inference:** Pattern matching (classification, prediction)
                    - Each turn: Generate → Evaluate → Analyze Failures → Refine
                    - Best for: Prediction tasks, classification, tool sequence prediction
                    - Example: "Predict tool sequences for user queries"
-        
+
                 2. **📊 Computational Analysis:** Statistics, simulations, optimization
                    - Uses code execution for computational tasks
                    - Best for: Data analysis, statistical computations, optimization
                    - Example: "Analyze performance metrics and compute statistics"
-        
+
                 3. **🔍 Research Tasks:** Multi-source information gathering
                    - Each turn: Decompose → Execute in Parallel → Synthesize
                    - Best for: Open-ended research, multi-source information gathering
                    - Example: "Research George Morgan, Symbolica AI, and their fundraising"
-        
+
                 **Features:**
                 - ✅ Auto-mode detection based on goal
                 - ✅ Parallel task execution (asyncio.gather)
                 - ✅ Smart caching with deduplication
                 - ✅ Convergence detection (mode-specific)
-        
+
                 **Budget Modes:**
                 - **Fixed Turns:** Run exactly N iterations (predictable, simpler)
                 - **Cost/Token Limit:** Run until budget exhausted or converged (efficient, dynamic)
-        
+
                 **Stopping Conditions:**
                 - Turn mode: Max turns reached OR no improvement in last 3 turns
                 - Cost mode: Budget exhausted OR marginal value < 1%
-        
+
                 **Execution Model:** Gemini 2.5 Flash with Code Execution
                 **Test Data:** Tool/Agent Sequence dataset (for inference mode)
                 **Evaluation Metric:** Exact sequence match accuracy (inference mode)
@@ -935,7 +2111,7 @@ def render_test5_tab(tab) -> None:
                     st.rerun()
         
             with col2:
-                if st.button("🔒 Demo 2: Cybersecurity (Phishing Analysis)", use_container_width=True, help="Threat detection with reasoning, risk scoring, and policy enforcement"):
+                if st.button("🔑 Demo 2: Cybersecurity (Phishing Analysis)", use_container_width=True, help="Threat detection with reasoning, risk scoring, and policy enforcement"):
                     st.session_state['demo_scenario'] = 'cybersecurity'
                     st.session_state['demo_goal'] = CYBERSECURITY_GOAL_PROMPT
                     st.session_state['demo_agents'] = ["web_researcher", "validator", "code_executor", "content_generator"]
@@ -1012,7 +2188,7 @@ def render_test5_tab(tab) -> None:
                 format_func=lambda x: {
                     "auto": "🤖 Auto-detect",
                     "solo": "👤 Solo Agent",
-                    "subagent": "🏗️ Subagent Orchestration",
+                    "subagent": "🗂️ Subagent Orchestration",
                     "multi_agent": "👥 Multi-Agent Collaboration",
                     "leaf_scaffold": "🌳 Leaf Agent Scaffold"
                 }.get(x, x),
@@ -1032,11 +2208,11 @@ def render_test5_tab(tab) -> None:
                 st.caption("Best for: Simple, straightforward tasks")
         
             elif coordination_option == "subagent":
-                st.info("🏗️ **Subagent Orchestration**: Hierarchical delegation (Decomposer → Generator → Evaluator → Analyzer → Synthesizer)")
+                st.info("🗂️ **Subagent Orchestration**: Hierarchical delegation (Decomposer → Generator → Evaluator → Analyzer → Synthesizer)")
                 st.caption("Best for: Complex tasks requiring specialized expertise at each stage")
         
                 # Optional: Show subagent workflow diagram
-                with st.expander("🏗️ Subagent Workflow Details", expanded=False):
+                with st.expander("🗂️ Subagent Workflow Details", expanded=False):
                     st.markdown("""
                     **Hierarchical Pipeline**:
                     1. **Decomposer** → Breaks goal into subtasks
@@ -1091,7 +2267,7 @@ def render_test5_tab(tab) -> None:
                     - Each agent reviews proposals from other agents
                     - Provides constructive feedback and identifies concerns
         
-                    **Round 3: Consensus Building** 🤝
+                    **Round 3: Consensus Building** 🤝
                     - Synthesizer combines all proposals and reviews
                     - Creates unified solution incorporating best ideas
         
@@ -1124,7 +2300,7 @@ def render_test5_tab(tab) -> None:
                 st.caption("✨ Best for: Complex tasks requiring multiple specialized capabilities (research, computation, writing, validation)")
         
                 # Show architecture diagram
-                with st.expander("🏗️ Architecture Overview", expanded=True):
+                with st.expander("🗂️ Architecture Overview", expanded=True):
                     st.markdown("""
                     **Hierarchical Structure**:
         
@@ -1426,7 +2602,7 @@ def render_test5_tab(tab) -> None:
                 button_label = "👥 Run Multi-Agent Collaboration"
             elif coordination_option == "subagent":
                 st.markdown("### 🎬 Run Subagent Orchestration")
-                button_label = "🏗️ Run Subagent Orchestration"
+                button_label = "🗂️ Run Subagent Orchestration"
             elif coordination_option == "leaf_scaffold":
                 st.markdown("### 🎬 Run Leaf Agent Scaffold")
                 st.info("💡 **Tip**: After running, switch to **Tab 6 (Agent Dashboard)** to see the hierarchical execution flow!")
@@ -1539,7 +2715,7 @@ def render_test5_tab(tab) -> None:
                         results = asyncio.run(orchestrator.run())
         
                         # Display coordination pattern used
-                        st.info(f"🎯 Mode: **{orchestrator.mode.upper()}** | 🤝 Pattern: **{orchestrator.coordination_pattern.upper()}**")
+                        st.info(f"🎯 Mode: **{orchestrator.mode.upper()}** | 🤝 Pattern: **{orchestrator.coordination_pattern.upper()}**")
         
                         # Handle different result types based on coordination pattern and mode
                         if orchestrator.coordination_pattern == "multi_agent":
@@ -1651,7 +2827,34 @@ def render_test5_tab(tab) -> None:
                             if best_code:
                                 st.subheader("Best Code Generated")
                                 st.code(best_code, language='python')
-        
+
+                            # Prompt Evolution Comparison
+                            if hasattr(orchestrator, 'prompt_history') and orchestrator.prompt_history:
+                                st.markdown("### 📝 Prompt Evolution")
+
+                                # Show each refinement iteration
+                                for idx, evolution in enumerate(orchestrator.prompt_history):
+                                    turn = evolution['turn']
+                                    prev_prompt = evolution['previous_prompt']
+                                    new_prompt = evolution['new_prompt']
+                                    prev_acc = evolution['previous_accuracy']
+                                    new_acc = evolution['new_accuracy']
+                                    improvement = evolution['improvement']
+
+                                    with st.expander(f"Turn {turn}: {prev_acc:.3f} → {new_acc:.3f} (+{improvement:.3f})", expanded=(idx == len(orchestrator.prompt_history) - 1)):
+                                        col1, col2 = st.columns(2)
+
+                                        with col1:
+                                            st.markdown(f"**Previous Prompt** (Accuracy: {prev_acc:.3f})")
+                                            if prev_prompt:
+                                                st.code(prev_prompt[:1000] + ("..." if len(prev_prompt) > 1000 else ""), language='python')
+                                            else:
+                                                st.info("Initial iteration - no previous prompt")
+
+                                        with col2:
+                                            st.markdown(f"**Refined Prompt** (Accuracy: {new_acc:.3f})")
+                                            st.code(new_prompt[:1000] + ("..." if len(new_prompt) > 1000 else ""), language='python')
+
                             # Turn-by-turn breakdown
                             st.subheader("Turn-by-Turn Progress")
         
@@ -1877,4 +3080,7 @@ def render_test5_tab(tab) -> None:
                         st.exception(e)
         
         
+
+
+
 

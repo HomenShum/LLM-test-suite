@@ -284,6 +284,45 @@ def render_test6_tab(tab) -> None:
         - **Mode B**: General Visual Comparison - Compare visual LLMs on any image dataset
         """)
 
+        # Add main documentation popover
+        with st.popover("ℹ️ How Test 6 Works", help="Click to see test orchestration details"):
+            st.markdown("**Test 6: Visual LLM Model Comparison & Artifact Detection**")
+            st.markdown("This test evaluates multiple visual LLM models on image analysis tasks with two distinct modes.")
+
+            st.markdown("**Overall Orchestration:**")
+            st.code("""
+# 1. Select visual LLM models
+selected_models = ["gpt5", "gemini", "claude", "llama"]
+
+# 2. Choose mode (A or B)
+if mode == "Mode A":
+    # VR Avatar Validation
+    df = load_vr_avatar_csv()
+    for avatar in df:
+        results = await analyze_image_multi_model(
+            image_path=avatar.screenshot_path,
+            prompt=build_vr_avatar_analysis_prompt(),
+            selected_models=selected_models
+        )
+        compare_with_human_ratings(results, avatar.human_ratings)
+
+elif mode == "Mode B":
+    # General Visual Comparison
+    images = collect_images_from_web_search(query)
+    for image in images:
+        results = await analyze_image_multi_model(
+            image_path=image.path,
+            prompt=build_general_visual_analysis_prompt(),
+            selected_models=selected_models
+        )
+
+# 3. Advanced analysis (both modes)
+computational_analysis = await plan_computational_analysis(results)
+evaluation = await evaluate_visual_llm_performance(results)
+            """, language="python")
+
+            st.markdown("**See mode-specific popovers below for detailed workflows.**")
+
         st.divider()
 
         # Mode selector
@@ -335,6 +374,220 @@ def render_mode_a_vr_avatar(selected_models: List[str]) -> None:
     3. Compare LLM ratings with human ratings
     4. Generate visualizations and bug prioritization report
     """)
+
+    # Add Mode A specific documentation popover
+    with st.popover("📖 Mode A: Detailed Orchestration", help="Click for Mode A workflow details"):
+        st.markdown("**Mode A: VR Avatar Validation Workflow**")
+        st.markdown("Compares visual LLM artifact detection with human ratings for VR avatars.")
+
+        st.markdown("**Step-by-Step Orchestration:**")
+        st.code("""
+# 1. Load VR avatar test data from CSV
+df = pd.read_csv(uploaded_file)
+# Expected columns:
+# - avatar_id, video_path, screenshot_path
+# - human_movement_rating, human_visual_rating, human_comfort_rating
+# - bug_description
+
+# 2. Configure artifact detection
+artifact_types = [
+    "red lines in eyes",
+    "finger movement issues",
+    "feet not moving",
+    "avatar distortions",
+    "clothing distortions during movement"
+]
+
+# 3. Build specialized prompt
+prompt = build_vr_avatar_analysis_prompt(artifact_types)
+
+# 4. Analyze each avatar with all selected models
+for avatar in df:
+    model_results = await analyze_image_multi_model(
+        image_path=avatar.screenshot_path,
+        prompt=prompt,
+        selected_models=["gpt5", "gemini", "claude"]
+    )
+
+    # Each model returns:
+    # - detected_artifacts: List[str]
+    # - severity_ratings: Dict[str, float]
+    # - confidence_score: float
+    # - rationale: str
+
+# 5. Compare with human ratings
+for result in results:
+    correlation = compare_ratings(
+        llm_ratings=result.severity_ratings,
+        human_ratings=avatar.human_ratings
+    )
+
+# 6. Generate visualizations
+- Rating comparison scatter plots
+- Model agreement heatmaps
+- Bug prioritization report
+        """, language="python")
+
+        st.markdown("**Key Functions:**")
+        st.code("""
+# Specialized VR avatar prompt builder
+def build_vr_avatar_analysis_prompt(artifact_types):
+    return f'''
+    Analyze this VR avatar recording for the following artifacts:
+    {', '.join(artifact_types)}
+
+    For each artifact:
+    1. Detect presence (yes/no)
+    2. Rate severity (0-5 scale)
+    3. Provide confidence score
+    4. Explain your reasoning
+    '''
+
+# Multi-model analysis
+async def analyze_image_multi_model(
+    image_path, prompt, selected_models
+):
+    tasks = [
+        analyze_with_model(image_path, prompt, model)
+        for model in selected_models
+    ]
+    return await asyncio.gather(*tasks)
+        """, language="python")
+
+        st.markdown("**Expected CSV Format:**")
+        st.code("""
+avatar_id,screenshot_path,human_movement_rating,human_visual_rating,human_comfort_rating,bug_description
+avatar_001,/path/img1.png,4.5,4.0,4.2,"Minor finger clipping"
+avatar_002,/path/img2.png,3.0,2.5,3.5,"Red lines in eyes, feet not moving"
+        """, language="text")
+
+        st.markdown("---")
+        st.markdown("**Example Input:**")
+        st.code("""
+# CSV Row:
+avatar_id: "avatar_003"
+screenshot_path: "screenshots/avatar_003_walk.png"
+human_movement_rating: 3.5
+human_visual_rating: 2.0
+human_comfort_rating: 3.0
+bug_description: "Eyes have red lines, arms clip through body during walk"
+        """, language="text")
+
+        st.markdown("**Example Output:**")
+        st.code("""
+# Multi-model analysis results:
+{
+  "avatar_id": "avatar_003",
+  "image_path": "screenshots/avatar_003_walk.png",
+  "human_ratings": {
+    "movement": 3.5,
+    "visual": 2.0,
+    "comfort": 3.0
+  },
+  "model_results": {
+    "gpt-5-nano": {
+      "detected_artifacts": [
+        "Red lines visible in eye area",
+        "Arm geometry clips through torso during animation"
+      ],
+      "movement_rating": 3.0,
+      "visual_rating": 2.5,
+      "comfort_rating": 3.0,
+      "confidence": 0.85,
+      "rationale": "Clear visual artifacts in eyes reduce visual
+        quality. Arm clipping is noticeable but doesn't severely
+        impact movement fluidity."
+    },
+    "gemini-2.5-flash": {
+      "detected_artifacts": [
+        "Eye rendering artifacts (red lines)",
+        "Mesh penetration in upper body"
+      ],
+      "movement_rating": 3.5,
+      "visual_rating": 2.0,
+      "comfort_rating": 2.5,
+      "confidence": 0.92,
+      "rationale": "Eye artifacts are prominent and distracting.
+        Arm clipping may cause discomfort in VR."
+    }
+  }
+}
+        """, language="json")
+
+        st.markdown("**Calculation Steps:**")
+        st.markdown("**Step 1: Artifact Detection Agreement**")
+        st.code("""
+# Compare detected artifacts across models:
+GPT-5-nano artifacts:
+  - "Red lines visible in eye area"
+  - "Arm geometry clips through torso during animation"
+
+Gemini-2.5-flash artifacts:
+  - "Eye rendering artifacts (red lines)"
+  - "Mesh penetration in upper body"
+
+Semantic matching:
+  "Red lines in eye area" ≈ "Eye rendering artifacts" → MATCH
+  "Arm clips through torso" ≈ "Mesh penetration" → MATCH
+
+Agreement Score: 2/2 = 100% (both models detected same issues)
+        """, language="text")
+
+        st.markdown("**Step 2: Rating Correlation**")
+        st.code("""
+# Compare LLM ratings with human ratings:
+
+Movement Rating:
+  Human:  3.5
+  GPT-5:  3.0  (diff: -0.5)
+  Gemini: 3.5  (diff:  0.0) ✓ Perfect match
+
+Visual Rating:
+  Human:  2.0
+  GPT-5:  2.5  (diff: +0.5)
+  Gemini: 2.0  (diff:  0.0) ✓ Perfect match
+
+Comfort Rating:
+  Human:  3.0
+  GPT-5:  3.0  (diff:  0.0) ✓ Perfect match
+  Gemini: 2.5  (diff: -0.5)
+
+# Calculate correlation (Pearson's r):
+Human ratings:  [3.5, 2.0, 3.0]
+GPT-5 ratings:  [3.0, 2.5, 3.0]
+Gemini ratings: [3.5, 2.0, 2.5]
+
+Correlation (GPT-5 vs Human):   r = 0.87
+Correlation (Gemini vs Human):  r = 0.95  ← Better correlation
+        """, language="text")
+
+        st.markdown("**Step 3: Bug Prioritization**")
+        st.code("""
+# Prioritize bugs by severity and model confidence:
+
+Bug 1: "Red lines in eyes"
+  - Detected by: 2/2 models (100% agreement)
+  - Avg confidence: (0.85 + 0.92) / 2 = 0.885
+  - Impact on visual rating: 2.0 (LOW)
+  - Priority Score: 0.885 × (5.0 - 2.0) = 2.66  ← HIGH PRIORITY
+
+Bug 2: "Arm clipping through body"
+  - Detected by: 2/2 models (100% agreement)
+  - Avg confidence: (0.85 + 0.92) / 2 = 0.885
+  - Impact on movement rating: 3.5 (MEDIUM)
+  - Priority Score: 0.885 × (5.0 - 3.5) = 1.33  ← MEDIUM PRIORITY
+
+Prioritized Bug List:
+  1. Red lines in eyes (Priority: 2.66)
+  2. Arm clipping (Priority: 1.33)
+        """, language="text")
+
+        st.markdown("---")
+        st.markdown("**Expected Outputs:**")
+        st.markdown("- LLM vs. Human rating correlation analysis")
+        st.markdown("- Model agreement on artifact detection")
+        st.markdown("- Bug prioritization based on severity and confidence")
+        st.markdown("- Downloadable results with all ratings")
 
     # CSV upload
     st.markdown("### 📁 Upload Test Data")
@@ -981,6 +1234,293 @@ def render_mode_b_general_visual(selected_models: List[str]) -> None:
     4. Use LLM judge for meta-analysis
     5. Interactive Q&A on results
     """)
+
+    # Add Mode B specific documentation popover
+    with st.popover("📖 Mode B: Detailed Orchestration", help="Click for Mode B workflow details"):
+        st.markdown("**Mode B: General Visual LLM Comparison Framework**")
+        st.markdown("Compare visual LLMs on any image dataset with flexible analysis tasks.")
+
+        st.markdown("**Step-by-Step Orchestration:**")
+        st.code("""
+# 1. Image Collection (two options)
+
+# Option A: Web search collection
+images = await search_and_download_images(
+    query="red pandas in snow",
+    num_images=20,
+    cache_preset="red_pandas"
+)
+
+# Option B: Upload custom dataset
+images = load_uploaded_images(uploaded_files)
+
+# 2. Define analysis task
+task_description = '''
+Analyze each image and provide:
+1. Object detection (what objects are present)
+2. Scene classification (indoor/outdoor, setting)
+3. Anomaly detection (anything unusual)
+4. Dominant colors and composition
+'''
+
+# 3. Build general analysis prompt
+prompt = build_general_visual_analysis_prompt(task_description)
+
+# 4. Analyze all images with all models
+results = []
+for image in images:
+    model_results = await analyze_image_multi_model(
+        image_path=image.path,
+        prompt=prompt,
+        selected_models=selected_models
+    )
+    results.append({
+        "image_name": image.name,
+        "image_path": image.path,
+        "model_results": model_results
+    })
+
+# 5. Advanced Analysis Pipeline
+
+# 5a. Computational Analysis (optional)
+computational_plan = await plan_computational_analysis(
+    visual_llm_outputs=results,
+    task_description=task_description
+)
+code = generate_analysis_code(computational_plan)
+computational_results = execute_code(code)
+
+# 5b. Model Evaluation
+evaluation = await evaluate_visual_llm_performance(
+    visual_llm_outputs=results,
+    task_description=task_description,
+    computational_results=computational_results,
+    judge_model="gpt-5-nano"
+)
+
+# 6. Interactive Q&A
+while user_has_questions:
+    answer = await answer_followup_question(
+        question=user_question,
+        visual_llm_outputs=results,
+        computational_results=computational_results,
+        evaluation_results=evaluation,
+        conversation_history=history
+    )
+    # Automatically displays relevant images
+        """, language="python")
+
+        st.markdown("**Key Functions:**")
+        st.code("""
+# Image collection with caching
+async def search_and_download_images(query, num_images, cache_preset):
+    # Uses Linkup API for web search
+    # Caches results for reuse
+    # Returns list of image paths
+
+# Computational analysis planning
+async def plan_computational_analysis(visual_llm_outputs, task_description):
+    # LLM generates Python code to analyze results
+    # Examples: color analysis, object frequency, model agreement
+
+# Model evaluation with LLM judge
+async def evaluate_visual_llm_performance(
+    visual_llm_outputs, task_description, judge_model
+):
+    # Judge evaluates each model's performance
+    # Returns rankings, scores, and rationale
+
+# Interactive Q&A with image context
+async def answer_followup_question(question, visual_llm_outputs, ...):
+    # LLM selects relevant images for the question
+    # Provides answer with image references
+    # UI automatically displays referenced images
+        """, language="python")
+
+        st.markdown("---")
+        st.markdown("**Example Input:**")
+        st.code("""
+# Image Collection:
+images = [
+  "urban_scene_001.jpg",  # City street with cars and pedestrians
+  "nature_002.jpg",       # Forest landscape
+  "product_003.jpg"       # Product photo on white background
+]
+
+# Analysis Task:
+"Detect all objects, classify the scene type, and identify
+ the dominant colors in each image"
+
+# Selected Models:
+["gpt-5-nano", "gemini-2.5-flash-lite", "claude-3.5-sonnet"]
+        """, language="text")
+
+        st.markdown("**Example Output:**")
+        st.code("""
+# Multi-model analysis for "urban_scene_001.jpg":
+{
+  "image_name": "urban_scene_001.jpg",
+  "model_results": {
+    "gpt-5-nano": {
+      "detected_objects": ["car", "pedestrian", "traffic_light",
+                          "building", "street_sign"],
+      "scene_classification": "urban_street",
+      "dominant_colors": ["#4A4A4A", "#FFFFFF", "#FF0000"],
+      "confidence": 0.92,
+      "rationale": "Clear urban environment with multiple vehicles
+        and pedestrians. Traffic infrastructure visible."
+    },
+    "gemini-2.5-flash-lite": {
+      "detected_objects": ["vehicle", "person", "traffic_signal",
+                          "building", "road"],
+      "scene_classification": "city_street",
+      "dominant_colors": ["#3C3C3C", "#F5F5F5", "#E63946"],
+      "confidence": 0.88,
+      "rationale": "Typical city street scene with traffic and
+        pedestrians. Urban architecture in background."
+    },
+    "claude-3.5-sonnet": {
+      "detected_objects": ["car", "person", "traffic_light",
+                          "building", "sidewalk"],
+      "scene_classification": "urban_street",
+      "dominant_colors": ["#424242", "#FAFAFA", "#D32F2F"],
+      "confidence": 0.90,
+      "rationale": "Urban street environment with active traffic
+        and pedestrian activity."
+    }
+  }
+}
+        """, language="json")
+
+        st.markdown("**Calculation Steps:**")
+        st.markdown("**Step 1: Object Detection Agreement**")
+        st.code("""
+# Normalize and compare detected objects:
+GPT-5:    ["car", "pedestrian", "traffic_light", "building", "street_sign"]
+Gemini:   ["vehicle", "person", "traffic_signal", "building", "road"]
+Claude:   ["car", "person", "traffic_light", "building", "sidewalk"]
+
+# Semantic matching:
+"car" ≈ "vehicle" ≈ "car" → 3/3 models agree
+"pedestrian" ≈ "person" ≈ "person" → 3/3 models agree
+"traffic_light" ≈ "traffic_signal" ≈ "traffic_light" → 3/3 models agree
+"building" = "building" = "building" → 3/3 models agree
+"street_sign" vs "road" vs "sidewalk" → 0/3 agree (different objects)
+
+Object Agreement Score: 4/5 = 80%
+        """, language="text")
+
+        st.markdown("**Step 2: Computational Analysis**")
+        st.code("""
+# LLM generates Python code to analyze all results:
+import pandas as pd
+from collections import Counter
+
+# Extract all detected objects across all images
+all_objects = []
+for result in visual_llm_outputs:
+    for model_result in result['model_results'].values():
+        all_objects.extend(model_result['detected_objects'])
+
+# Frequency analysis
+object_freq = Counter(all_objects)
+top_10 = object_freq.most_common(10)
+
+# Results:
+┌─────────────────┬───────────┐
+│ Object          │ Frequency │
+├─────────────────┼───────────┤
+│ building        │ 45        │
+│ person/pedestrian│ 38        │
+│ car/vehicle     │ 35        │
+│ tree            │ 28        │
+│ traffic_light   │ 22        │
+│ road            │ 20        │
+│ sky             │ 18        │
+│ sidewalk        │ 15        │
+│ sign            │ 12        │
+│ window          │ 10        │
+└─────────────────┴───────────┘
+
+# Color analysis
+avg_dominant_colors = calculate_color_distribution(all_results)
+# Most common: Grays (#4A4A4A), Whites (#FFFFFF), Blues (#1E88E5)
+        """, language="python")
+
+        st.markdown("**Step 3: Model Evaluation**")
+        st.code("""
+# LLM judge evaluates each model:
+{
+  "best_model": "gpt-5-nano",
+  "rankings": [
+    {
+      "model": "gpt-5-nano",
+      "score": 92,
+      "strengths": [
+        "Highest object detection accuracy",
+        "Most detailed rationales",
+        "Consistent confidence calibration"
+      ]
+    },
+    {
+      "model": "claude-3.5-sonnet",
+      "score": 88,
+      "strengths": [
+        "Good scene classification",
+        "Balanced confidence scores",
+        "Clear explanations"
+      ]
+    },
+    {
+      "model": "gemini-2.5-flash-lite",
+      "score": 85,
+      "strengths": [
+        "Fast inference",
+        "Good color detection",
+        "Reasonable accuracy"
+      ]
+    }
+  ],
+  "evaluation_criteria": {
+    "accuracy": "Object detection correctness",
+    "consistency": "Agreement with other models",
+    "confidence_calibration": "Confidence matches accuracy",
+    "detail": "Rationale completeness"
+  }
+}
+        """, language="json")
+
+        st.markdown("**Step 4: Interactive Q&A Example**")
+        st.code("""
+# User Question: "Which images contain traffic lights?"
+
+# LLM selects relevant images:
+relevant_images = [
+  "urban_scene_001.jpg",  # All 3 models detected traffic_light
+  "urban_scene_005.jpg"   # 2/3 models detected traffic_signal
+]
+
+# Answer:
+"Based on the analysis, 2 images contain traffic lights:
+
+1. **urban_scene_001.jpg**: All three models (GPT-5, Gemini,
+   Claude) detected traffic lights with high confidence (avg 0.90).
+
+2. **urban_scene_005.jpg**: Two models (GPT-5 and Claude) detected
+   traffic signals with moderate confidence (avg 0.75).
+
+The images are displayed below for your reference."
+
+# UI automatically shows these images in expanders
+        """, language="text")
+
+        st.markdown("---")
+        st.markdown("**Expected Outputs:**")
+        st.markdown("- Multi-model analysis results for all images")
+        st.markdown("- Computational analysis (color distributions, object frequencies, etc.)")
+        st.markdown("- Model performance evaluation and rankings")
+        st.markdown("- Interactive Q&A with automatic image display")
+        st.markdown("- Downloadable results in JSON/CSV format")
 
     if 'test6_custom_curated_images' not in st.session_state:
         st.session_state.test6_custom_curated_images = []

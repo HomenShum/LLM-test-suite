@@ -149,13 +149,22 @@ SKELETON_COLUMNS = [
     "query",
     "classification",
     "classification_result_openrouter_mistral",
-    "confidence_openrouter_mistral",
+    "classification_result_openrouter_mistral_rationale",
+    "classification_result_openrouter_mistral_confidence",
+    "probabilities_openrouter_mistral_raw",
+    "probabilities_openrouter_mistral_calibrated",
     "latency_openrouter_mistral",
     "classification_result_openai",
-    "confidence_openai",
+    "classification_result_openai_rationale",
+    "classification_result_openai_confidence",
+    "probabilities_openai_raw",
+    "probabilities_openai_calibrated",
     "latency_openai",
     "classification_result_third",
-    "confidence_third",
+    "classification_result_third_rationale",
+    "classification_result_third_confidence",
+    "probabilities_third_raw",
+    "probabilities_third_calibrated",
     "latency_third",
 ]
 
@@ -210,8 +219,8 @@ CANON_MAP = {
 
 TEST_FLOWS = {
     1: "📊 Load Data → 🤖 Classify (2 Models) → 📈 Evaluate F1/Latency → ❌ Error Analysis",
-    2: "📊 Load Data → 🤖 Classify (3 Models) → ⚖️ Weighted Ensemble → 📈 Evaluate Performance",
-    3: "📊 Load Data → 🤖 Classify (3 Models) → ⚖️ Weighted Scores → 👨‍⚖️ LLM Judge → 📈 Evaluate",
+    2: "📊 Load Data → 🔍 Classify (3 Models) → ⚖️ Weighted Ensemble → 📈 Evaluate Performance",
+    3: "📊 Load Data → 🔍 Classify (3 Models) → ⚖️ Weighted Scores → 👨‍⚖️ LLM Judge → 📈 Evaluate",
     4: "📊 Load Context → ✂️ Prune Context → 🎯 Predict Action → 📊 Measure Accuracy",
     5: "🎯 Goal → 🧩 Decompose → 📊 Prioritize → 🔄 Execute → ✅ Verify → 📚 Index → 🔁 Converge"
 }

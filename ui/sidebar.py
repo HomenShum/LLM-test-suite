@@ -1,4 +1,4 @@
-"""Sidebar renderers extracted from the main app."""
+﻿"""Sidebar renderers extracted from the main app."""
 
 from __future__ import annotations
 
@@ -219,12 +219,19 @@ def render_primary_sidebar() -> None:
         
             st.divider()
             st.subheader("Third Model (Test 2/3)")
-            THIRD_KIND = st.selectbox("Third model kind", ["None", "OpenRouter", "OpenAI"], index=["None","OpenRouter","OpenAI"].index(THIRD_KIND if THIRD_KIND in ["None","OpenRouter","OpenAI"] else "None"))
+            third_kind_options = ["None", "OpenRouter", "OpenAI"]
+            default_third_kind = THIRD_KIND if THIRD_KIND in third_kind_options else "OpenAI"
+            THIRD_KIND = st.selectbox("Third model kind", third_kind_options, index=third_kind_options.index(default_third_kind))
             if THIRD_KIND == "OpenRouter":
-                THIRD_MODEL = st.selectbox("Third model (OpenRouter)", options=_openrouter_model_ids, format_func=format_model_option, index=0, key="openrouter_third_select")
+                default_third_index = _openrouter_model_ids.index(THIRD_MODEL) if THIRD_MODEL in _openrouter_model_ids else 0
+                THIRD_MODEL = st.selectbox("Third model (OpenRouter)", options=_openrouter_model_ids, format_func=format_model_option, index=default_third_index, key="openrouter_third_select")
             elif THIRD_KIND == "OpenAI":
-                THIRD_MODEL = st.selectbox("Third model (OpenAI)", options=_openai_model_ids, format_func=format_model_option, index=0, key="openai_third_select")
-            else: THIRD_MODEL = ""
+                default_openai_index = _openai_model_ids.index(THIRD_MODEL) if THIRD_MODEL in _openai_model_ids else 0
+                THIRD_MODEL = st.selectbox("Third model (OpenAI)", options=_openai_model_ids, format_func=format_model_option, index=default_openai_index, key="openai_third_select")
+            else:
+                THIRD_MODEL = ""
+            st.session_state['third_model_kind'] = THIRD_KIND
+            st.session_state['third_model'] = THIRD_MODEL
             st.divider()
             st.subheader("DataFrame Controls")
             if st.button("Clear results"):
@@ -300,4 +307,5 @@ def render_primary_sidebar() -> None:
                 st.rerun()
         
         
+
 

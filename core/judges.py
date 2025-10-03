@@ -58,6 +58,22 @@ PRUNER_INSTRUCTIONS = (
     "AVAILABLE CONTEXT KEYS: ['instruction', 'summary', 'user_messages', 'agent_responses', 'tool_logs']"
 )
 
+BASELINE_ACTION_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "action": {"type": "string", "enum": ["general_answer", "kb_lookup", "tool_call"]},
+        "rationale": {"type": "string", "description": "Explain why this action is appropriate when all context is available."}
+    },
+    "required": ["action", "rationale"],
+    "additionalProperties": False
+}
+
+BASELINE_ACTION_INSTRUCTIONS = (
+    "You are an expert AI assistant that evaluates the entire conversation context to choose the next action.\n"
+    "Do NOT prune any context keys. Consider every field in `context` plus the `new_question` to select the best action.\n"
+    "Return JSON with `action` (general_answer, kb_lookup, or tool_call) and a short `rationale`."
+)
+
 
 def configure(context: Dict[str, Any]) -> None:
     """Store judge-related configuration."""
@@ -113,6 +129,10 @@ async def run_judge_ollama(payload: Dict[str, Any]) -> Dict[str, Any]:
     return await run_judge_flexible(payload, model)
 
 
+
+
+
+
 async def run_pruner(payload: Dict[str, Any], model: Optional[str] = None) -> Dict[str, Any]:
     """Run the pruning model with flexible routing."""
     api_routing_mode = _CONFIG.get("API_ROUTING_MODE", "openrouter")
@@ -144,4 +164,38 @@ async def run_pruner(payload: Dict[str, Any], model: Optional[str] = None) -> Di
         payload,
         "pruner",
         PRUNER_SCHEMA,
+    )
+
+
+async def run_action_without_pruning(payload: Dict[str, Any], model: Optional[str] = None) -> Dict[str, Any]:
+    """Predict the next action using the full context without pruning."""
+    api_routing_mode = _CONFIG.get("API_ROUTING_MODE", "openrouter")
+    openai_api_key = _CONFIG.get("OPENAI_API_KEY")
+    if model is None:
+        model = st.session_state.get('pruner_model', _CONFIG.get("OPENAI_MODEL", "openai/gpt-5-mini"))
+
+    provider = _get_provider_from_model_id(model)
+
+    if api_routing_mode == "openrouter" or provider in {"mistralai", "anthropic", "meta-llama", "deepseek"}:
+        return await openrouter_json(
+            _to_openrouter_model_id(model),
+            BASELINE_ACTION_INSTRUCTIONS,
+            payload,
+            "baseline_action",
+            BASELINE_ACTION_SCHEMA,
+        )
+    if provider == "openai" and openai_api_key:
+        native_model = _to_native_model_id(model)
+        return await openai_structured_json(
+            AsyncOpenAI(api_key=openai_api_key),
+            native_model,
+            BASELINE_ACTION_INSTRUCTIONS,
+            payload,
+        )
+    return await openrouter_json(
+        _to_openrouter_model_id(model),
+        BASELINE_ACTION_INSTRUCTIONS,
+        payload,
+        "baseline_action",
+        BASELINE_ACTION_SCHEMA,
     )

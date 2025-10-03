@@ -22,6 +22,7 @@ class Classification(BaseModel):
 class ClassificationWithConf(Classification):
     """Classification result with confidence score."""
     confidence: Optional[float] = Field(default=None, ge=0.0, le=1.0)
+    class_probabilities: Optional[Dict[str, float]] = Field(default_factory=dict, description="Mapping of label -> probability")
 
 
 class SyntheticDataItem(BaseModel):

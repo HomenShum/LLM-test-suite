@@ -21,8 +21,8 @@ from core.pricing import (
 # Default models configuration
 OPENROUTER_MODEL = "mistralai/mistral-large-2411"
 OPENAI_MODEL = "gpt-5-mini"
-THIRD_MODEL_KIND = "None"  # "None", "Gemini", or "Ollama"
-THIRD_MODEL = ""
+THIRD_MODEL_KIND = "OpenAI"  # "None", "Gemini", "OpenRouter", or "Ollama"
+THIRD_MODEL = "gpt-4.1-mini"
 
 
 @st.cache_data(ttl=60 * 60 * 24 * 30)  # Cache for 30 days

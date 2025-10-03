@@ -364,11 +364,17 @@ def render_agent_dashboard(tab) -> None:
                     # Determine color (vibrant, high-contrast scheme)
                     agent_type = agent.get('type', 'task')
                     color = AGENT_COLORS_VIBRANT.get(agent_type, '#94A3B8')
-        
+
                     if agent['status'] == 'error':
                         color = '#DC2626'  # Bright Red for errors
                     elif agent['status'] == 'running':
-                        color = color + 'CC'  # Slightly transparent for running
+                        # Convert hex to rgba with transparency for running agents
+                        # Extract RGB from hex color
+                        hex_color = color.lstrip('#')
+                        r = int(hex_color[0:2], 16)
+                        g = int(hex_color[2:4], 16)
+                        b = int(hex_color[4:6], 16)
+                        color = f'rgba({r},{g},{b},0.8)'  # 80% opacity for running
         
                     gantt_data.append({
                         'Task': agent['name'],
@@ -491,10 +497,10 @@ def render_agent_dashboard(tab) -> None:
                     completed = len([a for a in agents.values() if a['status'] == 'complete'])
                     st.metric("Completed", completed)
                 with col3:
-                    total_time = max([a.get('end', a['start']) - min_time for a in agents.values()]) if agents else 0
+                    total_time = max([(a['end'] or a['start']) - min_time for a in agents.values()]) if agents else 0
                     st.metric("Total Time", f"{total_time:.1f}s")
                 with col4:
-                    avg_duration = sum([(a.get('end', a['start']) - a['start']) for a in agents.values()]) / len(agents) if agents else 0
+                    avg_duration = sum([((a['end'] or a['start']) - a['start']) for a in agents.values()]) / len(agents) if agents else 0
                     st.metric("Avg Duration", f"{avg_duration:.1f}s")
         
             # Render the enhanced Gantt chart

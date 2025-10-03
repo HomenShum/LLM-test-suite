@@ -110,6 +110,9 @@ class UnifiedOrchestrator:
         self.best_code = None
         self.best_turn = 0
 
+        # Prompt evolution tracking for UI display
+        self.prompt_history: List[Dict[str, Any]] = []  # List of {turn, prompt, accuracy}
+
         # CRITICAL: Initialize iteration counter
         self.iteration = 0
 
@@ -1283,6 +1286,17 @@ Return ONLY the improved predict_tools function code.
         # Step 5: Update best if improved
         if overall_accuracy > self.best_performance:
             improvement = overall_accuracy - self.best_performance
+
+            # Track prompt evolution for UI display
+            self.prompt_history.append({
+                "turn": turn,
+                "previous_prompt": self.best_code,
+                "new_prompt": generated_code,
+                "previous_accuracy": self.best_performance,
+                "new_accuracy": overall_accuracy,
+                "improvement": improvement
+            })
+
             self.best_performance = overall_accuracy
             self.best_code = generated_code
             self.best_turn = turn

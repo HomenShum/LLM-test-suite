@@ -190,6 +190,60 @@ def display_advanced_results(
 
     st.session_state.test6_analysis_data = results
 
+    # Add documentation popover for advanced results
+    with st.popover("ℹ️ Advanced Results Guide", help="Click to understand the analysis tabs"):
+        st.markdown("**Advanced Results Interface**")
+        st.markdown("This interface provides 8 comprehensive analysis tabs:")
+
+        st.markdown("**Tab Overview:**")
+        st.code("""
+📋 Summary & Performance
+   - Quick metrics and model comparison
+   - Success rates and average confidence
+   - Performance dashboard
+
+📊 Detailed Results
+   - Full analysis for each image
+   - Model-by-model breakdown
+   - Downloadable CSV/JSON
+
+📈 Visualizations
+   - Rating comparison scatter plots
+   - Model agreement heatmaps
+   - Confidence distributions
+   - Interactive charts
+
+🎯 Synthesis & Insights
+   - Cross-model synthesis
+   - Key findings and patterns
+   - Actionable recommendations
+
+🧠 Computational Analysis
+   - LLM-generated Python code analysis
+   - Statistical computations
+   - Custom metrics and visualizations
+
+🏆 Model Evaluation
+   - LLM judge evaluation
+   - Model rankings and scores
+   - Performance comparison
+
+💬 Interactive Q&A
+   - Ask questions about results
+   - Automatic image context selection
+   - Follow-up analysis suggestions
+
+💾 Export
+   - Download results in multiple formats
+   - CSV, JSON, and full reports
+        """, language="text")
+
+        st.markdown("**Key Features:**")
+        st.markdown("- **Result Caching**: Computational and evaluation results are cached")
+        st.markdown("- **Image Display**: Referenced images automatically shown in Q&A")
+        st.markdown("- **Downloadable**: All results exportable as CSV/JSON")
+        st.markdown("- **Interactive**: Click through tabs to explore different aspects")
+
     # Create tabs - merged basic and advanced
     result_tabs = st.tabs([
         "📋 Summary & Performance",
@@ -632,6 +686,87 @@ def _display_computational_analysis_tab(
     st.markdown("#### 📈 Computational Analysis")
 
     st.info("💡 This tab uses LLM-generated code to perform statistical and computational analysis on the visual LLM outputs.")
+
+    # Add documentation popover for Computational Analysis
+    with st.popover("📖 How Computational Analysis Works", help="Click for analysis details"):
+        st.markdown("**Computational Analysis with Code Execution**")
+        st.markdown("This tab uses LLMs to generate and execute Python code for analyzing visual LLM outputs.")
+
+        st.markdown("**Two-Stage Orchestration:**")
+        st.code("""
+# Stage 1: Planning (GPT-5-mini)
+plan = await plan_computational_analysis(
+    visual_llm_outputs=results,
+    task_description=task_description,
+    planner_model="gpt-5-mini"
+)
+
+# Planner generates:
+# - analysis_plan: What to analyze and why
+# - expected_outputs: What results to expect
+# - python_code: Executable Python code
+
+# Example generated code:
+'''
+import pandas as pd
+import numpy as np
+from collections import Counter
+
+# Extract all detected objects
+all_objects = []
+for result in visual_llm_outputs:
+    for model_result in result['model_results'].values():
+        objects = model_result.get('detected_objects', [])
+        all_objects.extend(objects)
+
+# Frequency analysis
+object_freq = Counter(all_objects)
+top_10 = object_freq.most_common(10)
+
+# Model agreement analysis
+# ... more analysis code ...
+'''
+
+# Stage 2: Execution (Gemini Code Execution)
+execution_results = await execute_analysis_code(
+    python_code=plan['python_code'],
+    visual_llm_outputs=results,
+    use_gemini_execution=True
+)
+
+# Gemini Code Execution:
+# - Runs code in sandboxed environment
+# - Has access to visual_llm_outputs data
+# - Returns execution results and any outputs
+        """, language="python")
+
+        st.markdown("**Key Functions:**")
+        st.code("""
+# Planning function
+async def plan_computational_analysis(
+    visual_llm_outputs, task_description, planner_model
+):
+    # LLM analyzes the data structure
+    # Generates appropriate analysis code
+    # Returns plan with executable Python code
+
+# Execution function
+async def execute_analysis_code(
+    python_code, visual_llm_outputs, use_gemini_execution
+):
+    # Gemini Code Execution API runs the code
+    # Returns results, stdout, and any errors
+    # Handles visualization generation
+        """, language="python")
+
+        st.markdown("**Example Analyses:**")
+        st.markdown("- **Object Frequency**: Count detected objects across all images")
+        st.markdown("- **Color Analysis**: Extract and analyze dominant colors")
+        st.markdown("- **Model Agreement**: Calculate inter-model agreement scores")
+        st.markdown("- **Confidence Calibration**: Analyze confidence vs. accuracy")
+        st.markdown("- **Custom Metrics**: Any statistical analysis you need")
+
+        st.markdown("**Note:** Results are cached - re-run if you want fresh analysis.")
 
     # Check if analysis already run
     if st.session_state.test6_computational_results is not None:
@@ -1253,6 +1388,85 @@ def _display_model_evaluation_tab(
 
     st.info("💡 This tab uses an LLM judge to evaluate model performance and provide recommendations.")
 
+    # Add documentation popover for Model Evaluation
+    with st.popover("📖 How Model Evaluation Works", help="Click for evaluation details"):
+        st.markdown("**Model Evaluation with LLM Judge**")
+        st.markdown("This tab uses an LLM judge to evaluate and rank visual LLM performance.")
+
+        st.markdown("**Orchestration Flow:**")
+        st.code("""
+# 1. Prepare evaluation context
+evaluation_context = {
+    "task_description": task_description,
+    "visual_llm_outputs": results,
+    "computational_results": computational_analysis
+}
+
+# 2. LLM Judge analyzes all model outputs
+judge_prompt = f'''
+Task: {task_description}
+
+Analyze the performance of these visual LLMs:
+{format_model_outputs(results)}
+
+Computational Analysis:
+{computational_results}
+
+Evaluate each model on:
+1. Accuracy and relevance
+2. Consistency across images
+3. Confidence calibration
+4. Artifact detection capability
+5. Overall usefulness
+
+Provide:
+- Best model and rationale
+- Model rankings with scores (0-100)
+- Strengths and weaknesses for each
+- Recommendations for improvement
+'''
+
+evaluation = await evaluate_visual_llm_performance(
+    visual_llm_outputs=results,
+    task_description=task_description,
+    computational_results=comp_results,
+    judge_model="gpt-5-nano"
+)
+
+# 3. Display results
+- Best model selection
+- Model rankings with scores
+- Detailed analysis per model
+- Recommendations
+        """, language="python")
+
+        st.markdown("**Key Functions:**")
+        st.code("""
+async def evaluate_visual_llm_performance(
+    visual_llm_outputs,
+    task_description,
+    computational_results,
+    judge_model
+):
+    # Build comprehensive evaluation prompt
+    # Call judge LLM
+    # Parse and structure results
+    return {
+        "best_model": str,
+        "model_rankings": List[Dict],
+        "analysis": str,
+        "recommendations": List[str]
+    }
+        """, language="python")
+
+        st.markdown("**Expected Outputs:**")
+        st.markdown("- **Best Model**: Top-performing model with rationale")
+        st.markdown("- **Rankings**: All models scored 0-100")
+        st.markdown("- **Analysis**: Detailed strengths/weaknesses")
+        st.markdown("- **Recommendations**: Actionable improvement suggestions")
+
+        st.markdown("**Note:** Results are cached - re-run if you want fresh evaluation.")
+
     # Check if evaluation already run
     if st.session_state.test6_evaluation_results is not None:
         st.success("✅ Evaluation already completed. Showing cached results.")
@@ -1352,6 +1566,99 @@ def _display_qa_tab(
         st.session_state.test6_qa_history = []
 
     st.info("💡 Ask questions about the analysis results **OR** specific images. The AI will answer based on all available data and show relevant images.")
+
+    # Add documentation popover for Interactive Q&A
+    with st.popover("📖 How Interactive Q&A Works", help="Click for Q&A details"):
+        st.markdown("**Interactive Q&A with Automatic Image Context**")
+        st.markdown("Ask questions about analysis results and get answers with relevant images automatically displayed.")
+
+        st.markdown("**Orchestration Flow:**")
+        st.code("""
+# 1. User asks a question
+question = "Show me the analysis for urban_scene_003.jpg"
+
+# 2. Build context from all available data
+context = {
+    "visual_llm_outputs": results,
+    "computational_results": computational_analysis,
+    "evaluation_results": model_evaluation,
+    "conversation_history": previous_qa_exchanges
+}
+
+# 3. LLM selects relevant images (two methods)
+
+# Method A: Explicit image name detection
+if "urban_scene_003.jpg" in question:
+    relevant_images.append(find_image("urban_scene_003.jpg"))
+
+# Method B: LLM-based selection
+image_descriptors = [
+    {"image_name": img.name, "descriptor": img.summary}
+    for img in results
+]
+
+selected_names = await llm_select_relevant_images(
+    question=question,
+    image_descriptors=image_descriptors,
+    qa_model="gpt-5-nano"
+)
+
+# 4. Answer question with full context
+answer = await answer_followup_question(
+    question=question,
+    visual_llm_outputs=results,
+    computational_results=comp_results,
+    evaluation_results=eval_results,
+    conversation_history=history,
+    qa_model="gpt-5-nano"
+)
+
+# 5. Display answer with images
+# UI automatically shows:
+# - Answer text
+# - Relevant images in expanders
+# - Model analyses for each image
+# - Suggested follow-up actions
+        """, language="python")
+
+        st.markdown("**Key Functions:**")
+        st.code("""
+# Main Q&A function
+async def answer_followup_question(
+    question, visual_llm_outputs,
+    computational_results, evaluation_results,
+    conversation_history, qa_model
+):
+    # Build comprehensive context
+    # Select relevant images
+    # Generate answer
+    # Suggest follow-up actions
+    return {
+        "answer": str,
+        "relevant_images": List[Dict],
+        "suggested_actions": List[str]
+    }
+
+# LLM-based image selection
+async def llm_select_relevant_images(
+    question, image_descriptors, qa_model
+):
+    # LLM analyzes question and image descriptors
+    # Returns list of relevant image names
+    # Cached for performance
+        """, language="python")
+
+        st.markdown("**Question Types:**")
+        st.markdown("- **General**: *Which model performed best?*")
+        st.markdown("- **Image-specific**: *Show me image_003.jpg*")
+        st.markdown("- **Comparison**: *Why did models disagree on this image?*")
+        st.markdown("- **Analysis**: *What patterns did you find in the data?*")
+
+        st.markdown("**Features:**")
+        st.markdown("- **Automatic Image Display**: Referenced images shown in expanders")
+        st.markdown("- **Conversation History**: Maintains context across questions")
+        st.markdown("- **Smart Caching**: Image selections cached for performance")
+        st.markdown("- **Suggested Actions**: Follow-up questions and actions")
 
     # Display conversation history using chat UI
     for exchange in st.session_state.test6_qa_history:

@@ -181,6 +181,21 @@ def save_dataset_to_file(df: pd.DataFrame, dataset_type: str, model_used: Option
 
 def save_results_df(df: pd.DataFrame, test_name: str, row_limit: Optional[int], is_pruning_test: bool = False):
     """Saves the results DataFrame to the test_output directory."""
+    enforce_third = isinstance(test_name, str) and (test_name.startswith("Test 2") or test_name.startswith("Test 3"))
+    if enforce_third:
+        required_prediction_cols = [
+            "classification_result_openrouter_mistral",
+            "classification_result_openai",
+            "classification_result_third",
+        ]
+        for col in required_prediction_cols:
+            if col not in df.columns:
+                st.error(f"Missing required column '{col}' in results DataFrame. Ensure all three models were executed before saving.")
+                return
+            if df[col].dropna().empty:
+                st.error(f"Column '{col}' has no predictions. Ensure the corresponding model is configured and rerun the test.")
+                return
+
     try:
         output_dir = "test_output"
         os.makedirs(output_dir, exist_ok=True)
