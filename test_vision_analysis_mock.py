@@ -323,6 +323,7 @@ def main():
         print(f"\n❌ TEST FAILED: {e}")
         import traceback
         traceback.print_exc()
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

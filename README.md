@@ -234,6 +234,18 @@ The system supports dynamic model discovery from:
 
 ## 🧪 Testing
 
+### Offline mock runner exit regression
+
+From the repository root, run:
+
+```bash
+python -I -B -X utf8 test_mock_runner_exit.py -v
+```
+
+This uses stdlib unittest and the local Pydantic dependency already used by the mock runner; no API credentials or Streamlit session is needed. It runs the actual mock main, deliberately injects an exception at each of its four workflow steps, and checks process exit status, traceback, success messages, and current-run cache contents. It also checks callers in separate temporary directories, with at most two running concurrently, and three failure-then-success recovery pairs. Child processes receive an explicit minimal environment and block guarded Python socket and child-process events after startup.
+
+The native mock returns 0 on success and 1 after a caught workflow failure. These are offline fixture checks, not provider/model quality evaluations or verification of the Streamlit app. See the [surface change history](CHANGELOG/README.md).
+
 ### Run Classification Tests
 Tests model performance on sentiment classification with F1 scores and confusion matrices.
 
